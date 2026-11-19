@@ -1,0 +1,8 @@
+{
+  "name": "টেক্স ওয়ার অ্যাপারেলস - বেতন ও কর্মচারী ব্যবস্থাপনা",
+  "description": "গার্মেন্টস ও টেক্সটাইল ফ্যাক্টরির বেতন হিসাব, ওভারটাইম, রিজাইন ও চাকরি স্ট্যাটাস ট্র্যাকিং, POS পে-স্লিপ এবং এইচআর ম্যানেজমেন্ট সিস্টেম।",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

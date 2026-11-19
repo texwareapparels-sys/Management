@@ -1,0 +1,195 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', 'Hind Siliguri', 'Noto Sans Bengali', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #f8fafc;
+    color: #0f172a;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .font-mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.enterprise-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.enterprise-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.enterprise-scroll::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.45);
+  border-radius: 9999px;
+}
+
+.enterprise-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.7);
+}
+
+@media print {
+  /* Default: hide everything by default */
+  html, body {
+    background: #fff !important;
+    color: #000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  header,
+  nav,
+  footer,
+  button,
+  .no-print,
+  #tabUserApp,
+  #tabAdminApp {
+    display: none !important;
+  }
+
+  /* When printing POS thermal receipt */
+  #invoicePrintArea {
+    display: block !important;
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 58mm !important;
+    max-width: 58mm !important;
+    margin: 0 auto !important;
+    padding: 3mm !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: #fff !important;
+    z-index: 999999 !important;
+  }
+
+  /* When printing employee profile in Admin */
+  #employeeProfilePrintArea {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    padding: 10mm !important;
+    background: #fff !important;
+    z-index: 999999 !important;
+  }
+
+  /* When printing monthly salary sheet in Admin */
+  #monthlySalarySheetPrintArea {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    padding: 6mm !important;
+    background: #fff !important;
+    z-index: 999999 !important;
+  }
+
+  /* When printing master A4 payroll sheet in Admin */
+  #masterSalaryA4PrintArea {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    padding: 4mm !important;
+    background: #fff !important;
+    z-index: 999999 !important;
+  }
+
+  /* When printing Worker Appointment Contract Letter */
+  #workerContractLetterA4Area {
+    display: block !important;
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 2.5mm 5mm !important;
+    background: #fff !important;
+    color: #000 !important;
+    z-index: 9999999 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* When printing Factory Investment Agreement & Deed */
+  #printableA4InvestmentAgreement {
+    display: block !important;
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 3mm 6mm !important;
+    background: #fff !important;
+    color: #000 !important;
+    z-index: 9999999 !important;
+    box-shadow: none !important;
+    border: none !important;
+    overflow: visible !important;
+  }
+
+  /* When printing Individual Worker Attendance & In-Out History Sheet */
+  #employeeIndividualAttendancePrintArea,
+  #workerMonthlyAttendancePrintArea {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 3mm 5mm !important;
+    background: #fff !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    border: none !important;
+    overflow: visible !important;
+    page-break-inside: auto !important;
+  }
+
+  /* When printing Monthly Master Attendance Sheet (A4 Landscape) */
+  #monthlyMasterAttendanceA4Area {
+    display: block !important;
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 3mm 5mm !important;
+    background: #fff !important;
+    color: #000 !important;
+    z-index: 9999999 !important;
+    box-shadow: none !important;
+    border: none !important;
+    overflow: visible !important;
+  }
+
+  .print-block,
+  .print\:block {
+    display: block !important;
+  }
+
+  @page {
+    size: auto;
+    margin: 4mm;
+  }
+}
+

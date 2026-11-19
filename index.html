@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>টেক্স ওয়ার অ্যাপারেলস - বেতন ও কর্মচারী ব্যবস্থাপনা</title>
+    <meta name="description" content="গার্মেন্টস ও টেক্সটাইল ফ্যাক্টরির বেতন হিসাব, ওভারটাইম, রিজাইন ও চাকরি স্ট্যাটাস ট্র্যাকিং, POS পে-স্লিপ এবং এইচআর ম্যানেজমেন্ট সিস্টেম।" />
+    <meta name="theme-color" content="#0f766e" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512.png" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+    <link rel="shortcut icon" href="/icons/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+
+    <!-- Dynamic Dual-App PWA Manifest & Service Worker Registration -->
+    <script>
+      (function() {
+        // Global install prompt capture for PWA
+        window.addEventListener('beforeinstallprompt', function(e) {
+          e.preventDefault();
+          window.__deferredInstallPrompt = e;
+          try {
+            window.dispatchEvent(new CustomEvent('pwa_prompt_ready'));
+          } catch(err) {}
+        });
+
+        // Register Service Worker immediately for Chromium PWA installability & offline support
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/sw.js', { scope: '/' })
+            .then(function(reg) {
+              if (reg.update) reg.update();
+            })
+            .catch(function(err) {
+              console.warn('PWA SW registration warning:', err);
+            });
+        }
+
+        var p = (window.location.pathname || '').toLowerCase();
+        var h = (window.location.hash || '').toLowerCase();
+        var s = (window.location.search || '').toLowerCase();
+        var isWorker = p.indexOf('worker') !== -1 || h.indexOf('worker') !== -1 || s.indexOf('worker') !== -1;
+        var isAdmin = p.indexOf('admin') !== -1 || s.indexOf('admin') !== -1 || s.indexOf('mode=admin') !== -1;
+
+        if (!isWorker && !isAdmin) {
+          try {
+            var sess = localStorage.getItem('texware_worker_session');
+            if (sess && (p === '/' || p === '') && s === '') {
+              // Only redirect if specifically on empty root and has worker session
+              isWorker = true;
+              window.location.replace('/texwareworker');
+              return;
+            }
+          } catch(e) {}
+        }
+
+        var manifestHref = isWorker ? '/worker-manifest.json' : '/manifest.json';
+        var pageTitle = isWorker ? 'টেক্স ওয়ার শ্রমিক অ্যাপ' : 'টেক্স ওয়ার অ্যাপারেলস - কারখানা ব্যবস্থাপনা';
+        var themeColor = '#0f766e';
+        var appTitle = isWorker ? 'শ্রমিক অ্যাপ' : 'টেক্স ওয়ার';
+
+        document.title = pageTitle;
+
+        var themeMeta = document.querySelector('meta[name="theme-color"]');
+        if (themeMeta) themeMeta.setAttribute('content', themeColor);
+
+        var appleMeta = document.querySelector('meta[name="apple-mobile-web-app-title"]');
+        if (appleMeta) appleMeta.setAttribute('content', appTitle);
+
+        var manifestLink = document.getElementById('pwa-manifest');
+        if (!manifestLink) {
+          manifestLink = document.createElement('link');
+          manifestLink.rel = 'manifest';
+          manifestLink.id = 'pwa-manifest';
+          manifestLink.href = manifestHref;
+          document.head.appendChild(manifestLink);
+        } else if (manifestLink.getAttribute('href') !== manifestHref) {
+          manifestLink.setAttribute('href', manifestHref);
+        }
+      })();
+    </script>
+    <meta property="og:title" content="টেক্স ওয়ার অ্যাপারেলস - বেতন ও কর্মচারী ব্যবস্থাপনা" />
+    <meta property="og:description" content="গার্মেন্টস ও টেক্সটাইল ফ্যাক্টরির বেতন হিসাব, ওভারটাইম, রিজাইন ও চাকরি স্ট্যাটাস ট্র্যাকিং, POS পে-স্লিপ এবং এইচআর ম্যানেজমেন্ট সিস্টেম।" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  </head>
+  <body class="bg-slate-50 text-slate-900 antialiased font-['Plus_Jakarta_Sans','Hind_Siliguri','Noto_Sans_Bengali',sans-serif]">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
