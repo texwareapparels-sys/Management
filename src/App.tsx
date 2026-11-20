@@ -124,20 +124,14 @@ export default function App() {
           return false;
         }
       })();
+      const hasInvestorSession = (() => {
+        try {
+          return Boolean(localStorage.getItem('texware_investor_session'));
+        } catch {
+          return false;
+        }
+      })();
       const isAdminExplicit = mode === 'admin' || admin === 'true' || admin === '1';
-
-      const isWorkerRoute =
-        pathname.includes('texwareworker') ||
-        pathname.endsWith('/worker') ||
-        pathname === '/worker' ||
-        hash.includes('texwareworker') ||
-        hash.includes('worker') ||
-        portal === 'texwareworker' ||
-        portal === 'worker' ||
-        mode === 'texwareworker' ||
-        mode === 'worker' ||
-        tab === 'worker' ||
-        (hasWorkerSession && !isAdminExplicit && (pathname === '/' || pathname === ''));
 
       const isInvestorRoute =
         pathname.includes('texwareinvestment') ||
@@ -146,7 +140,22 @@ export default function App() {
         portal === 'investor' ||
         mode === 'texwareinvestment' ||
         mode === 'investor' ||
-        tab === 'investor';
+        tab === 'investor' ||
+        (hasInvestorSession && !isAdminExplicit && (pathname === '/' || pathname === ''));
+
+      const isWorkerRoute =
+        !isInvestorRoute &&
+        (pathname.includes('texwareworker') ||
+          pathname.endsWith('/worker') ||
+          pathname === '/worker' ||
+          hash.includes('texwareworker') ||
+          hash.includes('worker') ||
+          portal === 'texwareworker' ||
+          portal === 'worker' ||
+          mode === 'texwareworker' ||
+          mode === 'worker' ||
+          tab === 'worker' ||
+          (hasWorkerSession && !isAdminExplicit && (pathname === '/' || pathname === '')));
 
       const wid = params.get('workerId') || (!isInvestorRoute ? (params.get('id') || '') : '');
       const invId =
@@ -211,10 +220,19 @@ export default function App() {
       if (typeof window === 'undefined') return;
       const pathname = (window.location.pathname || '').toLowerCase();
       const hash = (window.location.hash || '').toLowerCase();
-      if (pathname.includes('texwareworker') || hash.includes('texwareworker')) {
-        setCurrentTab('worker');
-      } else if (pathname.includes('texwareinvestment') || hash.includes('texwareinvestment')) {
+      let hasInvSession = false;
+      try {
+        hasInvSession = Boolean(localStorage.getItem('texware_investor_session'));
+      } catch {}
+      if (pathname.includes('texwareinvestment') || hash.includes('texwareinvestment') || hasInvSession) {
         setCurrentTab('investor');
+        if (hasInvSession && !pathname.includes('texwareinvestment')) {
+          try {
+            window.history.replaceState(null, '', '/texwareinvestment');
+          } catch {}
+        }
+      } else if (pathname.includes('texwareworker') || hash.includes('texwareworker')) {
+        setCurrentTab('worker');
       } else if (pathname === '/' || pathname === '') {
         setCurrentTab('dashboard');
       }
@@ -250,7 +268,6 @@ export default function App() {
         <InvestorPortal
           initialInvestorId={urlInvestorId}
           initialMobile={urlMobile}
-          onBackToApp={handleGoBack}
           onSwitchToWorkerPortal={() => handleTabChange('worker')}
           showToast={showToast}
         />

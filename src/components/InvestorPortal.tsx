@@ -166,10 +166,16 @@ export const InvestorPortal: React.FC<InvestorPortalProps> = ({
       if (activeId) {
         const found = list.find((i) => i.id === activeId);
         if (!found) {
+          try {
+            localStorage.removeItem('texware_investor_session');
+          } catch {}
           setLoggedInInvestor(null);
           setLoginError('আপনার বিনিয়োগ চুক্তিটি অ্যাডমিন কর্তৃক মুছে ফেলা হয়েছে। বিস্তারিত জানতে কর্তৃপক্ষের সাথে যোগাযোগ করুন।');
           showToast('বিনিয়োগ রেকর্ড পাওয়া যায়নি — লগআউট করা হয়েছে');
         } else if (found.isBlocked) {
+          try {
+            localStorage.removeItem('texware_investor_session');
+          } catch {}
           setLoggedInInvestor(null);
           setLoginError(
             `⛔ আপনার ইনভেস্টর অ্যাকাউন্ট অ্যাডমিন কর্তৃক সাময়িকভাবে ব্লক করা হয়েছে!\n\nকারণ: ${
@@ -180,6 +186,19 @@ export const InvestorPortal: React.FC<InvestorPortalProps> = ({
         } else {
           setLoggedInInvestor(found);
         }
+      } else {
+        try {
+          const storedRaw = localStorage.getItem('texware_investor_session');
+          if (storedRaw) {
+            const parsed = JSON.parse(storedRaw);
+            const matched = list.find((i) => i.id === parsed?.id);
+            if (matched && !matched.isBlocked) {
+              setLoggedInInvestor(matched);
+            } else if (list.length > 0) {
+              localStorage.removeItem('texware_investor_session');
+            }
+          }
+        } catch {}
       }
     });
 
@@ -302,12 +321,21 @@ export const InvestorPortal: React.FC<InvestorPortalProps> = ({
       return;
     }
 
+    try {
+      localStorage.setItem(
+        'texware_investor_session',
+        JSON.stringify({ id: authenticatedMatch.id, agreementNo: authenticatedMatch.agreementNo })
+      );
+    } catch {}
     setLoggedInInvestor(authenticatedMatch);
     setPortalTab('all');
     showToast(`স্বাগতম জনাব ${authenticatedMatch.investorName}! ইনভেস্টর পোর্টালে সফলভাবে প্রবেশ করেছেন।`);
   };
 
   const handleLogout = () => {
+    try {
+      localStorage.removeItem('texware_investor_session');
+    } catch {}
     setLoggedInInvestor(null);
     setLoginPassword('');
     setLoginError('');
@@ -758,18 +786,6 @@ export const InvestorPortal: React.FC<InvestorPortalProps> = ({
             </div>
             <p>সকল ডাটা কারখানা সার্ভারে সুরক্ষিতভাবে সংরক্ষিত</p>
           </div>
-
-          {onBackToApp && (
-            <div className="text-center pt-1">
-              <button
-                type="button"
-                onClick={onBackToApp}
-                className="text-xs text-slate-400 hover:text-amber-300 font-semibold underline cursor-pointer"
-              >
-                ← প্রধান অ্যাপ্লিকেশনে ফিরে যান
-              </button>
-            </div>
-          )}
         </div>
       </div>
     );
@@ -781,16 +797,6 @@ export const InvestorPortal: React.FC<InvestorPortalProps> = ({
       {/* Top Corporate Navigation Bar */}
       <header className="bg-slate-900/90 border-b border-amber-400/20 backdrop-blur-md sticky top-0 z-40 px-4 py-3 sm:px-8 flex items-center justify-between no-print">
         <div className="flex items-center gap-3">
-          {onBackToApp && (
-            <button
-              type="button"
-              onClick={onBackToApp}
-              title="আগের পেজে ফিরে যান"
-              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer shrink-0"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </button>
-          )}
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 font-black flex items-center justify-center shadow-md border border-amber-300">
             <TrendingUp className="w-6 h-6 stroke-[2.5]" />
           </div>
