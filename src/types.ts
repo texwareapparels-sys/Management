@@ -206,6 +206,7 @@ export interface TelegramSettings {
   chatId: string;
   notifyOnResignation?: boolean;
   notifyOnSalary?: boolean;
+  notifyOnInvestment?: boolean;
   updatedAt?: number;
 }
 

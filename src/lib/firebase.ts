@@ -33,7 +33,11 @@ import { INITIAL_EMPLOYEES } from './initialData';
 import { DEFAULT_SHIFT_SETTINGS } from './attendanceUtils';
 import { generateInitialAttendanceRecords } from './attendanceSeed';
 import { generateUniqueWorkerId } from './workerIdUtils';
-import { sendSalaryStatusTelegramNotification } from './telegram';
+import {
+  sendSalaryStatusTelegramNotification,
+  sendInvestmentTelegramNotification,
+  sendInvestmentWithdrawalTelegramNotification,
+} from './telegram';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAiqeoFeg5UUQShhsAT-pXHon1KSThqm78",
@@ -2660,12 +2664,46 @@ export async function saveOrUpdateInvestment(
     }
   }
 
+  if (!existing) {
+    void (async () => {
+      try {
+        const [tgCfg, facCfg] = await Promise.all([
+          loadTelegramSettings(),
+          loadFactorySettings(),
+        ]);
+        await sendInvestmentTelegramNotification({
+          event: 'created',
+          investment: record,
+          settings: tgCfg,
+          factoryName: facCfg?.name,
+        });
+      } catch {}
+    })();
+  } else if (existing.status !== record.status) {
+    void (async () => {
+      try {
+        const [tgCfg, facCfg] = await Promise.all([
+          loadTelegramSettings(),
+          loadFactorySettings(),
+        ]);
+        await sendInvestmentTelegramNotification({
+          event: 'status_updated',
+          investment: record,
+          previousStatus: existing.status,
+          settings: tgCfg,
+          factoryName: facCfg?.name,
+        });
+      } catch {}
+    })();
+  }
+
   return recordId;
 }
 
 export async function deleteInvestmentById(id: string): Promise<void> {
-  recordDeletedInvestmentId(id);
   const currentList = getLocalInvestments();
+  const target = currentList.find((item) => item.id === id);
+  recordDeletedInvestmentId(id);
   const nextList = currentList.filter((item) => item.id !== id);
   setLocalInvestments(nextList);
 
@@ -2675,6 +2713,24 @@ export async function deleteInvestmentById(id: string): Promise<void> {
     } catch (e) {
       console.warn("Firebase delete investment error:", e);
     }
+  }
+
+  if (target) {
+    void (async () => {
+      try {
+        const [tgCfg, facCfg] = await Promise.all([
+          loadTelegramSettings(),
+          loadFactorySettings(),
+        ]);
+        await sendInvestmentTelegramNotification({
+          event: 'deleted',
+          investment: target,
+          previousStatus: target.status,
+          settings: tgCfg,
+          factoryName: facCfg?.name,
+        });
+      } catch {}
+    })();
   }
 }
 
@@ -2713,6 +2769,24 @@ export async function blockInvestorProfile(
       console.warn("Firebase blockInvestorProfile error:", e);
     }
   }
+
+  const target = updatedList.find((inv) => inv.id === id);
+  if (target) {
+    void (async () => {
+      try {
+        const [tgCfg, facCfg] = await Promise.all([
+          loadTelegramSettings(),
+          loadFactorySettings(),
+        ]);
+        await sendInvestmentTelegramNotification({
+          event: 'blocked',
+          investment: target,
+          settings: tgCfg,
+          factoryName: facCfg?.name,
+        });
+      } catch {}
+    })();
+  }
 }
 
 export async function unblockInvestorProfile(id: string): Promise<void> {
@@ -2744,6 +2818,24 @@ export async function unblockInvestorProfile(id: string): Promise<void> {
     } catch (e) {
       console.warn("Firebase unblockInvestorProfile error:", e);
     }
+  }
+
+  const target = updatedList.find((inv) => inv.id === id);
+  if (target) {
+    void (async () => {
+      try {
+        const [tgCfg, facCfg] = await Promise.all([
+          loadTelegramSettings(),
+          loadFactorySettings(),
+        ]);
+        await sendInvestmentTelegramNotification({
+          event: 'unblocked',
+          investment: target,
+          settings: tgCfg,
+          factoryName: facCfg?.name,
+        });
+      } catch {}
+    })();
   }
 }
 
@@ -3042,6 +3134,39 @@ export async function saveOrUpdateWithdrawal(
     }
   }
 
+  if (!existing) {
+    void (async () => {
+      try {
+        const [tgCfg, facCfg] = await Promise.all([
+          loadTelegramSettings(),
+          loadFactorySettings(),
+        ]);
+        await sendInvestmentWithdrawalTelegramNotification({
+          event: 'created',
+          withdrawal: record,
+          settings: tgCfg,
+          factoryName: facCfg?.name,
+        });
+      } catch {}
+    })();
+  } else if (existing.status !== record.status) {
+    void (async () => {
+      try {
+        const [tgCfg, facCfg] = await Promise.all([
+          loadTelegramSettings(),
+          loadFactorySettings(),
+        ]);
+        await sendInvestmentWithdrawalTelegramNotification({
+          event: 'status_updated',
+          withdrawal: record,
+          previousStatus: existing.status,
+          settings: tgCfg,
+          factoryName: facCfg?.name,
+        });
+      } catch {}
+    })();
+  }
+
   return recordId;
 }
 
@@ -3050,6 +3175,7 @@ export async function updateWithdrawalStatus(
   status: 'pending' | 'approved' | 'completed'
 ): Promise<void> {
   const currentList = getLocalWithdrawals();
+  const existing = currentList.find((item) => item.id === id);
   const now = Date.now();
   const nextList = currentList.map((item) =>
     item.id === id ? { ...item, status, updatedAt: now } : item
@@ -3068,11 +3194,31 @@ export async function updateWithdrawalStatus(
       console.warn("Firebase updateWithdrawalStatus error:", e);
     }
   }
+
+  const updated = nextList.find((item) => item.id === id);
+  if (updated) {
+    void (async () => {
+      try {
+        const [tgCfg, facCfg] = await Promise.all([
+          loadTelegramSettings(),
+          loadFactorySettings(),
+        ]);
+        await sendInvestmentWithdrawalTelegramNotification({
+          event: 'status_updated',
+          withdrawal: updated,
+          previousStatus: existing?.status,
+          settings: tgCfg,
+          factoryName: facCfg?.name,
+        });
+      } catch {}
+    })();
+  }
 }
 
 export async function deleteWithdrawalById(id: string): Promise<void> {
-  recordDeletedWithdrawalId(id);
   const currentList = getLocalWithdrawals();
+  const target = currentList.find((item) => item.id === id);
+  recordDeletedWithdrawalId(id);
   const nextList = currentList.filter((item) => item.id !== id);
   setLocalWithdrawals(nextList);
 
@@ -3082,6 +3228,24 @@ export async function deleteWithdrawalById(id: string): Promise<void> {
     } catch (e) {
       console.warn("Firebase delete withdrawal error:", e);
     }
+  }
+
+  if (target) {
+    void (async () => {
+      try {
+        const [tgCfg, facCfg] = await Promise.all([
+          loadTelegramSettings(),
+          loadFactorySettings(),
+        ]);
+        await sendInvestmentWithdrawalTelegramNotification({
+          event: 'deleted',
+          withdrawal: target,
+          previousStatus: target.status,
+          settings: tgCfg,
+          factoryName: facCfg?.name,
+        });
+      } catch {}
+    })();
   }
 }
 

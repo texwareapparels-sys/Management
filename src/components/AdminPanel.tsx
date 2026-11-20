@@ -5137,6 +5137,23 @@ NID: ${emp.nid || '—'}
               />
             </label>
 
+            <label className="flex items-center justify-between gap-3 p-3 rounded-xl bg-indigo-50/70 border border-indigo-200 cursor-pointer">
+              <div>
+                <div className="font-bold text-indigo-950 text-xs">
+                  ইনভেস্টমেন্ট সেকশনে অটো Telegram নোটিফিকেশন
+                </div>
+                <div className="text-[11px] text-indigo-800">
+                  নতুন ইনভেস্ট, স্ট্যাটাস পরিবর্তন, উত্তোলন রিকোয়েস্ট ও বাতিল হলে সাথে সাথে বটে মেসেজ যাবে
+                </div>
+              </div>
+              <input
+                type="checkbox"
+                checked={tgSettings.notifyOnInvestment !== false}
+                onChange={(e) => setTgSettings({ ...tgSettings, notifyOnInvestment: e.target.checked })}
+                className="w-4 h-4 accent-indigo-600 rounded cursor-pointer shrink-0"
+              />
+            </label>
+
             <div className="grid grid-cols-2 gap-2 pt-2">
               <button
                 type="button"

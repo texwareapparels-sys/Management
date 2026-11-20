@@ -433,6 +433,35 @@ export const InvestmentHub: React.FC<InvestmentHubProps> = ({
     });
   };
 
+  // Direct status selector handler (active | completed | refunded | cancelled)
+  const handleChangeInvestmentStatus = (inv: InvestmentRecord, nextStatus: InvestmentStatus) => {
+    if (inv.status === nextStatus) return;
+    const labelMap: Record<InvestmentStatus, string> = {
+      active: 'সক্রিয় অংশীদারিত্ব',
+      completed: 'মেয়াদ সমাপ্ত',
+      refunded: 'মূলধন ফেরত ও সমাপ্ত',
+      cancelled: 'বাতিলকৃত',
+    };
+    setConfirmDialog({
+      title: `বিনিয়োগ স্ট্যাটাস পরিবর্তন (${labelMap[nextStatus]})`,
+      message: `আপনি কি "${inv.investorName}" (${inv.agreementNo})-এর বিনিয়োগ স্ট্যাটাস "${labelMap[nextStatus]}" করতে চান?`,
+      confirmLabel: 'হ্যাঁ, স্ট্যাটাস আপডেট করুন',
+      variant: nextStatus === 'cancelled' ? 'danger' : nextStatus === 'refunded' ? 'warning' : 'success',
+      onConfirm: async () => {
+        await saveOrUpdateInvestment(
+          {
+            ...inv,
+            status: nextStatus,
+            refundDate: nextStatus === 'refunded' ? (inv.refundDate || safeDateToYmd(Date.now())) : inv.refundDate,
+            refundAmount: nextStatus === 'refunded' ? (inv.refundAmount || inv.amount) : inv.refundAmount,
+          },
+          inv.id
+        );
+        showToast(`✓ স্ট্যাটাস "${labelMap[nextStatus]}" করা হয়েছে!`);
+      },
+    });
+  };
+
   // Image file upload handlers for signature & investor photo
   const handleSignatureFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -862,7 +891,28 @@ export const InvestmentHub: React.FC<InvestmentHubProps> = ({
                   </div>
 
                   {isAdmin && (
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      {/* Direct Status Selector (All Statuses) */}
+                      <select
+                        value={inv.status}
+                        onChange={(e) =>
+                          handleChangeInvestmentStatus(inv, e.target.value as InvestmentStatus)
+                        }
+                        className={`py-1.5 px-2.5 rounded-xl font-bold text-xs border transition cursor-pointer outline-none ${
+                          inv.status === 'active'
+                            ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                            : inv.status === 'cancelled'
+                            ? 'bg-rose-50 text-rose-700 border-rose-300'
+                            : 'bg-slate-100 text-slate-800 border-slate-300'
+                        }`}
+                        title="বিনিয়োগের স্ট্যাটাস পরিবর্তন করুন"
+                      >
+                        <option value="active">সক্রিয়</option>
+                        <option value="completed">মেয়াদ সমাপ্ত</option>
+                        <option value="refunded">মূলধন ফেরত</option>
+                        <option value="cancelled">বাতিল</option>
+                      </select>
+
                       {/* Return Capital / Refund Button */}
                       <button
                         type="button"
