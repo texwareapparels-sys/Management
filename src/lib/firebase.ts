@@ -33,6 +33,7 @@ import { INITIAL_EMPLOYEES } from './initialData';
 import { DEFAULT_SHIFT_SETTINGS } from './attendanceUtils';
 import { generateInitialAttendanceRecords } from './attendanceSeed';
 import { generateUniqueWorkerId } from './workerIdUtils';
+import { sendSalaryStatusTelegramNotification } from './telegram';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAiqeoFeg5UUQShhsAT-pXHon1KSThqm78",
@@ -1154,7 +1155,27 @@ export async function updateSalaryProgressStatus(
     note: note !== undefined ? note : (existing?.note || ''),
   };
 
-  return await saveOrUpdateSalaryRecord(newRecord, recId);
+  const previousStatus =
+    existing?.progressStatus || (existing?.paymentStatus === 'paid' ? 'disbursed' : 'due');
+
+  const savedId = await saveOrUpdateSalaryRecord(newRecord, recId);
+
+  void (async () => {
+    try {
+      const [tgCfg, facCfg] = await Promise.all([
+        loadTelegramSettings(),
+        loadFactorySettings(),
+      ]);
+      await sendSalaryStatusTelegramNotification({
+        record: newRecord,
+        previousStatus,
+        settings: tgCfg,
+        factoryName: facCfg?.name,
+      });
+    } catch {}
+  })();
+
+  return savedId;
 }
 
 export async function deleteSalaryRecordById(id: string): Promise<void> {

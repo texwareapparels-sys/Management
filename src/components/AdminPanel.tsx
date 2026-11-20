@@ -36,7 +36,7 @@ import { formatMoney, formatDateBn, getStatusBadge, toBengaliNumber } from '../l
 import { calculateEmployeeAttendanceStats, getNewJoinerSalaryPolicy, calculateCombinedPenaltyDays } from '../lib/attendanceUtils';
 import { generateUniqueWorkerId, isWorkerIdUnique, getConflictingWorker } from '../lib/workerIdUtils';
 import { printElement } from '../lib/printer';
-import { openInExternalBrowser, isTelegramWebApp } from '../lib/telegram';
+import { openInExternalBrowser, isTelegramWebApp, sendSalaryStatusTelegramNotification } from '../lib/telegram';
 import { AttendanceHub } from './AttendanceHub';
 import { EmployeeAttendanceProfileView } from './EmployeeAttendanceProfileView';
 import { ContractLetterModal } from './ContractLetterModal';
@@ -1120,7 +1120,27 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         return next;
       });
 
+      const previousStatus =
+        rec.progressStatus || (rec.paymentStatus === 'paid' ? 'disbursed' : 'due');
+
       await saveOrUpdateSalaryRecord(updated, recId);
+
+      // Send automatic Telegram Bot notification for this worker's salary status update
+      void (async () => {
+        try {
+          const activeTg =
+            tgSettings?.botToken?.trim() && tgSettings?.chatId?.trim()
+              ? tgSettings
+              : await loadTelegramSettings();
+          await sendSalaryStatusTelegramNotification({
+            record: updated,
+            previousStatus,
+            settings: activeTg,
+            factoryName: factorySettings?.name,
+          });
+        } catch {}
+      })();
+
       const statusLabels: Record<string, string> = {
         due: 'বাকী',
         calculating: 'বাকী',
@@ -1437,7 +1457,33 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         return next;
       });
 
+      const previousProgressStatus =
+        editingSalaryRecord.progressStatus ||
+        (editingSalaryRecord.paymentStatus === 'paid' ? 'disbursed' : 'due');
+      const previousPaymentStatus = editingSalaryRecord.paymentStatus;
+
       await saveOrUpdateSalaryRecord(updatedRecord, editingSalaryRecord.id);
+
+      if (
+        updatedRecord.progressStatus !== previousProgressStatus ||
+        updatedRecord.paymentStatus !== previousPaymentStatus
+      ) {
+        void (async () => {
+          try {
+            const activeTg =
+              tgSettings?.botToken?.trim() && tgSettings?.chatId?.trim()
+                ? tgSettings
+                : await loadTelegramSettings();
+            await sendSalaryStatusTelegramNotification({
+              record: updatedRecord,
+              previousStatus: previousProgressStatus,
+              settings: activeTg,
+              factoryName: factorySettings?.name,
+            });
+          } catch {}
+        })();
+      }
+
       showToast(`${editingSalaryRecord.employeeName}-এর বেতন হিসাব সফলভাবে আপডেট করা হয়েছে`);
       setEditingSalaryRecord(null);
     } catch (err) {
@@ -5073,6 +5119,23 @@ NID: ${emp.nid || '—'}
                 className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500"
               />
             </div>
+
+            <label className="flex items-center justify-between gap-3 p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 cursor-pointer">
+              <div>
+                <div className="font-bold text-emerald-950 text-xs">
+                  শ্রমিকের বেতন স্ট্যাটাস আপডেটে অটো Telegram নোটিফিকেশন
+                </div>
+                <div className="text-[11px] text-emerald-800">
+                  যেকোনো শ্রমিকের বেতন স্ট্যাটাস পরিবর্তন হলে বটে সাথে সাথে মেসেজ যাবে
+                </div>
+              </div>
+              <input
+                type="checkbox"
+                checked={tgSettings.notifyOnSalary !== false}
+                onChange={(e) => setTgSettings({ ...tgSettings, notifyOnSalary: e.target.checked })}
+                className="w-4 h-4 accent-emerald-600 rounded cursor-pointer shrink-0"
+              />
+            </label>
 
             <div className="grid grid-cols-2 gap-2 pt-2">
               <button
