@@ -18,7 +18,8 @@ import {
   FileText,
   Trash2,
   Eye,
-  Loader2
+  Loader2,
+  Pencil
 } from 'lucide-react';
 
 interface JobApplicationPrintModalProps {
@@ -31,6 +32,7 @@ interface JobApplicationPrintModalProps {
   onRejectClick?: (app: JobApplication) => void;
   onOpenContract?: (workerId: string) => void;
   onDeleteClick?: (app: JobApplication) => void;
+  onEditClick?: (app: JobApplication) => void;
   isDraftPreview?: boolean;
   onOpenBlankForm?: () => void;
 }
@@ -45,6 +47,7 @@ export const JobApplicationPrintModal: React.FC<JobApplicationPrintModalProps> =
   onRejectClick,
   onOpenContract,
   onDeleteClick,
+  onEditClick,
   isDraftPreview = false,
   onOpenBlankForm,
 }) => {
@@ -162,6 +165,21 @@ export const JobApplicationPrintModal: React.FC<JobApplicationPrintModalProps> =
                 title="চুক্তিপত্র দেখুন ও ডাউনলোড করুন"
               >
                 <span>চুক্তিপত্র দেখুন</span>
+              </button>
+            )}
+
+            {!isDraftPreview && onEditClick && (
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onEditClick(application);
+                }}
+                className="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-sm cursor-pointer transition active:scale-95"
+                title="আবেদনের তথ্য এডিট করুন"
+              >
+                <Pencil className="w-3.5 h-3.5" />
+                <span>এডিট করুন</span>
               </button>
             )}
 

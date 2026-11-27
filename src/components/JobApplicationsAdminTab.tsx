@@ -12,6 +12,7 @@ import { BlankJobApplicationModal } from './BlankJobApplicationModal';
 import { JobApplicationRejectModal } from './JobApplicationRejectModal';
 import { JobApplicationApproveModal } from './JobApplicationApproveModal';
 import { JobApplicationRejectionLetterModal } from './JobApplicationRejectionLetterModal';
+import { JobApplicationEditModal } from './JobApplicationEditModal';
 import {
   FileText,
   Clock,
@@ -33,7 +34,8 @@ import {
   Share2,
   ChevronRight,
   Sparkles,
-  Eye
+  Eye,
+  Pencil
 } from 'lucide-react';
 
 interface JobApplicationsAdminTabProps {
@@ -56,6 +58,7 @@ export const JobApplicationsAdminTab: React.FC<JobApplicationsAdminTabProps> = (
 
   // Modals state
   const [selectedPrintApp, setSelectedPrintApp] = useState<JobApplication | null>(null);
+  const [selectedEditApp, setSelectedEditApp] = useState<JobApplication | null>(null);
   const [selectedRejectApp, setSelectedRejectApp] = useState<JobApplication | null>(null);
   const [selectedApproveApp, setSelectedApproveApp] = useState<JobApplication | null>(null);
   const [selectedRejectionLetterApp, setSelectedRejectionLetterApp] = useState<JobApplication | null>(null);
@@ -514,7 +517,7 @@ export const JobApplicationsAdminTab: React.FC<JobApplicationsAdminTabProps> = (
 
                 {/* Bottom Actions Bar */}
                 <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex flex-wrap items-center gap-1.5">
                     {/* View & Print Application Preview */}
                     <button
                       type="button"
@@ -524,6 +527,17 @@ export const JobApplicationsAdminTab: React.FC<JobApplicationsAdminTabProps> = (
                     >
                       <Eye className="w-3.5 h-3.5 text-blue-600" />
                       <span>প্রিভিউ ও A4 প্রিন্ট</span>
+                    </button>
+
+                    {/* Edit Application */}
+                    <button
+                      type="button"
+                      onClick={() => setSelectedEditApp(app)}
+                      className="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs flex items-center gap-1.5 transition active:scale-95 cursor-pointer shadow-xs"
+                      title="আবেদন ফরমের তথ্য এডিট ও সংশোধন করুন"
+                    >
+                      <Pencil className="w-3.5 h-3.5 text-amber-600" />
+                      <span>এডিট করুন</span>
                     </button>
 
                     {/* If Rejected: Print Rejection Letter */}
@@ -613,8 +627,22 @@ export const JobApplicationsAdminTab: React.FC<JobApplicationsAdminTabProps> = (
             setSelectedRejectApp(app);
           }}
           onOpenContract={(workerId) => handleOpenContractForApproved(workerId)}
+          onEditClick={(app) => {
+            setSelectedPrintApp(null);
+            setSelectedEditApp(app);
+          }}
           onDeleteClick={(app) => setConfirmDeleteApp(app)}
           onOpenBlankForm={() => setIsBlankModalOpen(true)}
+        />
+      )}
+
+      {/* 1.5 Edit Application Modal */}
+      {selectedEditApp && (
+        <JobApplicationEditModal
+          application={selectedEditApp}
+          isOpen={Boolean(selectedEditApp)}
+          onClose={() => setSelectedEditApp(null)}
+          showToast={showToast}
         />
       )}
 

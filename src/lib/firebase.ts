@@ -1974,6 +1974,48 @@ export async function approveJobApplication(
 }
 
 /**
+ * Updates an existing job application's editable fields
+ */
+export async function updateJobApplication(
+  id: string,
+  updates: Partial<Omit<JobApplication, 'id' | 'createdAt'>>
+): Promise<JobApplication | null> {
+  const now = Date.now();
+  const currentList = getLocalJobApplications();
+  let updatedApp: JobApplication | null = null;
+  const updatedList = currentList.map((app) => {
+    if (app.id === id) {
+      updatedApp = {
+        ...app,
+        ...updates,
+        id: app.id,
+        createdAt: app.createdAt,
+        updatedAt: now,
+      };
+      return updatedApp;
+    }
+    return app;
+  });
+
+  setLocalJobApplications(updatedList);
+
+  if (db) {
+    try {
+      const firebaseUpdates: Record<string, any> = {};
+      for (const [key, val] of Object.entries(updates)) {
+        firebaseUpdates[key] = val === undefined ? null : val;
+      }
+      firebaseUpdates.updatedAt = now;
+      await update(ref(db, `job_applications/${id}`), firebaseUpdates);
+    } catch (e) {
+      console.warn("Firebase updateJobApplication error:", e);
+    }
+  }
+
+  return updatedApp;
+}
+
+/**
  * Deletes a job application
  */
 export async function deleteJobApplication(id: string): Promise<void> {
