@@ -135,15 +135,15 @@ export const JobApplicationsAdminTab: React.FC<JobApplicationsAdminTabProps> = (
   return (
     <div className="space-y-4">
       {/* 1. Permanent Application Link Card */}
-      <div className="bg-slate-950 text-white rounded-xl p-4 sm:p-5 border border-slate-800">
+      <div className="bg-gradient-to-r from-[#08142E] via-[#0F2149] to-[#132B63] text-white rounded-2xl p-4 sm:p-5 border border-[#162752] shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-teal-400 shrink-0">
-              <Share2 className="w-5 h-5" />
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-400 to-teal-500 text-slate-950 flex items-center justify-center shrink-0 shadow-md">
+              <Share2 className="w-5 h-5 stroke-[2.25]" />
             </div>
             <div>
-              <h3 className="font-extrabold text-sm text-white">আবেদন ফরমের স্থায়ী পাবলিক লিংক</h3>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <h3 className="font-extrabold text-sm sm:text-base text-white">আবেদন ফরমের স্থায়ী পাবলিক লিংক</h3>
+              <p className="text-xs text-blue-200/80 mt-0.5">
                 এই নির্দিষ্ট লিংকটি শেয়ার করলে প্রার্থী অনলাইনে সরাসরি আবেদন করতে পারবে এবং স্বয়ংক্রিয়ভাবে এখানে জমা হবে।
               </p>
             </div>
@@ -153,7 +153,7 @@ export const JobApplicationsAdminTab: React.FC<JobApplicationsAdminTabProps> = (
             <button
               type="button"
               onClick={handleCopyLink}
-              className="px-3.5 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
             >
               <Copy className="w-3.5 h-3.5" />
               <span>লিংক কপি করুন</span>
@@ -162,7 +162,7 @@ export const JobApplicationsAdminTab: React.FC<JobApplicationsAdminTabProps> = (
             <button
               type="button"
               onClick={handleOpenLinkInNewTab}
-              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
               title="নতুন ট্যাবে ওপেন করে দেখুন"
             >
               <ExternalLink className="w-3.5 h-3.5" />
@@ -172,7 +172,7 @@ export const JobApplicationsAdminTab: React.FC<JobApplicationsAdminTabProps> = (
             <button
               type="button"
               onClick={() => setIsBlankModalOpen(true)}
-              className="px-3.5 py-1.5 rounded-lg bg-white hover:bg-slate-100 text-slate-900 font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
               title="হাতে পূরণের জন্য ফাঁকা আবেদন ফরম প্রিন্ট বা PDF ডাউনলোড করুন"
             >
               <FileText className="w-3.5 h-3.5" />
@@ -182,7 +182,7 @@ export const JobApplicationsAdminTab: React.FC<JobApplicationsAdminTabProps> = (
             <button
               type="button"
               onClick={onOpenNewApplicationForm}
-              className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-white font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
               title="অ্যাপ থেকেই প্রার্থীর আবেদন ফরম পূরণ করুন"
             >
               <Plus className="w-3.5 h-3.5" />
@@ -192,37 +192,37 @@ export const JobApplicationsAdminTab: React.FC<JobApplicationsAdminTabProps> = (
         </div>
 
         {/* Link Text Box */}
-        <div className="mt-3 pt-3 border-t border-slate-800 flex items-center gap-2 text-xs">
-          <span className="text-slate-400 font-semibold shrink-0">স্থায়ী লিংক:</span>
-          <div className="flex-1 font-mono text-[11px] bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800 text-teal-300 select-all truncate">
+        <div className="mt-3 pt-3 border-t border-white/10 flex items-center gap-2 text-xs">
+          <span className="text-blue-200 font-semibold shrink-0">স্থায়ী লিংক:</span>
+          <div className="flex-1 font-mono text-[11px] bg-[#0B1736] px-3 py-1.5 rounded-lg border border-white/10 text-cyan-300 select-all truncate">
             {getShareableLink()}
           </div>
         </div>
       </div>
 
-      {/* 2. Top Metric Counter Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+      {/* 2. Top Vibrant Gradient Metric Counter Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <button
           type="button"
           onClick={() => setFilterStatus('pending')}
-          className={`p-3.5 rounded-xl border text-left transition-colors cursor-pointer ${
+          className={`p-4 rounded-xl text-left transition-all cursor-pointer bg-gradient-to-br from-[#F97316] to-[#EA580C] text-white shadow-sm ${
             filterStatus === 'pending'
-              ? 'bg-slate-900 text-white border-slate-900'
-              : 'bg-white text-slate-800 border-slate-200 hover:border-slate-300'
+              ? 'ring-3 ring-amber-300 shadow-md scale-[1.01]'
+              : 'opacity-85 hover:opacity-100'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className={`text-xs font-medium ${filterStatus === 'pending' ? 'text-slate-300' : 'text-slate-500'}`}>
+            <span className="text-xs font-medium text-white/90">
               পেন্ডিং (অপেক্ষমাণ)
             </span>
-            <Clock className={`w-4 h-4 ${filterStatus === 'pending' ? 'text-amber-300' : 'text-amber-600'}`} />
+            <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+              <Clock className="w-4 h-4 text-white" />
+            </div>
           </div>
-          <div className="text-2xl font-extrabold font-mono mt-1 flex items-baseline gap-2 tabular-nums">
+          <div className="text-2xl font-extrabold font-mono mt-1.5 flex items-baseline gap-2 tabular-nums">
             <span>{toBengaliNumber(pendingCount)}</span>
             {pendingCount > 0 && (
-              <span className={`text-[10.5px] font-sans font-semibold ${
-                filterStatus === 'pending' ? 'text-amber-300' : 'text-amber-700'
-              }`}>
+              <span className="text-[10.5px] font-sans font-semibold text-white/90">
                 নতুন আবেদন
               </span>
             )}
@@ -232,19 +232,21 @@ export const JobApplicationsAdminTab: React.FC<JobApplicationsAdminTabProps> = (
         <button
           type="button"
           onClick={() => setFilterStatus('approved')}
-          className={`p-3.5 rounded-xl border text-left transition-colors cursor-pointer ${
+          className={`p-4 rounded-xl text-left transition-all cursor-pointer bg-gradient-to-br from-[#059669] to-[#16A34A] text-white shadow-sm ${
             filterStatus === 'approved'
-              ? 'bg-slate-900 text-white border-slate-900'
-              : 'bg-white text-slate-800 border-slate-200 hover:border-slate-300'
+              ? 'ring-3 ring-emerald-300 shadow-md scale-[1.01]'
+              : 'opacity-85 hover:opacity-100'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className={`text-xs font-medium ${filterStatus === 'approved' ? 'text-slate-300' : 'text-slate-500'}`}>
+            <span className="text-xs font-medium text-white/90">
               অনুমোদিত (গ্রহণকৃত)
             </span>
-            <CheckCircle className={`w-4 h-4 ${filterStatus === 'approved' ? 'text-emerald-300' : 'text-emerald-600'}`} />
+            <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+              <CheckCircle className="w-4 h-4 text-white" />
+            </div>
           </div>
-          <div className="text-2xl font-extrabold font-mono mt-1 tabular-nums">
+          <div className="text-2xl font-extrabold font-mono mt-1.5 tabular-nums">
             {toBengaliNumber(approvedCount)}
           </div>
         </button>
@@ -252,19 +254,21 @@ export const JobApplicationsAdminTab: React.FC<JobApplicationsAdminTabProps> = (
         <button
           type="button"
           onClick={() => setFilterStatus('rejected')}
-          className={`p-3.5 rounded-xl border text-left transition-colors cursor-pointer ${
+          className={`p-4 rounded-xl text-left transition-all cursor-pointer bg-gradient-to-br from-[#EC4899] to-[#DB2777] text-white shadow-sm ${
             filterStatus === 'rejected'
-              ? 'bg-slate-900 text-white border-slate-900'
-              : 'bg-white text-slate-800 border-slate-200 hover:border-slate-300'
+              ? 'ring-3 ring-pink-300 shadow-md scale-[1.01]'
+              : 'opacity-85 hover:opacity-100'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className={`text-xs font-medium ${filterStatus === 'rejected' ? 'text-slate-300' : 'text-slate-500'}`}>
+            <span className="text-xs font-medium text-white/90">
               বাতিলকৃত (Rejected)
             </span>
-            <XCircle className={`w-4 h-4 ${filterStatus === 'rejected' ? 'text-rose-300' : 'text-rose-600'}`} />
+            <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+              <XCircle className="w-4 h-4 text-white" />
+            </div>
           </div>
-          <div className="text-2xl font-extrabold font-mono mt-1 tabular-nums">
+          <div className="text-2xl font-extrabold font-mono mt-1.5 tabular-nums">
             {toBengaliNumber(rejectedCount)}
           </div>
         </button>
@@ -272,26 +276,28 @@ export const JobApplicationsAdminTab: React.FC<JobApplicationsAdminTabProps> = (
         <button
           type="button"
           onClick={() => setFilterStatus('all')}
-          className={`p-3.5 rounded-xl border text-left transition-colors cursor-pointer ${
+          className={`p-4 rounded-xl text-left transition-all cursor-pointer bg-gradient-to-br from-[#635BFF] to-[#4338CA] text-white shadow-sm ${
             filterStatus === 'all'
-              ? 'bg-slate-900 text-white border-slate-900'
-              : 'bg-white text-slate-800 border-slate-200 hover:border-slate-300'
+              ? 'ring-3 ring-indigo-300 shadow-md scale-[1.01]'
+              : 'opacity-85 hover:opacity-100'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className={`text-xs font-medium ${filterStatus === 'all' ? 'text-slate-300' : 'text-slate-500'}`}>
+            <span className="text-xs font-medium text-white/90">
               সর্বমোট আবেদন
             </span>
-            <Users className={`w-4 h-4 ${filterStatus === 'all' ? 'text-teal-300' : 'text-slate-500'}`} />
+            <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+              <Users className="w-4 h-4 text-white" />
+            </div>
           </div>
-          <div className="text-2xl font-extrabold font-mono mt-1 tabular-nums">
+          <div className="text-2xl font-extrabold font-mono mt-1.5 tabular-nums">
             {toBengaliNumber(applications.length)}
           </div>
         </button>
       </div>
 
       {/* 3. Search & Filter Bar */}
-      <div className="bg-white rounded-xl p-3 border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="bg-white rounded-xl p-3 border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-2xs">
         {/* Search */}
         <div className="relative w-full sm:w-72">
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -300,18 +306,18 @@ export const JobApplicationsAdminTab: React.FC<JobApplicationsAdminTabProps> = (
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="প্রার্থীর নাম, মোবাইল, NID বা ট্র্যাকিং নং..."
-            className="w-full pl-9 pr-3 py-2 text-xs border border-slate-200 rounded-lg focus:ring-2 focus:ring-teal-600 outline-none"
+            className="w-full pl-9 pr-3 py-2 text-xs border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-600 outline-none bg-slate-50 focus:bg-white"
           />
         </div>
 
         {/* Tab Filters */}
-        <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-lg self-stretch sm:self-auto overflow-x-auto text-xs">
+        <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl self-stretch sm:self-auto overflow-x-auto text-xs">
           <button
             type="button"
             onClick={() => setFilterStatus('pending')}
-            className={`px-3 py-1.5 rounded-md font-semibold transition-colors cursor-pointer shrink-0 tabular-nums ${
+            className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer shrink-0 tabular-nums ${
               filterStatus === 'pending'
-                ? 'bg-slate-900 text-white'
+                ? 'bg-gradient-to-r from-[#F97316] to-[#EA580C] text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -320,9 +326,9 @@ export const JobApplicationsAdminTab: React.FC<JobApplicationsAdminTabProps> = (
           <button
             type="button"
             onClick={() => setFilterStatus('approved')}
-            className={`px-3 py-1.5 rounded-md font-semibold transition-colors cursor-pointer shrink-0 tabular-nums ${
+            className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer shrink-0 tabular-nums ${
               filterStatus === 'approved'
-                ? 'bg-slate-900 text-white'
+                ? 'bg-gradient-to-r from-[#059669] to-[#16A34A] text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -331,9 +337,9 @@ export const JobApplicationsAdminTab: React.FC<JobApplicationsAdminTabProps> = (
           <button
             type="button"
             onClick={() => setFilterStatus('rejected')}
-            className={`px-3 py-1.5 rounded-md font-semibold transition-colors cursor-pointer shrink-0 tabular-nums ${
+            className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer shrink-0 tabular-nums ${
               filterStatus === 'rejected'
-                ? 'bg-slate-900 text-white'
+                ? 'bg-gradient-to-r from-[#EC4899] to-[#DB2777] text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -342,9 +348,9 @@ export const JobApplicationsAdminTab: React.FC<JobApplicationsAdminTabProps> = (
           <button
             type="button"
             onClick={() => setFilterStatus('all')}
-            className={`px-3 py-1.5 rounded-md font-semibold transition-colors cursor-pointer shrink-0 tabular-nums ${
+            className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer shrink-0 tabular-nums ${
               filterStatus === 'all'
-                ? 'bg-slate-900 text-white'
+                ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >

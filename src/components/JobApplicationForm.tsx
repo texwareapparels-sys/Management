@@ -438,7 +438,7 @@ export const JobApplicationForm: React.FC<JobApplicationFormProps> = ({
   return (
     <div className="space-y-4">
       {/* Top Banner & Quick Share Bar */}
-      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 text-white rounded-2xl p-4 sm:p-5 shadow-lg relative overflow-hidden border border-white/10">
+      <div className="bg-gradient-to-r from-[#08142E] via-[#0F2149] to-[#132B63] text-white rounded-2xl p-4 sm:p-5 shadow-md relative overflow-hidden border border-[#162752]">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 relative z-10">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-2xl bg-white p-0.5 border border-white/20 flex items-center justify-center shrink-0 shadow-inner overflow-hidden">
@@ -593,12 +593,14 @@ export const JobApplicationForm: React.FC<JobApplicationFormProps> = ({
         /* The Application Form */
         <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
           {/* Form Header */}
-          <div className="p-4 sm:p-5 border-b border-slate-100 bg-slate-50/70">
-            <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
-              <FileText className="w-5 h-5 text-blue-600" />
+          <div className="p-4 sm:p-5 border-b border-slate-100 bg-gradient-to-r from-blue-50/70 via-indigo-50/40 to-white">
+            <h2 className="text-base font-black text-slate-900 flex items-center gap-2.5">
+              <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#1D63DC] to-[#2563EB] text-white flex items-center justify-center shadow-xs">
+                <FileText className="w-4 h-4" />
+              </span>
               <span>শ্রমিক / কর্মচারী নিয়োগ আবেদন ফরম পূরণ করুন</span>
             </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-slate-500 mt-1">
               জাতীয় পরিচয়পত্র (NID) বা জন্ম নিবন্ধন অনুযায়ী সকল তথ্য নির্ভুলভাবে প্রদান করুন। লাল তারকা (*) চিহ্নিত ঘরগুলো আবশ্যক।
             </p>
           </div>
@@ -607,7 +609,7 @@ export const JobApplicationForm: React.FC<JobApplicationFormProps> = ({
             {/* SECTION 1: APPLICANT PERSONAL INFO */}
             <div>
               <div className="flex items-center gap-2 pb-2 mb-3 border-b border-slate-200">
-                <span className="w-6 h-6 rounded-lg bg-blue-600 text-white font-bold text-xs flex items-center justify-center">১</span>
+                <span className="w-6 h-6 rounded-lg bg-gradient-to-br from-[#1D63DC] to-[#2563EB] text-white font-bold text-xs flex items-center justify-center shadow-xs">১</span>
                 <h3 className="font-bold text-sm text-slate-900">
                   আবেদনকারীর ব্যক্তিগত তথ্য (জাতীয় পরিচয়পত্র অনুযায়ী)
                 </h3>

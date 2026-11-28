@@ -2192,29 +2192,32 @@ NID: ${emp.nid || '—'}
 
     return (
       <div className="min-h-[calc(100vh-8.5rem)] flex items-center justify-center p-2">
-        <div className="bg-white rounded-xl p-6 border border-slate-200/90 w-full max-w-md mx-auto text-center relative shadow-xs">
-          {onBack && (
-            <button
-              type="button"
-              onClick={onBack}
-              title="আগের পেজে ফিরে যান"
-              className="absolute left-4 top-4 px-2.5 py-1.5 rounded-lg bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>ফিরে যান</span>
-            </button>
-          )}
-          <div className="w-12 h-12 rounded-xl bg-slate-900 text-teal-300 flex items-center justify-center mx-auto mb-3">
-            <Lock className="w-5 h-5" />
+        <div className="bg-white rounded-2xl border border-slate-200/90 w-full max-w-md mx-auto text-center relative shadow-md overflow-hidden">
+          <div className="bg-gradient-to-r from-[#08142E] via-[#0F2149] to-[#132B63] text-white p-6 relative">
+            {onBack && (
+              <button
+                type="button"
+                onClick={onBack}
+                title="আগের পেজে ফিরে যান"
+                className="absolute left-4 top-4 px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/15 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>ফিরে যান</span>
+              </button>
+            )}
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-500 text-white flex items-center justify-center mx-auto mb-3 shadow-md">
+              <Lock className="w-5 h-5" />
+            </div>
+            <h2 className="text-base font-extrabold text-white tracking-tight">অ্যাডমিন কন্ট্রোল প্যানেল</h2>
+            <p className="text-[11.5px] text-blue-200/80 mt-0.5">
+              টেক্স ওয়ার অ্যাপারেলস · শুধুমাত্র অনুমোদিত এইচআর ও অ্যাডমিনদের জন্য
+            </p>
           </div>
-          <h2 className="text-base font-extrabold text-slate-950 tracking-tight">অ্যাডমিন কন্ট্রোল প্যানেল</h2>
-          <p className="text-[11.5px] text-slate-500 mt-0.5 mb-5">
-            টেক্স ওয়ার অ্যাপারেলস · শুধুমাত্র অনুমোদিত এইচআর ও অ্যাডমিনদের জন্য
-          </p>
 
+          <div className="p-6">
           {showSetupScreen ? (
             <form onSubmit={handleFirstTimeSetup} className="space-y-3.5 text-left">
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 leading-relaxed">
+              <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-xl text-xs text-slate-700 leading-relaxed">
                 <b className="text-slate-900 block mb-0.5">প্রথমবার Admin পাসওয়ার্ড সেট করুন</b>
                 নিরাপত্তার স্বার্থে আপনার পছন্দমতো একটি শক্তিশালী পাসওয়ার্ড নির্ধারণ করুন।
               </div>
@@ -2229,7 +2232,7 @@ NID: ${emp.nid || '—'}
                   value={firstPass}
                   onChange={(e) => setFirstPass(e.target.value)}
                   placeholder="কমপক্ষে ৬ অক্ষর বা সংখ্যা"
-                  className="w-full p-2.5 bg-white border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-teal-600 focus:border-teal-600 outline-none"
+                  className="w-full p-2.5 bg-white border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none"
                 />
               </div>
 
@@ -2243,13 +2246,13 @@ NID: ${emp.nid || '—'}
                   value={firstPassConfirm}
                   onChange={(e) => setFirstPassConfirm(e.target.value)}
                   placeholder="পাসওয়ার্ডটি আবার লিখুন"
-                  className="w-full p-2.5 bg-white border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-teal-600 focus:border-teal-600 outline-none"
+                  className="w-full p-2.5 bg-white border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-colors cursor-pointer"
+                className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#1D63DC] to-[#2563EB] hover:from-blue-600 hover:to-blue-700 text-white font-bold text-xs transition-all cursor-pointer shadow-sm"
               >
                 পাসওয়ার্ড সেট করে প্রবেশ করুন
               </button>
@@ -2263,7 +2266,7 @@ NID: ${emp.nid || '—'}
               <button
                 type="button"
                 onClick={handleQuickSetupDefault}
-                className="w-full py-2 rounded-lg bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs border border-slate-200 transition-colors cursor-pointer"
+                className="w-full py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs border border-slate-200 transition-colors cursor-pointer"
               >
                 ডিফল্ট পাসওয়ার্ড (123456) দিয়ে প্রবেশ করুন
               </button>
@@ -2271,7 +2274,7 @@ NID: ${emp.nid || '—'}
           ) : (
             <form onSubmit={handleLogin} className="space-y-3.5 text-left">
               {isCustomSet && (
-                <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-lg text-xs text-emerald-900 flex items-center gap-2">
+                <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl text-xs text-emerald-900 flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
                   <span>ক্লাউড সিকিউরিটি সক্রিয়। নির্ধারিত অ্যাডমিন পাসওয়ার্ড দিয়ে লগইন করুন।</span>
                 </div>
@@ -2288,7 +2291,7 @@ NID: ${emp.nid || '—'}
                     value={loginPass}
                     onChange={(e) => setLoginPass(e.target.value)}
                     placeholder="আপনার Admin পাসওয়ার্ড দিন"
-                    className="w-full py-2.5 pl-3 pr-10 bg-white border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-teal-600 focus:border-teal-600 outline-none"
+                    className="w-full py-2.5 pl-3 pr-10 bg-white border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none"
                   />
                   <button
                     type="button"
@@ -2302,12 +2305,13 @@ NID: ${emp.nid || '—'}
 
               <button
                 type="submit"
-                className="w-full py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-colors cursor-pointer"
+                className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#1D63DC] to-[#2563EB] hover:from-blue-600 hover:to-blue-700 text-white font-bold text-xs transition-all cursor-pointer shadow-sm"
               >
                 লগইন করুন
               </button>
             </form>
           )}
+          </div>
         </div>
       </div>
     );
@@ -2316,16 +2320,16 @@ NID: ${emp.nid || '—'}
   /* ================= ADMIN LOGGED IN DASHBOARD ================= */
   return (
     <div className="space-y-3">
-      {/* Sub Menu Tabs Strip: Crisp Enterprise Segmented Strip + Back Icon */}
-      <div className="bg-slate-100/90 rounded-xl p-1 border border-slate-200/90 flex items-stretch gap-1.5">
+      {/* Sub Menu Tabs Strip: Deep Navy Executive Navigation + Royal Blue Active */}
+      <div className="bg-[#08142E] rounded-2xl p-1.5 border border-[#162752] flex items-stretch gap-1.5 shadow-sm">
         {onBack && (
           <button
             type="button"
             onClick={onBack}
             title="আগের ফাংশন বা ড্যাশবোর্ডে ফিরে যান"
-            className="px-2.5 py-2 rounded-lg bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-xs font-semibold flex items-center justify-center gap-1 transition-colors cursor-pointer shrink-0"
+            className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/10 text-xs font-semibold flex items-center justify-center gap-1 transition-colors cursor-pointer shrink-0"
           >
-            <ArrowLeft className="w-3.5 h-3.5 text-slate-600" />
+            <ArrowLeft className="w-3.5 h-3.5 text-blue-200" />
             <span className="hidden sm:inline">Back</span>
           </button>
         )}
@@ -2335,13 +2339,13 @@ NID: ${emp.nid || '—'}
             type="button"
             id="tabAdminWorkers"
             onClick={() => handleTabChange('list')}
-            className={`py-2 px-2.5 rounded-lg font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
+            className={`py-2 px-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
               activeTab === 'list' || activeTab === 'resignation'
-                ? 'bg-slate-900 text-white shadow-2xs'
-                : 'text-slate-600 hover:text-slate-950 hover:bg-white'
+                ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-sm'
+                : 'text-slate-300 hover:text-white hover:bg-white/10'
             }`}
           >
-            <Users className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'list' || activeTab === 'resignation' ? 'text-teal-300' : 'text-slate-400'}`} />
+            <Users className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'list' || activeTab === 'resignation' ? 'text-white' : 'text-blue-400'}`} />
             <span>১. কর্মী তালিকা</span>
           </button>
 
@@ -2350,13 +2354,13 @@ NID: ${emp.nid || '—'}
             type="button"
             id="tabAdminAttendance"
             onClick={() => handleTabChange('attendance')}
-            className={`py-2 px-2.5 rounded-lg font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
+            className={`py-2 px-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
               activeTab === 'attendance'
-                ? 'bg-slate-900 text-white shadow-2xs'
-                : 'text-slate-600 hover:text-slate-950 hover:bg-white'
+                ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-sm'
+                : 'text-slate-300 hover:text-white hover:bg-white/10'
             }`}
           >
-            <Clock className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'attendance' ? 'text-teal-300' : 'text-slate-400'}`} />
+            <Clock className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'attendance' ? 'text-white' : 'text-cyan-400'}`} />
             <span>২. হাজিরা</span>
           </button>
 
@@ -2365,13 +2369,13 @@ NID: ${emp.nid || '—'}
             type="button"
             id="tabAdminSalaries"
             onClick={() => handleTabChange('salaries')}
-            className={`py-2 px-2.5 rounded-lg font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
+            className={`py-2 px-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
               activeTab === 'salaries'
-                ? 'bg-slate-900 text-white shadow-2xs'
-                : 'text-slate-600 hover:text-slate-950 hover:bg-white'
+                ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-sm'
+                : 'text-slate-300 hover:text-white hover:bg-white/10'
             }`}
           >
-            <Receipt className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'salaries' ? 'text-teal-300' : 'text-slate-400'}`} />
+            <Receipt className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'salaries' ? 'text-white' : 'text-emerald-400'}`} />
             <span>৩. বেতন খাতা</span>
           </button>
 
@@ -2383,13 +2387,13 @@ NID: ${emp.nid || '—'}
               resetForm();
               handleTabChange('form');
             }}
-            className={`py-2 px-2.5 rounded-lg font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
+            className={`py-2 px-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
               activeTab === 'form'
-                ? 'bg-slate-900 text-white shadow-2xs'
-                : 'text-slate-600 hover:text-slate-950 hover:bg-white'
+                ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-sm'
+                : 'text-slate-300 hover:text-white hover:bg-white/10'
             }`}
           >
-            <UserPlus className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'form' ? 'text-teal-300' : 'text-slate-400'}`} />
+            <UserPlus className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'form' ? 'text-white' : 'text-violet-400'}`} />
             <span>{editId ? '৪. এডিট কর্মী' : '৪. নতুন কর্মী'}</span>
           </button>
 
@@ -2398,13 +2402,13 @@ NID: ${emp.nid || '—'}
             type="button"
             id="tabAdminTelegram"
             onClick={() => handleTabChange('telegram')}
-            className={`py-2 px-2.5 rounded-lg font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
+            className={`py-2 px-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
               activeTab === 'telegram'
-                ? 'bg-slate-900 text-white shadow-2xs'
-                : 'text-slate-600 hover:text-slate-950 hover:bg-white'
+                ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-sm'
+                : 'text-slate-300 hover:text-white hover:bg-white/10'
             }`}
           >
-            <Send className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'telegram' ? 'text-teal-300' : 'text-slate-400'}`} />
+            <Send className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'telegram' ? 'text-white' : 'text-sky-400'}`} />
             <span>৫. Telegram Bot</span>
           </button>
 
@@ -2413,13 +2417,13 @@ NID: ${emp.nid || '—'}
             type="button"
             id="tabAdminSms"
             onClick={() => handleTabChange('sms')}
-            className={`py-2 px-2.5 rounded-lg font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
+            className={`py-2 px-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
               activeTab === 'sms'
-                ? 'bg-slate-900 text-white shadow-2xs'
-                : 'text-slate-600 hover:text-slate-950 hover:bg-white'
+                ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-sm'
+                : 'text-slate-300 hover:text-white hover:bg-white/10'
             }`}
           >
-            <MessageSquare className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'sms' ? 'text-teal-300' : 'text-slate-400'}`} />
+            <MessageSquare className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'sms' ? 'text-white' : 'text-pink-400'}`} />
             <span>৬. Auto SMS</span>
           </button>
 
@@ -2428,13 +2432,13 @@ NID: ${emp.nid || '—'}
             type="button"
             id="tabAdminPassword"
             onClick={() => handleTabChange('password')}
-            className={`py-2 px-2.5 rounded-lg font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
+            className={`py-2 px-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
               activeTab === 'password'
-                ? 'bg-slate-900 text-white shadow-2xs'
-                : 'text-slate-600 hover:text-slate-950 hover:bg-white'
+                ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-sm'
+                : 'text-slate-300 hover:text-white hover:bg-white/10'
             }`}
           >
-            <KeyRound className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'password' ? 'text-teal-300' : 'text-slate-400'}`} />
+            <KeyRound className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'password' ? 'text-white' : 'text-amber-400'}`} />
             <span>৭. পাসওয়ার্ড</span>
           </button>
 
@@ -2443,13 +2447,13 @@ NID: ${emp.nid || '—'}
             type="button"
             id="tabAdminDetails"
             onClick={() => handleTabChange('details')}
-            className={`py-2 px-2.5 rounded-lg font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
+            className={`py-2 px-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
               activeTab === 'details'
-                ? 'bg-slate-900 text-white shadow-2xs'
-                : 'text-slate-600 hover:text-slate-950 hover:bg-white'
+                ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-sm'
+                : 'text-slate-300 hover:text-white hover:bg-white/10'
             }`}
           >
-            <IdCard className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'details' ? 'text-teal-300' : 'text-slate-400'}`} />
+            <IdCard className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'details' ? 'text-white' : 'text-teal-400'}`} />
             <span>৮. প্রোফাইল</span>
           </button>
 
@@ -2458,13 +2462,13 @@ NID: ${emp.nid || '—'}
             type="button"
             id="tabAdminFactory"
             onClick={() => handleTabChange('factory')}
-            className={`py-2 px-2.5 rounded-lg font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
+            className={`py-2 px-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
               activeTab === 'factory'
-                ? 'bg-slate-900 text-white shadow-2xs'
-                : 'text-slate-600 hover:text-slate-950 hover:bg-white'
+                ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-sm'
+                : 'text-slate-300 hover:text-white hover:bg-white/10'
             }`}
           >
-            <Building2 className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'factory' ? 'text-teal-300' : 'text-slate-400'}`} />
+            <Building2 className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'factory' ? 'text-white' : 'text-orange-400'}`} />
             <span>৯. কারখানা তথ্য</span>
           </button>
 
@@ -2473,13 +2477,13 @@ NID: ${emp.nid || '—'}
             type="button"
             id="tabAdminApplications"
             onClick={() => handleTabChange('applications')}
-            className={`py-2 px-2.5 rounded-lg font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
+            className={`py-2 px-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer text-[11.5px] whitespace-nowrap shrink-0 ${
               activeTab === 'applications'
-                ? 'bg-slate-900 text-white shadow-2xs'
-                : 'text-slate-600 hover:text-slate-950 hover:bg-white'
+                ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-sm'
+                : 'text-slate-300 hover:text-white hover:bg-white/10'
             }`}
           >
-            <FileText className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'applications' ? 'text-teal-300' : 'text-slate-400'}`} />
+            <FileText className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'applications' ? 'text-white' : 'text-rose-400'}`} />
             <span>১০. আবেদন ফরম</span>
             {pendingAppsCount > 0 && (
               <span className="inline-flex items-center justify-center px-1.5 py-0.2 rounded text-[10px] font-mono font-bold bg-amber-400 text-slate-950 ml-0.5 tabular-nums">
@@ -2492,12 +2496,14 @@ NID: ${emp.nid || '—'}
 
       {/* ================= TAB 1 & 2: 4-SECTION EMPLOYEE MANAGEMENT HUB ================= */}
       {(activeTab === 'list' || activeTab === 'resignation') && (
-        <div className="bg-white rounded-xl p-3.5 sm:p-4 border border-slate-200/90 space-y-3">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs space-y-3.5">
           {/* 4 Dedicated Sections Navigation Bar */}
-          <div className="flex flex-col gap-2.5 pb-3 border-b border-slate-100">
+          <div className="flex flex-col gap-3 pb-3 border-b border-slate-100">
             <div className="flex items-center justify-between flex-wrap gap-2">
-              <div className="flex items-center gap-2 font-bold text-slate-900 text-sm">
-                <Users className="w-4 h-4 text-teal-700" />
+              <div className="flex items-center gap-2.5 font-extrabold text-slate-900 text-sm">
+                <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center shadow-xs">
+                  <Users className="w-4 h-4" />
+                </span>
                 <span>শ্রমিক ব্যবস্থাপনা</span>
                 <span className="text-slate-300 font-normal">·</span>
                 <span className="text-xs text-slate-500 font-medium tabular-nums">
@@ -2510,10 +2516,10 @@ NID: ${emp.nid || '—'}
                 <button
                   type="button"
                   onClick={() => setShowAllWorkersLoginModal(true)}
-                  className="py-1.5 px-3 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
+                  className="py-1.5 px-3 bg-gradient-to-r from-[#1D63DC] to-[#2563EB] hover:from-blue-600 hover:to-blue-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shadow-xs"
                   title="সকল শ্রমিকের ব্যক্তিগত প্রোফাইল লিংক ও পাসওয়ার্ড তালিকা দেখুন"
                 >
-                  <Key className="w-3.5 h-3.5 text-teal-300" />
+                  <Key className="w-3.5 h-3.5 text-cyan-200" />
                   <span>লগইন লিংক ও পাসওয়ার্ড তালিকা</span>
                 </button>
 
@@ -2523,10 +2529,10 @@ NID: ${emp.nid || '—'}
                     setNoticeTargetEmp(null);
                     setNoticeModalOpen(true);
                   }}
-                  className="py-1.5 px-3 bg-teal-700 hover:bg-teal-800 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
+                  className="py-1.5 px-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shadow-xs"
                   title="শ্রমিকদের এক সাথে বা আলাদা আলাদা নোটিশ প্রদান ও নোটিশ বোর্ড পরিচালনা"
                 >
-                  <Bell className="w-3.5 h-3.5 text-teal-100" />
+                  <Bell className="w-3.5 h-3.5 text-white" />
                   <span>নোটিশ পাঠান (নোটিশ বোর্ড)</span>
                 </button>
                 <button
@@ -2545,7 +2551,7 @@ NID: ${emp.nid || '—'}
                       }
                     }
                   }}
-                  className="py-1.5 px-3 bg-white hover:bg-rose-50 text-rose-700 border border-slate-200 hover:border-rose-300 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
+                  className="py-1.5 px-3 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
                   title="কারখানার ডেমো কর্মী মুছে ফেলুন যাতে কোনো ডেমো ডাটা না থাকে"
                 >
                   <Trash2 className="w-3.5 h-3.5 text-rose-600" />
@@ -2554,7 +2560,7 @@ NID: ${emp.nid || '—'}
 
                 <select
                   aria-label="শ্রমিকের স্ট্যাটাস বা সেকশন নির্বাচন করুন"
-                  className="py-1.5 px-2.5 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 cursor-pointer focus:ring-2 focus:ring-teal-600 outline-none"
+                  className="py-1.5 px-2.5 bg-slate-50 hover:bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 cursor-pointer focus:ring-2 focus:ring-blue-600 outline-none"
                   onChange={(e) => {
                     const target = employees.find((emp) => emp.id === e.target.value);
                     if (target) {
@@ -2584,57 +2590,57 @@ NID: ${emp.nid || '—'}
               </div>
             </div>
 
-            {/* 4 Dedicated Section Tabs */}
+            {/* 4 Dedicated Section Tabs (Vibrant Gradients) */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
               <button
                 type="button"
                 onClick={() => setEmployeeSectionTab('active')}
-                className={`py-2 px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer whitespace-nowrap ${
+                className={`py-2.5 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer whitespace-nowrap ${
                   employeeSectionTab === 'active'
-                    ? 'bg-emerald-700 text-white border-emerald-700'
-                    : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                    ? 'bg-gradient-to-r from-[#059669] to-[#16A34A] text-white border-emerald-600 shadow-sm'
+                    : 'bg-emerald-50/50 text-emerald-800 border-emerald-200 hover:bg-emerald-50'
                 }`}
               >
-                <CheckCircle2 className={`w-3.5 h-3.5 ${employeeSectionTab === 'active' ? 'text-emerald-200' : 'text-emerald-600'}`} />
+                <CheckCircle2 className={`w-3.5 h-3.5 ${employeeSectionTab === 'active' ? 'text-white' : 'text-emerald-600'}`} />
                 <span className="tabular-nums">১. কর্মরত / সক্রিয় ({activeEmployees.length})</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setEmployeeSectionTab('resigned')}
-                className={`py-2 px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer whitespace-nowrap ${
+                className={`py-2.5 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer whitespace-nowrap ${
                   employeeSectionTab === 'resigned'
-                    ? 'bg-rose-700 text-white border-rose-700'
-                    : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                    ? 'bg-gradient-to-r from-[#EC4899] to-[#DB2777] text-white border-pink-600 shadow-sm'
+                    : 'bg-rose-50/50 text-rose-800 border-rose-200 hover:bg-rose-50'
                 }`}
               >
-                <UserX className={`w-3.5 h-3.5 ${employeeSectionTab === 'resigned' ? 'text-rose-200' : 'text-rose-600'}`} />
+                <UserX className={`w-3.5 h-3.5 ${employeeSectionTab === 'resigned' ? 'text-white' : 'text-rose-600'}`} />
                 <span className="tabular-nums">২. পদত্যাগ / রিজাইন ({resignedEmployees.length})</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setEmployeeSectionTab('suspended')}
-                className={`py-2 px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer whitespace-nowrap ${
+                className={`py-2.5 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer whitespace-nowrap ${
                   employeeSectionTab === 'suspended'
-                    ? 'bg-amber-700 text-white border-amber-700'
-                    : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                    ? 'bg-gradient-to-r from-[#F97316] to-[#EA580C] text-white border-orange-600 shadow-sm'
+                    : 'bg-amber-50/50 text-amber-800 border-amber-200 hover:bg-amber-50'
                 }`}
               >
-                <AlertTriangle className={`w-3.5 h-3.5 ${employeeSectionTab === 'suspended' ? 'text-amber-200' : 'text-amber-600'}`} />
+                <AlertTriangle className={`w-3.5 h-3.5 ${employeeSectionTab === 'suspended' ? 'text-white' : 'text-amber-600'}`} />
                 <span className="tabular-nums">৩. সাময়িক স্থগিত ({suspendedEmployees.length})</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setEmployeeSectionTab('terminated')}
-                className={`py-2 px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer whitespace-nowrap ${
+                className={`py-2.5 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer whitespace-nowrap ${
                   employeeSectionTab === 'terminated'
-                    ? 'bg-slate-900 text-white border-slate-900'
-                    : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                    ? 'bg-gradient-to-r from-[#08142E] to-[#132B63] text-white border-[#08142E] shadow-sm'
+                    : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
                 }`}
               >
-                <RotateCcw className={`w-3.5 h-3.5 ${employeeSectionTab === 'terminated' ? 'text-slate-300' : 'text-slate-500'}`} />
+                <RotateCcw className={`w-3.5 h-3.5 ${employeeSectionTab === 'terminated' ? 'text-white' : 'text-slate-500'}`} />
                 <span className="tabular-nums">৪. বরখাস্ত / অব্যাহতি ({terminatedEmployees.length})</span>
               </button>
             </div>
@@ -3086,20 +3092,24 @@ NID: ${emp.nid || '—'}
 
       {/* ================= TAB: MONTHLY SALARY RECORDS (বেতন খাতা) ================= */}
       {activeTab === 'salaries' && (
-        <div className="bg-white rounded-xl p-4 border border-slate-200/90 space-y-4">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-slate-100">
-            <div>
-              <div className="flex items-center gap-2 font-bold text-slate-900 text-sm">
-                <Receipt className="w-4 h-4 text-teal-700" />
-                <span>মাসিক বেতন খাতা ও পরিশোধ ইতিহাস</span>
-                <span className="text-slate-300 font-normal">·</span>
-                <span className="text-xs font-mono font-semibold text-slate-500 tabular-nums">
-                  {salaryRecords.length} টি রেকর্ড
-                </span>
+            <div className="flex items-center gap-2.5">
+              <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-xs shrink-0">
+                <Receipt className="w-4 h-4" />
+              </span>
+              <div>
+                <div className="flex items-center gap-2 font-extrabold text-slate-900 text-sm">
+                  <span>মাসিক বেতন খাতা ও পরিশোধ ইতিহাস</span>
+                  <span className="text-slate-300 font-normal">·</span>
+                  <span className="text-xs font-mono font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200 tabular-nums">
+                    {salaryRecords.length} টি রেকর্ড
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-500 mt-0.5">
+                  কোন মাসে কাকে কত বেতন ও ক্যাশ/বিকাশ দেওয়া হয়েছে তার বিস্তারিত খাতা
+                </p>
               </div>
-              <p className="text-[11px] text-slate-500 mt-0.5">
-                কোন মাসে কাকে কত বেতন ও ক্যাশ/বিকাশ দেওয়া হয়েছে তার বিস্তারিত খাতা
-              </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
@@ -3116,17 +3126,17 @@ NID: ${emp.nid || '—'}
                   }
                   setShowMasterA4Modal(true);
                 }}
-                className="py-1.5 px-3 rounded-lg bg-teal-700 hover:bg-teal-800 text-white text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
+                className="py-1.5 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shadow-xs"
                 title="সকল শ্রমিকের উপস্থিতি, অনুপস্থিতি, ওটি ঘণ্টা ও টাকা, বোনাসসহ A4 মাস্টার পেপারে প্রিন্ট করুন"
               >
-                <FileSpreadsheet className="w-3.5 h-3.5 text-teal-100" />
+                <FileSpreadsheet className="w-3.5 h-3.5 text-white" />
                 <span>A4 মাস্টার বেতন ও হাজিরা শিট</span>
               </button>
 
               <button
                 type="button"
                 onClick={handlePrintSalarySheet}
-                className="py-1.5 px-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
+                className="py-1.5 px-3 rounded-xl bg-gradient-to-r from-[#1D63DC] to-[#2563EB] hover:from-blue-600 hover:to-blue-700 text-white text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shadow-xs"
               >
                 <Printer className="w-3.5 h-3.5" />
                 <span>পেমেন্ট খাতা প্রিন্ট</span>
@@ -3135,19 +3145,19 @@ NID: ${emp.nid || '—'}
           </div>
 
           {/* 1-Click A4 Master Sheet Executive Banner */}
-          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="p-4 rounded-2xl bg-gradient-to-r from-[#08142E] via-[#0F2149] to-[#132B63] text-white border border-[#162752] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-sm">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-slate-900 text-teal-300 flex items-center justify-center shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-teal-500 text-slate-950 flex items-center justify-center shrink-0 shadow-md">
                 <FileSpreadsheet className="w-5 h-5" />
               </div>
               <div>
-                <div className="font-bold text-xs text-slate-900 flex items-center gap-2">
+                <div className="font-extrabold text-xs sm:text-sm text-white flex items-center gap-2">
                   <span>সকল শ্রমিকের A4 বেতন ও হাজিরা মাস্টার শিট</span>
-                  <span className="text-[10.5px] font-medium text-teal-700">
+                  <span className="text-[10.5px] font-bold text-cyan-300">
                     · ১-ক্লিক প্রিন্ট রেডি
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-500 mt-0.5">
+                <p className="text-[11px] text-blue-200/80 mt-0.5">
                   এক ক্লিকে সকল শ্রমিকের উপস্থিতি, অনুপস্থিতি, মোট ওভারটাইম ঘণ্টা ও টাকা, হাজিরা বোনাস, নিট বেতন ও স্বাক্ষর কলামসহ A4 ল্যান্ডস্কেপ পেপারে প্রিন্ট করুন।
                 </p>
               </div>
@@ -3166,9 +3176,9 @@ NID: ${emp.nid || '—'}
                   }
                   setShowMasterA4Modal(true);
                 }}
-                className="px-3 py-2 rounded-lg bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
+                className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/15 font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
               >
-                <Eye className="w-3.5 h-3.5 text-slate-500" />
+                <Eye className="w-3.5 h-3.5 text-cyan-300" />
                 <span>প্রিভিউ ও সেটিংস</span>
               </button>
               <button
@@ -3184,10 +3194,10 @@ NID: ${emp.nid || '—'}
                   }
                   handlePrintMasterA4Sheet();
                 }}
-                className="px-3.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
+                className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 hover:from-amber-300 hover:to-orange-300 text-slate-950 font-extrabold text-xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shadow-sm"
                 title="সরাসরি প্রিন্ট ডায়ালগ ওপেন করুন"
               >
-                <Printer className="w-3.5 h-3.5 text-teal-300" />
+                <Printer className="w-3.5 h-3.5" />
                 <span className="tabular-nums">১-ক্লিকে সরাসরি প্রিন্ট ({toBengaliNumber(masterTotals.workersCount)} জন)</span>
               </button>
             </div>
@@ -3339,48 +3349,48 @@ NID: ${emp.nid || '—'}
 
             return (
               <>
-                {/* On-Screen Master Summary Cards (সম্পূর্ণ ফিল্টারের রেকর্ডের ওপর ভিত্তি করে, ডিলিট করলে ০ হবে) */}
-                <div className="grid grid-cols-2 sm:grid-cols-6 gap-2.5 text-left text-xs">
-                  <div className="p-3 rounded-xl bg-white border border-slate-200">
-                    <div className="text-[11px] font-medium text-slate-500">মোট মূল বেতন</div>
-                    <div className="text-sm font-extrabold font-mono text-slate-950 mt-0.5 tabular-nums">৳{formatMoney(totalBasicSalary)}</div>
-                    <div className="text-[10px] text-slate-500 mt-0.5 tabular-nums">{toBengaliNumber(totalWorkersCount)} জন শ্রমিক</div>
+                {/* On-Screen Master Summary Cards (6 Vibrant Rainbow Gradients matching Dashboard) */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-left text-xs">
+                  <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#635BFF] to-[#4338CA] text-white shadow-sm">
+                    <div className="text-[11px] font-medium text-white/85">মোট মূল বেতন</div>
+                    <div className="text-sm font-extrabold font-mono text-white mt-1 tabular-nums">৳{formatMoney(totalBasicSalary)}</div>
+                    <div className="text-[10px] text-white/80 mt-0.5 tabular-nums">{toBengaliNumber(totalWorkersCount)} জন শ্রমিক</div>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-white border border-slate-200">
-                    <div className="text-[11px] font-medium text-slate-500">উপস্থিতি / অনুপস্থিতি</div>
-                    <div className="text-sm font-extrabold font-mono text-emerald-700 mt-0.5 tabular-nums">
+                  <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#059669] to-[#16A34A] text-white shadow-sm">
+                    <div className="text-[11px] font-medium text-white/85">উপস্থিতি / অনুপস্থিতি</div>
+                    <div className="text-sm font-extrabold font-mono text-white mt-1 tabular-nums">
                       {toBengaliNumber(totalPresentDays)} / {toBengaliNumber(totalAbsentDays)}
                     </div>
-                    <div className="text-[10px] text-slate-500 mt-0.5">মোট দিন</div>
+                    <div className="text-[10px] text-white/80 mt-0.5">মোট দিন</div>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-white border border-slate-200">
-                    <div className="text-[11px] font-medium text-slate-500">মোট ওভারটাইম</div>
-                    <div className="text-sm font-extrabold font-mono text-slate-950 mt-0.5 tabular-nums">
+                  <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#0284C7] to-[#2563EB] text-white shadow-sm">
+                    <div className="text-[11px] font-medium text-white/85">মোট ওভারটাইম</div>
+                    <div className="text-sm font-extrabold font-mono text-white mt-1 tabular-nums">
                       {toBengaliNumber(totalOtHours)} ঘ. (৳{formatMoney(totalOtPay)})
                     </div>
-                    <div className="text-[10px] text-slate-500 mt-0.5">ওটি রেট অনুযায়ী</div>
+                    <div className="text-[10px] text-white/80 mt-0.5">ওটি রেট অনুযায়ী</div>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-white border border-slate-200">
-                    <div className="text-[11px] font-medium text-slate-500">মোট বোনাস</div>
-                    <div className="text-sm font-extrabold font-mono text-slate-950 mt-0.5 tabular-nums">৳{formatMoney(totalBonus)}</div>
-                    <div className="text-[10px] text-slate-500 mt-0.5">হাজিরা/উৎসব বোনাস</div>
+                  <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#F97316] to-[#EA580C] text-white shadow-sm">
+                    <div className="text-[11px] font-medium text-white/85">মোট বোনাস</div>
+                    <div className="text-sm font-extrabold font-mono text-white mt-1 tabular-nums">৳{formatMoney(totalBonus)}</div>
+                    <div className="text-[10px] text-white/80 mt-0.5">হাজিরা/উৎসব বোনাস</div>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-white border border-slate-200">
-                    <div className="text-[11px] font-medium text-slate-500">মোট নিট প্রদেয়</div>
-                    <div className="text-sm font-extrabold font-mono text-teal-800 mt-0.5 tabular-nums">৳{formatMoney(totalNetPayable)}</div>
-                    <div className="text-[10px] text-slate-500 mt-0.5">সর্বমোট নিট বেতন</div>
+                  <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#06B6D4] to-[#0D9488] text-white shadow-sm">
+                    <div className="text-[11px] font-medium text-white/85">মোট নিট প্রদেয়</div>
+                    <div className="text-sm font-extrabold font-mono text-white mt-1 tabular-nums">৳{formatMoney(totalNetPayable)}</div>
+                    <div className="text-[10px] text-white/80 mt-0.5">সর্বমোট নিট বেতন</div>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-white border border-slate-200">
-                    <div className="text-[11px] font-medium text-slate-500">পরিশোধিত / বকেয়া</div>
-                    <div className="text-sm font-extrabold font-mono text-rose-700 mt-0.5 tabular-nums">
+                  <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#EC4899] to-[#DB2777] text-white shadow-sm">
+                    <div className="text-[11px] font-medium text-white/85">পরিশোধিত / বকেয়া</div>
+                    <div className="text-sm font-extrabold font-mono text-white mt-1 tabular-nums">
                       ৳{formatMoney(totalPaid)} / ৳{formatMoney(totalDue)}
                     </div>
-                    <div className="text-[10px] text-slate-500 mt-0.5">
+                    <div className="text-[10px] text-white/80 mt-0.5">
                       {totalDue === 0 && totalWorkersCount > 0 ? 'সম্পূর্ণ পরিশোধিত' : totalDue > 0 ? 'বকেয়া আছে' : 'রেকর্ড নেই'}
                     </div>
                   </div>
@@ -3834,17 +3844,19 @@ NID: ${emp.nid || '—'}
 
       {/* ================= TAB 3: EMPLOYEE FORM (ADD / EDIT) ================= */}
       {activeTab === 'form' && (
-        <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 space-y-4">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-            <div className="flex items-center gap-2 font-bold text-slate-900 text-sm">
-              <UserPlus className="w-4 h-4 text-teal-700" />
+            <div className="flex items-center gap-2.5 font-extrabold text-slate-900 text-sm">
+              <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 text-white flex items-center justify-center shadow-xs">
+                <UserPlus className="w-4 h-4" />
+              </span>
               <span>{editId ? 'কর্মচারীর তথ্য সম্পাদন (Edit)' : 'নতুন কর্মচারী নিবন্ধন (Add Employee)'}</span>
             </div>
             {editId && (
               <button
                 type="button"
                 onClick={resetForm}
-                className="text-xs font-semibold text-slate-500 hover:text-slate-900"
+                className="text-xs font-semibold text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1 rounded-lg border border-blue-200 cursor-pointer"
               >
                 নতুন কর্মী ফর্মে ফিরে যান
               </button>
@@ -4405,10 +4417,12 @@ NID: ${emp.nid || '—'}
 
       {/* ================= TAB 4: EMPLOYEE DETAILS & PRINT ================= */}
       {activeTab === 'details' && (
-        <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 space-y-4">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-            <div className="flex items-center gap-2 font-bold text-slate-900 text-sm">
-              <IdCard className="w-4 h-4 text-teal-700" />
+            <div className="flex items-center gap-2.5 font-extrabold text-slate-900 text-sm">
+              <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-teal-600 text-white flex items-center justify-center shadow-xs">
+                <IdCard className="w-4 h-4" />
+              </span>
               <span>শ্রমিকের বিস্তারিত প্রোফাইল ও প্রিন্ট</span>
             </div>
           </div>
@@ -4872,46 +4886,48 @@ NID: ${emp.nid || '—'}
 
       {/* ================= TAB 5: TELEGRAM SETTINGS ================= */}
       {activeTab === 'telegram' && (
-        <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200/90 space-y-4">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs space-y-4">
           {/* Sub Navigation for Password & Settings */}
           <div className="flex items-center gap-2 pb-3 border-b border-slate-100 flex-wrap">
             <button
               type="button"
               onClick={() => handleTabChange('password')}
-              className="py-1.5 px-3 rounded-lg font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+              className="py-1.5 px-3 rounded-xl font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
             >
-              <KeyRound className="w-3.5 h-3.5 text-slate-500" />
+              <KeyRound className="w-3.5 h-3.5 text-amber-600" />
               <span>অ্যাডমিন পাসওয়ার্ড</span>
             </button>
             <button
               type="button"
               onClick={() => handleTabChange('telegram')}
-              className="py-1.5 px-3 rounded-lg font-semibold text-xs flex items-center gap-1.5 bg-slate-900 text-white transition-colors cursor-pointer"
+              className="py-1.5 px-3 rounded-xl font-bold text-xs flex items-center gap-1.5 bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-xs transition-all cursor-pointer"
             >
-              <Send className="w-3.5 h-3.5 text-teal-300" />
+              <Send className="w-3.5 h-3.5 text-white" />
               <span>Telegram Bot</span>
             </button>
             <button
               type="button"
               onClick={() => handleTabChange('sms')}
-              className="py-1.5 px-3 rounded-lg font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+              className="py-1.5 px-3 rounded-xl font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
             >
-              <MessageSquare className="w-3.5 h-3.5 text-slate-500" />
+              <MessageSquare className="w-3.5 h-3.5 text-pink-600" />
               <span>Auto SMS (Bulk)</span>
             </button>
             <button
               type="button"
               onClick={() => handleTabChange('factory')}
-              className="py-1.5 px-3 rounded-lg font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+              className="py-1.5 px-3 rounded-xl font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
             >
-              <Building2 className="w-3.5 h-3.5 text-slate-500" />
+              <Building2 className="w-3.5 h-3.5 text-orange-600" />
               <span>কারখানার তথ্য ও চুক্তি</span>
             </button>
           </div>
 
           <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-            <div className="flex items-center gap-2 font-bold text-slate-800 text-sm">
-              <Send className="w-4 h-4 text-blue-600" />
+            <div className="flex items-center gap-2.5 font-extrabold text-slate-900 text-sm">
+              <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-500 to-blue-600 text-white flex items-center justify-center shadow-xs">
+                <Send className="w-4 h-4" />
+              </span>
               <span>Telegram Bot Settings</span>
             </div>
           </div>
@@ -5179,46 +5195,48 @@ NID: ${emp.nid || '—'}
 
       {/* ================= TAB 6: AUTO MESSAGE / SMS ================= */}
       {activeTab === 'sms' && (
-        <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200/90 space-y-4">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs space-y-4">
           {/* Sub Navigation for Password & Settings */}
           <div className="flex items-center gap-2 pb-3 border-b border-slate-100 flex-wrap">
             <button
               type="button"
               onClick={() => handleTabChange('password')}
-              className="py-1.5 px-3 rounded-lg font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+              className="py-1.5 px-3 rounded-xl font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
             >
-              <KeyRound className="w-3.5 h-3.5 text-slate-500" />
+              <KeyRound className="w-3.5 h-3.5 text-amber-600" />
               <span>অ্যাডমিন পাসওয়ার্ড</span>
             </button>
             <button
               type="button"
               onClick={() => handleTabChange('telegram')}
-              className="py-1.5 px-3 rounded-lg font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+              className="py-1.5 px-3 rounded-xl font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
             >
-              <Send className="w-3.5 h-3.5 text-slate-500" />
+              <Send className="w-3.5 h-3.5 text-sky-600" />
               <span>Telegram Bot</span>
             </button>
             <button
               type="button"
               onClick={() => handleTabChange('sms')}
-              className="py-1.5 px-3 rounded-lg font-semibold text-xs flex items-center gap-1.5 bg-slate-900 text-white transition-colors cursor-pointer"
+              className="py-1.5 px-3 rounded-xl font-bold text-xs flex items-center gap-1.5 bg-gradient-to-r from-[#EC4899] to-[#DB2777] text-white shadow-xs transition-all cursor-pointer"
             >
-              <MessageSquare className="w-3.5 h-3.5 text-teal-300" />
+              <MessageSquare className="w-3.5 h-3.5 text-white" />
               <span>Auto SMS (Bulk)</span>
             </button>
             <button
               type="button"
               onClick={() => handleTabChange('factory')}
-              className="py-1.5 px-3 rounded-lg font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+              className="py-1.5 px-3 rounded-xl font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
             >
-              <Building2 className="w-3.5 h-3.5 text-slate-500" />
+              <Building2 className="w-3.5 h-3.5 text-orange-600" />
               <span>কারখানার তথ্য ও চুক্তি</span>
             </button>
           </div>
 
           <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-            <div className="flex items-center gap-2 font-bold text-slate-800 text-sm">
-              <MessageSquare className="w-4 h-4 text-blue-600" />
+            <div className="flex items-center gap-2.5 font-extrabold text-slate-900 text-sm">
+              <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 to-rose-600 text-white flex items-center justify-center shadow-xs">
+                <MessageSquare className="w-4 h-4" />
+              </span>
               <span>Auto Message / SMS (BulkSMSBD)</span>
             </div>
           </div>
@@ -5424,46 +5442,48 @@ NID: ${emp.nid || '—'}
 
       {/* ================= TAB 7: PASSWORD & LOGOUT ================= */}
       {activeTab === 'password' && (
-        <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200/90 space-y-4 max-w-lg mx-auto">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs space-y-4 max-w-lg mx-auto">
           {/* Sub Navigation for Password & Settings */}
           <div className="flex items-center gap-2 pb-3 border-b border-slate-100 flex-wrap">
             <button
               type="button"
               onClick={() => handleTabChange('password')}
-              className="py-1.5 px-3 rounded-lg font-semibold text-xs flex items-center gap-1.5 bg-slate-900 text-white transition-colors cursor-pointer"
+              className="py-1.5 px-3 rounded-xl font-bold text-xs flex items-center gap-1.5 bg-gradient-to-r from-[#F97316] to-[#EA580C] text-white shadow-xs transition-all cursor-pointer"
             >
-              <KeyRound className="w-3.5 h-3.5 text-teal-300" />
+              <KeyRound className="w-3.5 h-3.5 text-white" />
               <span>অ্যাডমিন পাসওয়ার্ড</span>
             </button>
             <button
               type="button"
               onClick={() => handleTabChange('telegram')}
-              className="py-1.5 px-3 rounded-lg font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+              className="py-1.5 px-3 rounded-xl font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
             >
-              <Send className="w-3.5 h-3.5 text-slate-500" />
+              <Send className="w-3.5 h-3.5 text-sky-600" />
               <span>Telegram Bot</span>
             </button>
             <button
               type="button"
               onClick={() => handleTabChange('sms')}
-              className="py-1.5 px-3 rounded-lg font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+              className="py-1.5 px-3 rounded-xl font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
             >
-              <MessageSquare className="w-3.5 h-3.5 text-slate-500" />
+              <MessageSquare className="w-3.5 h-3.5 text-pink-600" />
               <span>Auto SMS (Bulk)</span>
             </button>
             <button
               type="button"
               onClick={() => handleTabChange('factory')}
-              className="py-1.5 px-3 rounded-lg font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+              className="py-1.5 px-3 rounded-xl font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
             >
-              <Building2 className="w-3.5 h-3.5 text-slate-500" />
+              <Building2 className="w-3.5 h-3.5 text-orange-600" />
               <span>কারখানার তথ্য ও চুক্তি</span>
             </button>
           </div>
 
           <div className="flex items-center justify-between pb-2 border-b border-slate-100 flex-wrap gap-2">
-            <div className="flex items-center gap-2 font-bold text-slate-800 text-sm">
-              <KeyRound className="w-4 h-4 text-amber-600" />
+            <div className="flex items-center gap-2.5 font-extrabold text-slate-900 text-sm">
+              <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center shadow-xs">
+                <KeyRound className="w-4 h-4" />
+              </span>
               <span>Admin Password পরিবর্তন ও ক্লাউড নিরাপত্তা</span>
             </div>
             {!adminSecurity.isDefaultPassword ? (
@@ -5559,52 +5579,56 @@ NID: ${emp.nid || '—'}
 
       {/* ================= TAB 9: FACTORY & AGREEMENT SETTINGS ================= */}
       {activeTab === 'factory' && (
-        <div className="bg-white rounded-xl p-4 sm:p-6 border border-slate-200/90 space-y-5 max-w-2xl mx-auto">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200/90 shadow-xs space-y-5 max-w-2xl mx-auto">
           {/* Sub Navigation for Settings */}
           <div className="flex items-center gap-2 pb-3 border-b border-slate-100 flex-wrap">
             <button
               type="button"
               onClick={() => handleTabChange('password')}
-              className="py-1.5 px-3 rounded-lg font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+              className="py-1.5 px-3 rounded-xl font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
             >
-              <KeyRound className="w-3.5 h-3.5 text-slate-500" />
+              <KeyRound className="w-3.5 h-3.5 text-amber-600" />
               <span>অ্যাডমিন পাসওয়ার্ড</span>
             </button>
             <button
               type="button"
               onClick={() => handleTabChange('telegram')}
-              className="py-1.5 px-3 rounded-lg font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+              className="py-1.5 px-3 rounded-xl font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
             >
-              <Send className="w-3.5 h-3.5 text-slate-500" />
+              <Send className="w-3.5 h-3.5 text-sky-600" />
               <span>Telegram Bot</span>
             </button>
             <button
               type="button"
               onClick={() => handleTabChange('sms')}
-              className="py-1.5 px-3 rounded-lg font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+              className="py-1.5 px-3 rounded-xl font-semibold text-xs flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
             >
-              <MessageSquare className="w-3.5 h-3.5 text-slate-500" />
+              <MessageSquare className="w-3.5 h-3.5 text-pink-600" />
               <span>Auto SMS (Bulk)</span>
             </button>
             <button
               type="button"
               onClick={() => handleTabChange('factory')}
-              className="py-1.5 px-3 rounded-lg font-semibold text-xs flex items-center gap-1.5 bg-slate-900 text-white transition-colors cursor-pointer"
+              className="py-1.5 px-3 rounded-xl font-bold text-xs flex items-center gap-1.5 bg-gradient-to-r from-[#06B6D4] to-[#0D9488] text-white shadow-xs transition-all cursor-pointer"
             >
-              <Building2 className="w-3.5 h-3.5 text-teal-300" />
+              <Building2 className="w-3.5 h-3.5 text-white" />
               <span>কারখানার তথ্য ও চুক্তি</span>
             </button>
           </div>
 
           <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-            <div>
-              <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-teal-700" />
-                <span>কারখানার পরিচিতি ও চুক্তিপত্র (Agreement) সেটিংস</span>
-              </h3>
-              <p className="text-xs text-slate-500 mt-0.5">
-                এখানে দেওয়া কারখানার নাম, ঠিকানা ও ফোন নম্বর স্বয়ংক্রিয়ভাবে সকল চুক্তিপত্র ও অফিশিয়াল নথিতে প্রদর্শিত হবে।
-              </p>
+            <div className="flex items-center gap-2.5">
+              <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-teal-600 text-white flex items-center justify-center shadow-xs shrink-0">
+                <Building2 className="w-4 h-4" />
+              </span>
+              <div>
+                <h3 className="text-base font-black text-slate-900">
+                  কারখানার পরিচিতি ও চুক্তিপত্র (Agreement) সেটিংস
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  এখানে দেওয়া কারখানার নাম, ঠিকানা ও ফোন নম্বর স্বয়ংক্রিয়ভাবে সকল চুক্তিপত্র ও অফিশিয়াল নথিতে প্রদর্শিত হবে।
+                </p>
+              </div>
             </div>
           </div>
 

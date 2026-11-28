@@ -786,13 +786,71 @@ ${c.isResignationSettlement ? '★ অন্তিম দেনা-পাওন�
 
   return (
     <div className="space-y-5">
+      {/* Executive Salary Calculator Top Banner + 4 Gradient KPI Cards */}
+      <div className="bg-gradient-to-r from-[#08142E] via-[#0F2149] to-[#132B63] text-white rounded-2xl p-4 sm:p-5 border border-[#162752] shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-500 text-white flex items-center justify-center shrink-0 shadow-md">
+              <Calculator className="w-5 h-5 stroke-[2.25]" />
+            </div>
+            <div>
+              <h2 className="text-base sm:text-lg font-extrabold text-white tracking-tight">
+                বেতন হিসাব ক্যালকুলেটর ও পে-স্লিপ স্টুডিও
+              </h2>
+              <p className="text-xs text-blue-200/80 mt-0.5">
+                স্বয়ংক্রিয় হাজিরা সিঙ্ক, ওভারটাইম হিসাব, ৫৮ মিমি থার্মাল পে-স্লিপ ও বেতন খাতায় এন্ট্রি
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
+            <span className="px-3 py-1.5 rounded-xl bg-[#0B1736] border border-white/15 text-xs font-bold text-cyan-300 tabular-nums">
+              {month} {toBengaliNumber(year)} · সক্রিয় কর্মী {toBengaliNumber(employees.filter((e) => e.status === 'active').length)} জন
+            </span>
+          </div>
+        </div>
+
+        {/* 4 Vibrant Gradient KPI Cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 pt-3 border-t border-white/10">
+          <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#635BFF] to-[#4338CA] text-white shadow-sm">
+            <div className="text-[11px] font-medium text-white/85">প্রসেসকৃত কর্মী ({month})</div>
+            <div className="text-lg sm:text-xl font-extrabold font-mono mt-1 tabular-nums">
+              {toBengaliNumber(processedMonthRecords.length)} জন
+            </div>
+          </div>
+
+          <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#0284C7] to-[#2563EB] text-white shadow-sm">
+            <div className="text-[11px] font-medium text-white/85">সর্বমোট প্রদেয় নিট বেতন</div>
+            <div className="text-lg sm:text-xl font-extrabold font-mono mt-1 tabular-nums">
+              ৳ {formatMoney(totalProcessedNetPayable)}
+            </div>
+          </div>
+
+          <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#059669] to-[#16A34A] text-white shadow-sm">
+            <div className="text-[11px] font-medium text-white/85">মোট পরিশোধিত (Paid)</div>
+            <div className="text-lg sm:text-xl font-extrabold font-mono mt-1 tabular-nums">
+              ৳ {formatMoney(totalProcessedPaid)}
+            </div>
+          </div>
+
+          <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#F97316] to-[#EA580C] text-white shadow-sm">
+            <div className="text-[11px] font-medium text-white/85">অবশিষ্ট বকেয়া (Due)</div>
+            <div className="text-lg sm:text-xl font-extrabold font-mono mt-1 tabular-nums">
+              ৳ {formatMoney(totalProcessedDue)}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
       <div className="lg:col-span-7 space-y-4">
       {/* 1. Employee Selection Card */}
-      <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200">
+      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs">
         <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
-          <div className="flex items-center gap-2 font-bold text-slate-800 text-sm">
-            <User className="w-4 h-4 text-blue-600" />
+          <div className="flex items-center gap-2.5 font-extrabold text-slate-900 text-sm">
+            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center shadow-xs">
+              <User className="w-4 h-4" />
+            </span>
             <span>কর্মচারী নির্বাচন</span>
           </div>
 
@@ -1078,10 +1136,12 @@ ${c.isResignationSettlement ? '★ অন্তিম দেনা-পাওন�
       </div>
 
       {/* 2. Salary Calculation Parameters Card */}
-      <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-4">
+      <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-xs border border-slate-200/90 space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-          <div className="flex items-center gap-2 font-bold text-slate-800 text-sm">
-            <Calendar className="w-4 h-4 text-blue-600" />
+          <div className="flex items-center gap-2.5 font-extrabold text-slate-900 text-sm">
+            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-xs">
+              <Calendar className="w-4 h-4" />
+            </span>
             <span>মাস, কার্যদিবস ও হাজিরা</span>
           </div>
 
@@ -1545,7 +1605,7 @@ ${c.isResignationSettlement ? '★ অন্তিম দেনা-পাওন�
         <button
           type="button"
           onClick={handleCalculate}
-          className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md active:scale-98 transition flex items-center justify-center gap-2"
+          className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#1D63DC] to-[#2563EB] hover:from-blue-600 hover:to-blue-700 text-white font-extrabold text-sm shadow-md active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
         >
           <Calculator className="w-4 h-4" />
           <span>বেতন হিসাব করুন ও স্লিপ দেখুন</span>
@@ -1602,13 +1662,15 @@ ${c.isResignationSettlement ? '★ অন্তিম দেনা-পাওন�
 
       {/* 3. POS Pay Slip Preview & Actions Column */}
       <div className="lg:col-span-5 lg:sticky lg:top-20 space-y-4">
-      <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200">
+      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs">
         <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
-          <div className="flex items-center gap-2 font-bold text-slate-800 text-sm">
-            <Receipt className="w-4 h-4 text-blue-600" />
+          <div className="flex items-center gap-2.5 font-extrabold text-slate-900 text-sm">
+            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 text-white flex items-center justify-center shadow-xs">
+              <Receipt className="w-4 h-4" />
+            </span>
             <span>Pay Slip Preview</span>
           </div>
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 border border-slate-200">
+          <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200">
             POS 58mm Thermal
           </span>
         </div>
@@ -1899,10 +1961,10 @@ ${c.isResignationSettlement ? '★ অন্তিম দেনা-পাওন�
       </div>
 
         {/* ================= 4. PROCESSED EMPLOYEES NET PAYABLE SUMMARY SECTION ================= */}
-        <div className="mt-5 border border-slate-200 rounded-xl bg-white overflow-hidden">
-          <div className="p-3 sm:p-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="mt-5 border border-slate-200/90 rounded-2xl bg-white overflow-hidden shadow-xs">
+          <div className="p-3.5 sm:p-4 bg-gradient-to-r from-[#08142E] via-[#0F2149] to-[#132B63] text-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-indigo-500/30 border border-indigo-400/40 flex items-center justify-center text-indigo-300 shrink-0">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-400 to-blue-500 flex items-center justify-center text-white shrink-0 shadow-sm">
                 <Receipt className="w-5 h-5" />
               </div>
               <div>

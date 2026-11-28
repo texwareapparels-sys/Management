@@ -538,17 +538,17 @@ export const InvestmentHub: React.FC<InvestmentHubProps> = ({
   return (
     <div className="space-y-5">
       {/* 1. Header Banner & Quick Stats */}
-      <div className="bg-slate-950 text-white rounded-xl p-5 sm:p-6 border border-slate-800">
+      <div className="bg-gradient-to-r from-[#08142E] via-[#0F2149] to-[#132B63] text-white rounded-2xl p-5 sm:p-6 border border-[#162752] shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-teal-400 shrink-0">
-              <TrendingUp className="w-6 h-6" />
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 text-slate-950 flex items-center justify-center shrink-0 shadow-md">
+              <TrendingUp className="w-6 h-6 stroke-[2.25]" />
             </div>
             <div>
               <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-white">
                 কারখানা ইনভেস্টমেন্ট ও তহবিল পোর্টাল
               </h2>
-              <p className="text-xs text-slate-400 mt-0.5 max-w-2xl">
+              <p className="text-xs text-blue-200/80 mt-0.5 max-w-2xl">
                 মিনিমাম ১,০০০ ৳ হতে শুরু (৭ থেকে ১২০ দিনের প্ল্যান) · মুনাফা বণ্টন চুক্তিপত্র, A4 সরকারি স্ট্যাম্প চুক্তি ও টাকা জমার রসিদ
               </p>
             </div>
@@ -562,16 +562,16 @@ export const InvestmentHub: React.FC<InvestmentHubProps> = ({
                 resetForm();
                 setShowFormModal(true);
               }}
-              className="py-2 px-4 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
+              className="py-2 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shadow-md"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-4 h-4 stroke-[2.5]" />
               <span>নতুন বিনিয়োগ নিবন্ধন করুন</span>
             </button>
             {onBackToApp && (
               <button
                 type="button"
                 onClick={onBackToApp}
-                className="py-2 px-3.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-semibold text-xs transition-colors cursor-pointer"
+                className="py-2 px-3.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white font-semibold text-xs transition-colors cursor-pointer"
               >
                 ← ফিরে যান
               </button>
@@ -579,31 +579,31 @@ export const InvestmentHub: React.FC<InvestmentHubProps> = ({
           </div>
         </div>
 
-        {/* 4 Metric Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 pt-4 border-t border-slate-800">
-          <div className="bg-slate-900/90 p-3.5 rounded-lg border border-slate-800">
-            <span className="text-[11px] text-slate-400 block font-medium">মোট সক্রিয় মূলধন</span>
+        {/* 4 Vibrant Gradient Metric Cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 pt-4 border-t border-white/10">
+          <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#0284C7] to-[#2563EB] text-white shadow-sm">
+            <span className="text-[11px] text-white/85 block font-medium">মোট সক্রিয় মূলধন</span>
             <span className="text-lg sm:text-xl font-extrabold text-white font-mono mt-1 block tabular-nums">
               ৳ {formatMoney(totalInvestedAmount)}
             </span>
           </div>
 
-          <div className="bg-slate-900/90 p-3.5 rounded-lg border border-slate-800">
-            <span className="text-[11px] text-slate-400 block font-medium">সক্রিয় বিনিয়োগকারী</span>
-            <span className="text-lg sm:text-xl font-extrabold text-teal-300 font-mono mt-1 block tabular-nums">
+          <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#059669] to-[#16A34A] text-white shadow-sm">
+            <span className="text-[11px] text-white/85 block font-medium">সক্রিয় বিনিয়োগকারী</span>
+            <span className="text-lg sm:text-xl font-extrabold text-white font-mono mt-1 block tabular-nums">
               {toBengaliNumber(activeInvestorsCount)} জন
             </span>
           </div>
 
-          <div className="bg-slate-900/90 p-3.5 rounded-lg border border-slate-800">
-            <span className="text-[11px] text-slate-400 block font-medium">মোট প্রদেয় প্ল্যান মুনাফা</span>
+          <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#F97316] to-[#EA580C] text-white shadow-sm">
+            <span className="text-[11px] text-white/85 block font-medium">মোট প্রদেয় প্ল্যান মুনাফা</span>
             <span className="text-lg sm:text-xl font-extrabold text-white font-mono mt-1 block tabular-nums">
               ৳ {formatMoney(totalMonthlyProfitPayable)}
             </span>
           </div>
 
-          <div className="bg-slate-900/90 p-3.5 rounded-lg border border-slate-800">
-            <span className="text-[11px] text-slate-400 block font-medium">সর্বমোট চুক্তি সংখ্যা</span>
+          <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#635BFF] to-[#4338CA] text-white shadow-sm">
+            <span className="text-[11px] text-white/85 block font-medium">সর্বমোট চুক্তি সংখ্যা</span>
             <span className="text-lg sm:text-xl font-extrabold text-white font-mono mt-1 block tabular-nums">
               {toBengaliNumber(investments.length)} টি
             </span>
@@ -612,14 +612,14 @@ export const InvestmentHub: React.FC<InvestmentHubProps> = ({
       </div>
 
       {/* 2. Sub-Tab Switcher: Investments vs Withdrawals */}
-      <div className="flex items-center gap-1.5 p-1 bg-slate-100 border border-slate-200 rounded-lg w-fit flex-wrap">
+      <div className="flex items-center gap-1.5 p-1.5 bg-white border border-slate-200 rounded-xl w-fit flex-wrap shadow-2xs">
         <button
           type="button"
           onClick={() => setActiveHubTab('investments')}
-          className={`py-1.5 px-3.5 rounded-md font-semibold text-xs flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap ${
+          className={`py-2 px-4 rounded-lg font-bold text-xs flex items-center gap-2 transition-all cursor-pointer whitespace-nowrap ${
             activeHubTab === 'investments'
-              ? 'bg-slate-900 text-white'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+              ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-sm'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
           }`}
         >
           <TrendingUp className="w-3.5 h-3.5" />
@@ -629,10 +629,10 @@ export const InvestmentHub: React.FC<InvestmentHubProps> = ({
         <button
           type="button"
           onClick={() => setActiveHubTab('withdrawals')}
-          className={`py-1.5 px-3.5 rounded-md font-semibold text-xs flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap ${
+          className={`py-2 px-4 rounded-lg font-bold text-xs flex items-center gap-2 transition-all cursor-pointer whitespace-nowrap ${
             activeHubTab === 'withdrawals'
-              ? 'bg-slate-900 text-white'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+              ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-sm'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
           }`}
         >
           <Receipt className="w-3.5 h-3.5" />

@@ -363,7 +363,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-[#EEF2F7] text-slate-900">
       {isStandalonePortal ? (
         currentTab === 'investor' ? (
           <main className="w-full min-h-screen">{renderMainView()}</main>
@@ -394,12 +394,13 @@ export default function App() {
               terminatedCount={terminatedEmployees.length}
               totalCount={cleanEmployees.length}
               pendingApplicationsCount={pendingApplicationsCount}
+              employees={cleanEmployees}
               onOpenInstallModal={() => setShowInstallModal(true)}
               onOpenMobileMenu={() => setMobileMenuOpen(true)}
               onBack={currentTab !== 'dashboard' ? handleGoBack : undefined}
             />
 
-            <main className="flex-1 w-full max-w-[1400px] mx-auto p-3 sm:p-4 lg:p-6">
+            <main className="flex-1 w-full max-w-[1440px] mx-auto p-3 sm:p-4 lg:p-5">
               {renderMainView()}
             </main>
 

@@ -49,7 +49,8 @@ import {
   Sparkles,
   Coffee,
   HelpCircle,
-  FileSpreadsheet
+  FileSpreadsheet,
+  Users
 } from 'lucide-react';
 
 interface AttendanceHubProps {
@@ -762,31 +763,31 @@ export const AttendanceHub: React.FC<AttendanceHubProps> = ({
   return (
     <div className="space-y-4">
       {/* Top Banner & Date Control */}
-      <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-slate-100">
+      <div className="bg-gradient-to-r from-[#08142E] via-[#0F2149] to-[#132B63] text-white rounded-2xl p-4 sm:p-5 border border-[#162752] shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3.5 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-slate-900 text-teal-300 flex items-center justify-center shrink-0">
-              <Clock className="w-5 h-5" />
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-400 to-teal-500 text-slate-950 flex items-center justify-center shrink-0 shadow-md">
+              <Clock className="w-5 h-5 stroke-[2.25]" />
             </div>
             <div>
-              <h2 className="text-base font-extrabold text-slate-950 tracking-tight">
+              <h2 className="text-base sm:text-lg font-extrabold text-white tracking-tight">
                 দৈনিক হাজিরা ও টাইম কন্ট্রোল
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-blue-200/80">
                 শ্রমিকদের ইন টাইম, আউট টাইম, লেট ও ওভারটাইম রিয়েল-টাইম ট্র্যাকিং
               </p>
             </div>
           </div>
 
           {/* Sub Navigation Toggle */}
-          <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-lg border border-slate-200/70">
+          <div className="flex items-center gap-1 p-1 bg-[#0B1736] rounded-xl border border-white/10">
             <button
               type="button"
               onClick={() => setSubView('roster')}
-              className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                 subView === 'roster'
-                  ? 'bg-slate-900 text-white'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-sm'
+                  : 'text-slate-300 hover:text-white hover:bg-white/5'
               }`}
             >
               দৈনিক হাজিরা এন্ট্রি
@@ -794,10 +795,10 @@ export const AttendanceHub: React.FC<AttendanceHubProps> = ({
             <button
               type="button"
               onClick={() => setSubView('records')}
-              className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                 subView === 'records'
-                  ? 'bg-slate-900 text-white'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-sm'
+                  : 'text-slate-300 hover:text-white hover:bg-white/5'
               }`}
             >
               হাজিরা রেকর্ড ও রিপোর্ট
@@ -806,32 +807,32 @@ export const AttendanceHub: React.FC<AttendanceHubProps> = ({
         </div>
 
         {/* Date Selector & Shift Overview Bar */}
-        <div className="pt-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div className="pt-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           {/* Date Picker Bar */}
           <div className="flex items-center gap-2 flex-wrap">
-            <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg p-1">
+            <div className="flex items-center bg-white text-slate-900 border border-white/20 rounded-xl p-1 shadow-xs">
               <button
                 type="button"
                 onClick={() => changeDateBy(-1)}
                 title="আগের দিন"
-                className="p-1.5 hover:bg-slate-200 rounded-md text-slate-600 transition-colors cursor-pointer"
+                className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors cursor-pointer"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <div className="flex items-center gap-1.5 px-2">
-                <Calendar className="w-4 h-4 text-teal-700 shrink-0" />
+                <Calendar className="w-4 h-4 text-blue-600 shrink-0" />
                 <input
                   type="date"
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  className="bg-transparent text-xs font-bold font-mono text-slate-800 outline-none cursor-pointer"
+                  className="bg-transparent text-xs font-bold font-mono text-slate-900 outline-none cursor-pointer"
                 />
               </div>
               <button
                 type="button"
                 onClick={() => changeDateBy(1)}
                 title="পরের দিন"
-                className="p-1.5 hover:bg-slate-200 rounded-md text-slate-600 transition-colors cursor-pointer"
+                className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors cursor-pointer"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -841,26 +842,26 @@ export const AttendanceHub: React.FC<AttendanceHubProps> = ({
               <button
                 type="button"
                 onClick={setDateToToday}
-                className="px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-teal-50 text-teal-800 hover:bg-teal-100 border border-teal-200 transition-colors cursor-pointer"
+                className="px-3 py-1.5 text-xs font-bold rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 transition-colors cursor-pointer shadow-xs"
               >
                 আজকের দিনে যান
               </button>
             )}
 
-            <span className="text-xs font-medium text-slate-500 hidden sm:inline">
-              তারিখ: <strong className="text-slate-900">{formatDateBn(selectedDate)}</strong>
+            <span className="text-xs font-medium text-blue-200 hidden sm:inline">
+              তারিখ: <strong className="text-white">{formatDateBn(selectedDate)}</strong>
             </span>
           </div>
 
           {/* Shift Info & Change Settings Button */}
           <div className="flex items-center gap-2 self-start md:self-auto flex-wrap">
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 border border-slate-200 text-xs">
-              <Sun className="w-3.5 h-3.5 text-amber-500" />
-              <span className="text-slate-500">শিফট:</span>
-              <strong className="text-slate-900 font-mono tabular-nums">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0B1736] border border-white/15 text-xs">
+              <Sun className="w-3.5 h-3.5 text-amber-400" />
+              <span className="text-blue-200">শিফট:</span>
+              <strong className="text-white font-mono tabular-nums">
                 {formatTime12h(shiftSettings.standardInTime)} - {formatTime12h(shiftSettings.standardOutTime)}
               </strong>
-              <span className="text-[10px] text-slate-400">
+              <span className="text-[10px] text-blue-300/80">
                 (গ্রেস {shiftSettings.graceMinutes} মি.)
               </span>
             </div>
@@ -869,9 +870,9 @@ export const AttendanceHub: React.FC<AttendanceHubProps> = ({
               type="button"
               onClick={() => setShowShiftModal(true)}
               title="শিফটের সময় পরিবর্তন"
-              className="py-1.5 px-3 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 transition-colors cursor-pointer text-xs font-semibold flex items-center gap-1.5"
+              className="py-1.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white transition-colors cursor-pointer text-xs font-semibold flex items-center gap-1.5"
             >
-              <Sliders className="w-3.5 h-3.5 text-slate-600" />
+              <Sliders className="w-3.5 h-3.5 text-cyan-300" />
               <span className="hidden sm:inline">শিফট কন্ট্রোল</span>
             </button>
 
@@ -879,9 +880,9 @@ export const AttendanceHub: React.FC<AttendanceHubProps> = ({
               <button
                 type="button"
                 onClick={handlePrintAttendanceSheet}
-                className="py-1.5 px-3 rounded-lg bg-slate-900 text-white hover:bg-slate-800 transition-colors cursor-pointer text-xs font-semibold flex items-center gap-1.5"
+                className="py-1.5 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 transition-all cursor-pointer text-xs font-extrabold flex items-center gap-1.5 shadow-sm"
               >
-                <Printer className="w-3.5 h-3.5 text-teal-300" />
+                <Printer className="w-3.5 h-3.5" />
                 <span>প্রিন্ট শিট</span>
               </button>
             )}
@@ -890,16 +891,21 @@ export const AttendanceHub: React.FC<AttendanceHubProps> = ({
       </div>
 
       {/* KPI Stats Bar for Selected Date */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         {/* Total Active */}
-        <div className="bg-white p-3.5 rounded-xl border border-slate-200 flex flex-col justify-between">
-          <div className="text-[11px] font-medium text-slate-500 flex items-center justify-between">
-            <span>মোট সক্রিয় কর্মী</span>
+        <div className="relative overflow-hidden rounded-xl p-4 bg-gradient-to-br from-[#635BFF] to-[#4338CA] text-white shadow-sm flex flex-col justify-between">
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <div className="text-[11px] font-medium text-white/85">মোট সক্রিয় কর্মী</div>
+              <div className="text-xl font-extrabold font-mono text-white mt-1 tabular-nums tracking-tight">
+                {toBengaliNumber(activeEmployees.length)} <span className="text-xs font-sans font-medium text-white/80">জন</span>
+              </div>
+            </div>
+            <div className="w-9 h-9 rounded-lg bg-white/15 border border-white/15 flex items-center justify-center shrink-0">
+              <Users className="w-4 h-4 text-white" />
+            </div>
           </div>
-          <div className="text-xl font-extrabold font-mono text-slate-950 mt-1 tabular-nums">
-            {toBengaliNumber(activeEmployees.length)} <span className="text-xs font-sans font-medium text-slate-400">জন</span>
-          </div>
-          <div className="text-[10.5px] text-slate-500 mt-0.5 tabular-nums">
+          <div className="text-[10.5px] text-white/85 mt-2 tabular-nums">
             {isSelectedFri
               ? `ওটি এন্ট্রি: ${toBengaliNumber(fridayOtWorkersCount)}/${toBengaliNumber(activeEmployees.length)}`
               : `হাজিরা এন্ট্রি: ${toBengaliNumber(recordedCount)}/${toBengaliNumber(activeEmployees.length)}`}
@@ -907,85 +913,123 @@ export const AttendanceHub: React.FC<AttendanceHubProps> = ({
         </div>
 
         {/* Present */}
-        <div className={`p-3.5 rounded-xl border flex flex-col justify-between ${
-          isSelectedFri ? 'bg-slate-50 border-slate-200' : 'bg-white border-slate-200'
+        <div className={`relative overflow-hidden rounded-xl p-4 flex flex-col justify-between shadow-sm ${
+          isSelectedFri
+            ? 'bg-slate-200/80 text-slate-700 border border-slate-300'
+            : 'bg-gradient-to-br from-[#059669] to-[#16A34A] text-white'
         }`}>
-          <div className={`text-[11px] font-medium flex items-center justify-between ${
-            isSelectedFri ? 'text-slate-500' : 'text-slate-500'
-          }`}>
-            <span>উপস্থিত</span>
-            <UserCheck className={`w-3.5 h-3.5 ${isSelectedFri ? 'text-slate-400' : 'text-emerald-600'}`} />
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <div className={`text-[11px] font-medium ${isSelectedFri ? 'text-slate-600' : 'text-white/85'}`}>
+                উপস্থিত
+              </div>
+              <div className={`text-xl font-extrabold font-mono mt-1 tabular-nums tracking-tight ${
+                isSelectedFri ? 'text-slate-700' : 'text-white'
+              }`}>
+                {toBengaliNumber(presentCount)} <span className={`text-xs font-sans font-medium ${isSelectedFri ? 'text-slate-500' : 'text-white/80'}`}>জন</span>
+              </div>
+            </div>
+            <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
+              isSelectedFri ? 'bg-slate-300/70 text-slate-600' : 'bg-white/15 border border-white/15 text-white'
+            }`}>
+              <UserCheck className="w-4 h-4" />
+            </div>
           </div>
-          <div className={`text-xl font-extrabold font-mono mt-1 tabular-nums ${
-            isSelectedFri ? 'text-slate-500' : 'text-emerald-700'
-          }`}>
-            {toBengaliNumber(presentCount)} <span className="text-xs font-sans font-medium text-slate-400">জন</span>
-          </div>
-          <div className="text-[10.5px] text-slate-500 mt-0.5 tabular-nums">
+          <div className={`text-[10.5px] mt-2 tabular-nums ${isSelectedFri ? 'text-slate-600' : 'text-white/85'}`}>
             {isSelectedFri ? 'শুক্রবার বন্ধ (হাজিরা নেই)' : `${activeEmployees.length > 0 ? Math.round((presentCount / activeEmployees.length) * 100) : 0}% উপস্থিতির হার`}
           </div>
         </div>
 
         {/* Late */}
-        <div className={`p-3.5 rounded-xl border flex flex-col justify-between ${
-          isSelectedFri ? 'bg-slate-50 border-slate-200' : 'bg-white border-slate-200'
+        <div className={`relative overflow-hidden rounded-xl p-4 flex flex-col justify-between shadow-sm ${
+          isSelectedFri
+            ? 'bg-slate-200/80 text-slate-700 border border-slate-300'
+            : 'bg-gradient-to-br from-[#F97316] to-[#EA580C] text-white'
         }`}>
-          <div className="text-[11px] font-medium text-slate-500 flex items-center justify-between">
-            <span>বিলম্ব / লেট</span>
-            <AlertTriangle className={`w-3.5 h-3.5 ${isSelectedFri ? 'text-slate-400' : 'text-amber-600'}`} />
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <div className={`text-[11px] font-medium ${isSelectedFri ? 'text-slate-600' : 'text-white/85'}`}>
+                বিলম্ব / লেট
+              </div>
+              <div className={`text-xl font-extrabold font-mono mt-1 tabular-nums tracking-tight ${
+                isSelectedFri ? 'text-slate-700' : 'text-white'
+              }`}>
+                {toBengaliNumber(lateCount)} <span className={`text-xs font-sans font-medium ${isSelectedFri ? 'text-slate-500' : 'text-white/80'}`}>জন</span>
+              </div>
+            </div>
+            <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
+              isSelectedFri ? 'bg-slate-300/70 text-slate-600' : 'bg-white/15 border border-white/15 text-white'
+            }`}>
+              <AlertTriangle className="w-4 h-4" />
+            </div>
           </div>
-          <div className={`text-xl font-extrabold font-mono mt-1 tabular-nums ${
-            isSelectedFri ? 'text-slate-400' : 'text-amber-700'
-          }`}>
-            {toBengaliNumber(lateCount)} <span className="text-xs font-sans font-medium text-slate-400">জন</span>
-          </div>
-          <div className="text-[10.5px] text-slate-500 mt-0.5">
+          <div className={`text-[10.5px] mt-2 ${isSelectedFri ? 'text-slate-600' : 'text-white/85'}`}>
             {isSelectedFri ? 'সাপ্তাহিক বন্ধ (লেট নেই)' : 'নির্ধারিত সময়ের পরে প্রবেশ'}
           </div>
         </div>
 
         {/* Absent */}
-        <div className={`p-3.5 rounded-xl border flex flex-col justify-between ${
-          isSelectedFri ? 'bg-slate-50 border-slate-200' : 'bg-white border-slate-200'
+        <div className={`relative overflow-hidden rounded-xl p-4 flex flex-col justify-between shadow-sm ${
+          isSelectedFri
+            ? 'bg-slate-200/80 text-slate-700 border border-slate-300'
+            : 'bg-gradient-to-br from-[#EC4899] to-[#DB2777] text-white'
         }`}>
-          <div className="text-[11px] font-medium text-slate-500 flex items-center justify-between">
-            <span>অনুপস্থিত</span>
-            <UserX className={`w-3.5 h-3.5 ${isSelectedFri ? 'text-slate-400' : 'text-rose-600'}`} />
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <div className={`text-[11px] font-medium ${isSelectedFri ? 'text-slate-600' : 'text-white/85'}`}>
+                অনুপস্থিত
+              </div>
+              <div className={`text-xl font-extrabold font-mono mt-1 tabular-nums tracking-tight ${
+                isSelectedFri ? 'text-slate-700' : 'text-white'
+              }`}>
+                {toBengaliNumber(absentCount)} <span className={`text-xs font-sans font-medium ${isSelectedFri ? 'text-slate-500' : 'text-white/80'}`}>জন</span>
+              </div>
+            </div>
+            <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
+              isSelectedFri ? 'bg-slate-300/70 text-slate-600' : 'bg-white/15 border border-white/15 text-white'
+            }`}>
+              <UserX className="w-4 h-4" />
+            </div>
           </div>
-          <div className={`text-xl font-extrabold font-mono mt-1 tabular-nums ${
-            isSelectedFri ? 'text-slate-400' : 'text-rose-700'
-          }`}>
-            {toBengaliNumber(absentCount)} <span className="text-xs font-sans font-medium text-slate-400">জন</span>
-          </div>
-          <div className="text-[10.5px] text-slate-500 mt-0.5">
+          <div className={`text-[10.5px] mt-2 ${isSelectedFri ? 'text-slate-600' : 'text-white/85'}`}>
             {isSelectedFri ? 'সাপ্তাহিক ছুটি' : 'আজ কাজে যোগ দেননি'}
           </div>
         </div>
 
         {/* Leave */}
-        <div className="bg-white p-3.5 rounded-xl border border-slate-200 flex flex-col justify-between">
-          <div className="text-[11px] font-medium text-slate-500 flex items-center justify-between">
-            <span>ছুটিতে</span>
-            <Coffee className="w-3.5 h-3.5 text-slate-500" />
+        <div className="relative overflow-hidden rounded-xl p-4 bg-gradient-to-br from-[#0284C7] to-[#2563EB] text-white shadow-sm flex flex-col justify-between">
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <div className="text-[11px] font-medium text-white/85">ছুটিতে</div>
+              <div className="text-xl font-extrabold font-mono text-white mt-1 tabular-nums tracking-tight">
+                {toBengaliNumber(leaveCount)} <span className="text-xs font-sans font-medium text-white/80">জন</span>
+              </div>
+            </div>
+            <div className="w-9 h-9 rounded-lg bg-white/15 border border-white/15 flex items-center justify-center shrink-0">
+              <Coffee className="w-4 h-4 text-white" />
+            </div>
           </div>
-          <div className="text-xl font-extrabold font-mono text-slate-900 mt-1 tabular-nums">
-            {toBengaliNumber(leaveCount)} <span className="text-xs font-sans font-medium text-slate-400">জন</span>
-          </div>
-          <div className="text-[10.5px] text-slate-500 mt-0.5">
+          <div className="text-[10.5px] text-white/85 mt-2">
             অনুমোদিত ছুটি
           </div>
         </div>
 
         {/* Total OT */}
-        <div className="bg-white p-3.5 rounded-xl border border-slate-200 flex flex-col justify-between">
-          <div className="text-[11px] font-medium text-slate-500 flex items-center justify-between">
-            <span>{isSelectedFri ? 'শুক্রবার ওটি ঘণ্টা' : 'মোট ওটি ঘণ্টা'}</span>
-            <Clock className="w-3.5 h-3.5 text-teal-700" />
+        <div className="relative overflow-hidden rounded-xl p-4 bg-gradient-to-br from-[#06B6D4] to-[#0D9488] text-white shadow-sm flex flex-col justify-between">
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <div className="text-[11px] font-medium text-white/85">
+                {isSelectedFri ? 'শুক্রবার ওটি ঘণ্টা' : 'মোট ওটি ঘণ্টা'}
+              </div>
+              <div className="text-xl font-extrabold font-mono text-white mt-1 tabular-nums tracking-tight">
+                {toBengaliNumber(totalOtHoursToday)} <span className="text-xs font-sans font-medium text-white/80">ঘণ্টা</span>
+              </div>
+            </div>
+            <div className="w-9 h-9 rounded-lg bg-white/15 border border-white/15 flex items-center justify-center shrink-0">
+              <Clock className="w-4 h-4 text-white" />
+            </div>
           </div>
-          <div className="text-xl font-extrabold font-mono text-teal-800 mt-1 tabular-nums">
-            {toBengaliNumber(totalOtHoursToday)} <span className="text-xs font-sans font-medium text-slate-400">ঘণ্টা</span>
-          </div>
-          <div className="text-[10.5px] text-slate-500 mt-0.5 tabular-nums">
+          <div className="text-[10.5px] text-white/85 mt-2 tabular-nums">
             {isSelectedFri ? `ওটি ডিউটি: ${toBengaliNumber(fridayOtWorkersCount)} জন` : 'আজকের অতিরিক্ত কাজ'}
           </div>
         </div>
@@ -1030,9 +1074,9 @@ export const AttendanceHub: React.FC<AttendanceHubProps> = ({
               <button
                 type="button"
                 onClick={() => handleOpenSingleModal()}
-                className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs flex items-center gap-1.5 cursor-pointer transition-colors"
+                className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#1D63DC] to-[#2563EB] hover:from-blue-600 hover:to-blue-700 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer transition-all shadow-xs"
               >
-                <Clock className="w-3.5 h-3.5 text-teal-300" />
+                <Clock className="w-3.5 h-3.5 text-cyan-200" />
                 <span>+ একক কর্মী {isSelectedFri ? 'ওটি এন্ট্রি' : 'হাজিরা ও ওটি এন্ট্রি'}</span>
               </button>
 
@@ -1040,14 +1084,14 @@ export const AttendanceHub: React.FC<AttendanceHubProps> = ({
                 <button
                   type="button"
                   onClick={handleBulkMarkAllPresent}
-                  className="px-3 py-1.5 rounded-lg bg-teal-700 hover:bg-teal-800 text-white font-semibold text-xs flex items-center gap-1.5 cursor-pointer transition-colors"
+                  className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer transition-all shadow-xs"
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   <span>এক ক্লিকে সবাইকে উপস্থিত করুন ({shiftSettings.standardInTime})</span>
                 </button>
               ) : (
-                <div className="px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-slate-800 font-semibold text-xs flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-teal-700" />
+                <div className="px-3 py-1.5 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-900 font-semibold text-xs flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-indigo-600" />
                   <span>শুক্রবার সাপ্তাহিক বন্ধ (হাজিরা নেই, শুধু ওটি প্রযোজ্য)</span>
                 </div>
               )}
@@ -1056,7 +1100,7 @@ export const AttendanceHub: React.FC<AttendanceHubProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowDeleteDayModal(true)}
-                  className="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95 transition"
+                  className="px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95 transition"
                   title="এই দিনের সম্পূর্ণ হাজিরা শিট/রিপোর্ট এক ক্লিকে মুছে ফেলুন"
                 >
                   <Trash2 className="w-3.5 h-3.5 text-rose-500" />

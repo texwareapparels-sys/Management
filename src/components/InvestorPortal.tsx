@@ -662,8 +662,8 @@ export const InvestorPortal: React.FC<InvestorPortalProps> = ({
   /* ================= 1. LOGIN SCREEN (ISOLATED MODE) ================= */
   if (!loggedInInvestor) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 text-white flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-slate-900/90 backdrop-blur-md rounded-3xl border border-amber-400/30 p-6 sm:p-8 shadow-2xl space-y-6 relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-[#08142E] via-[#0F2149] to-[#08142E] text-white flex items-center justify-center p-4">
+        <div className="w-full max-w-md bg-[#0B1736]/95 backdrop-blur-md rounded-3xl border border-amber-400/35 p-6 sm:p-8 shadow-2xl space-y-6 relative overflow-hidden">
           {/* Subtle Golden Glow Accents */}
           <div className="absolute top-0 right-0 w-44 h-44 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-44 h-44 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -793,9 +793,9 @@ export const InvestorPortal: React.FC<InvestorPortalProps> = ({
 
   /* ================= 2. LOGGED-IN INVESTOR DASHBOARD ================= */
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 pb-16">
+    <div className="min-h-screen bg-[#08142E] text-slate-100 pb-16">
       {/* Top Corporate Navigation Bar */}
-      <header className="bg-slate-900/90 border-b border-amber-400/20 backdrop-blur-md sticky top-0 z-40 px-4 py-3 sm:px-8 flex items-center justify-between no-print">
+      <header className="bg-[#08142E]/95 border-b border-amber-400/25 backdrop-blur-md sticky top-0 z-40 px-4 py-3 sm:px-8 flex items-center justify-between no-print">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 font-black flex items-center justify-center shadow-md border border-amber-300">
             <TrendingUp className="w-6 h-6 stroke-[2.5]" />
@@ -830,7 +830,7 @@ export const InvestorPortal: React.FC<InvestorPortalProps> = ({
           <button
             type="button"
             onClick={handleLogout}
-            className="py-1.5 px-3 rounded-xl bg-slate-800 hover:bg-rose-900/60 text-slate-300 hover:text-white border border-slate-700 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer"
+            className="py-1.5 px-3 rounded-xl bg-white/10 hover:bg-rose-600 text-slate-200 hover:text-white border border-white/15 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">লগআউট</span>
@@ -840,8 +840,8 @@ export const InvestorPortal: React.FC<InvestorPortalProps> = ({
 
       {/* Main Container */}
       <main className="max-w-5xl mx-auto p-3 sm:p-6 space-y-6">
-        {/* Investor Profile Hero Card (Golden Luxury Theme) */}
-        <div className="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 rounded-3xl p-5 sm:p-7 border border-amber-400/30 shadow-2xl relative overflow-hidden">
+        {/* Investor Profile Hero Card (Deep Navy & Gold Theme) */}
+        <div className="bg-gradient-to-r from-[#0B1736] via-[#132B63] to-[#0B1736] rounded-3xl p-5 sm:p-7 border border-amber-400/35 shadow-2xl relative overflow-hidden">
           <div className="absolute right-0 top-0 translate-x-12 -translate-y-12 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute left-1/3 bottom-0 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
 
@@ -952,37 +952,37 @@ export const InvestorPortal: React.FC<InvestorPortalProps> = ({
           ))}
         </div>
 
-        {/* 4 Essential Financial Balance Metric Cards */}
+        {/* 4 Essential Vibrant Financial Balance Metric Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {/* Card 1: Total Initial Investment */}
-          <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 shadow-md space-y-1">
-            <span className="text-[11px] font-bold text-slate-400 block uppercase tracking-wider">
+          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#F97316] to-[#EA580C] text-white shadow-md space-y-1">
+            <span className="text-[11px] font-bold text-white/90 block uppercase tracking-wider">
               মোট বিনিয়োগকৃত মূলধন:
             </span>
-            <div className="text-xl sm:text-2xl font-black text-amber-400 font-mono">
+            <div className="text-xl sm:text-2xl font-black text-white font-mono tabular-nums">
               ৳ {formatMoney(loggedInInvestor.amount)}
             </div>
-            <span className="text-[10.5px] text-amber-300/90 block font-medium">
+            <span className="text-[10.5px] text-white/85 block font-medium">
               প্ল্যান: {toBengaliNumber(durationDays)} দিন ({toBengaliNumber(loggedInInvestor.profitRatePercent || 0)}% মুনাফা)
             </span>
           </div>
 
           {/* Card 2: Remaining Capital Balance */}
-          <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 shadow-md space-y-1">
-            <span className="text-[11px] font-bold text-emerald-400 block uppercase tracking-wider">
+          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#059669] to-[#16A34A] text-white shadow-md space-y-1">
+            <span className="text-[11px] font-bold text-white/90 block uppercase tracking-wider">
               বর্তমান মূলধন ব্যালেন্স:
             </span>
-            <div className="text-xl sm:text-2xl font-black text-emerald-300 font-mono">
+            <div className="text-xl sm:text-2xl font-black text-white font-mono tabular-nums">
               ৳ {formatMoney(remainingCapital)}
             </div>
-            <span className="text-[10.5px] text-emerald-400/90 block flex items-center gap-1">
+            <span className="text-[10.5px] text-white/90 block flex items-center gap-1">
               {isTermMatured ? (
-                <span className="text-emerald-300 font-bold flex items-center gap-1">
+                <span className="text-white font-bold flex items-center gap-1">
                   <CheckCircle2 className="w-3 h-3 inline" />
                   <span>মেয়াদ পূর্ণ (উত্তোলনযোগ্য)</span>
                 </span>
               ) : (
-                <span className="text-amber-300/90 font-bold flex items-center gap-1">
+                <span className="text-white/90 font-bold flex items-center gap-1">
                   <Lock className="w-3 h-3 inline" />
                   <span>উত্তোলন লক: আর {toBengaliNumber(daysUntilMaturity)} দিন</span>
                 </span>
@@ -991,27 +991,27 @@ export const InvestorPortal: React.FC<InvestorPortalProps> = ({
           </div>
 
           {/* Card 3: 24-Hour Daily Profit Yield */}
-          <div className="p-4 rounded-2xl bg-blue-950/40 border border-blue-500/30 shadow-md space-y-1">
-            <span className="text-[11px] font-bold text-blue-400 block uppercase tracking-wider">
+          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#0284C7] to-[#2563EB] text-white shadow-md space-y-1">
+            <span className="text-[11px] font-bold text-white/90 block uppercase tracking-wider">
               দৈনিক মুনাফা (২৪ ঘণ্টায় ১ বার):
             </span>
-            <div className="text-xl sm:text-2xl font-black text-blue-300 font-mono">
+            <div className="text-xl sm:text-2xl font-black text-white font-mono tabular-nums">
               ৳ {formatMoney(dailyProfitAmount)}
             </div>
-            <span className="text-[10.5px] text-blue-300/90 block">
+            <span className="text-[10.5px] text-white/85 block">
               ক্লেম করা হয়েছে: {toBengaliNumber(claimedDaysCount)} / {toBengaliNumber(durationDays)} দিন
             </span>
           </div>
 
           {/* Card 4: Total Claimed Profit & Available */}
-          <div className="p-4 rounded-2xl bg-purple-950/40 border border-purple-500/30 shadow-md space-y-1">
-            <span className="text-[11px] font-bold text-purple-400 block uppercase tracking-wider">
+          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#635BFF] to-[#4338CA] text-white shadow-md space-y-1">
+            <span className="text-[11px] font-bold text-white/90 block uppercase tracking-wider">
               ক্লেমকৃত মুনাফা (উত্তোলনযোগ্য):
             </span>
-            <div className="text-xl sm:text-2xl font-black text-purple-300 font-mono">
+            <div className="text-xl sm:text-2xl font-black text-white font-mono tabular-nums">
               ৳ {formatMoney(availableClaimedProfit)}
             </div>
-            <span className="text-[10.5px] text-purple-300/80 block">
+            <span className="text-[10.5px] text-white/85 block">
               মোট ক্লেম: ৳ {formatMoney(loggedInInvestor.totalProfitClaimed || 0)} · উত্তোলন: ৳ {formatMoney(totalWithdrawnAmount)}
             </span>
           </div>

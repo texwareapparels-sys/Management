@@ -683,7 +683,7 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
       <div className="max-w-md mx-auto my-6 p-4">
         <div className="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
           {/* Top Brand Banner */}
-          <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-900 text-white p-6 text-center relative overflow-hidden">
+          <div className="bg-gradient-to-r from-[#08142E] via-[#0F2149] to-[#132B63] text-white p-6 text-center relative overflow-hidden">
             {onBackToApp && (
               <button
                 type="button"
@@ -829,7 +829,7 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
 
             <button
               type="submit"
-              className="w-full py-3 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-black text-xs flex items-center justify-center gap-2 shadow-md cursor-pointer transition active:scale-95"
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-[#1D63DC] to-[#2563EB] hover:from-blue-600 hover:to-blue-700 text-white font-black text-xs flex items-center justify-center gap-2 shadow-md cursor-pointer transition active:scale-95"
             >
               <Lock className="w-3.5 h-3.5" />
               <span>প্রোফাইলে লগইন করুন</span>
@@ -876,7 +876,7 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
   return (
     <div className="space-y-4">
       {/* 1. Worker Profile Header Card */}
-      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 text-white rounded-2xl p-4 sm:p-5 shadow-lg relative overflow-hidden border border-white/10">
+      <div className="bg-gradient-to-r from-[#08142E] via-[#0F2149] to-[#132B63] text-white rounded-2xl p-4 sm:p-5 shadow-md relative overflow-hidden border border-[#162752]">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
           {/* Worker Info */}
           <div className="flex items-center gap-3.5">
@@ -1052,7 +1052,7 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
           onClick={() => setPortalTab('attendance')}
           className={`flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition cursor-pointer active:scale-95 ${
             portalTab === 'attendance'
-              ? 'bg-blue-600 text-white shadow-xs'
+              ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-sm'
               : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
           }`}
         >
@@ -1065,7 +1065,7 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
           onClick={() => setPortalTab('notices')}
           className={`flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition cursor-pointer active:scale-95 relative ${
             portalTab === 'notices'
-              ? 'bg-purple-600 text-white shadow-xs'
+              ? 'bg-gradient-to-r from-[#635BFF] to-[#4338CA] text-white shadow-sm'
               : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
           }`}
         >
@@ -1073,7 +1073,7 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
           <span>নোটিশ বোর্ড</span>
           {myNotices.length > 0 && (
             <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-black ${
-              portalTab === 'notices' ? 'bg-white text-purple-900' : 'bg-purple-100 text-purple-800'
+              portalTab === 'notices' ? 'bg-white text-indigo-900' : 'bg-indigo-100 text-indigo-800'
             }`}>
               {myNotices.length}
             </span>
@@ -1088,7 +1088,7 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
           onClick={() => setPortalTab('salary')}
           className={`flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition cursor-pointer active:scale-95 ${
             portalTab === 'salary'
-              ? 'bg-emerald-600 text-white shadow-xs'
+              ? 'bg-gradient-to-r from-[#059669] to-[#16A34A] text-white shadow-sm'
               : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
           }`}
         >
@@ -1101,7 +1101,7 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
           onClick={() => setPortalTab('profile')}
           className={`flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition cursor-pointer active:scale-95 ${
             portalTab === 'profile'
-              ? 'bg-amber-500 text-slate-950 shadow-xs font-black'
+              ? 'bg-gradient-to-r from-[#F97316] to-[#EA580C] text-white shadow-sm font-black'
               : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
           }`}
         >
@@ -1114,11 +1114,11 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
       {unreadNoticesCount > 0 && portalTab !== 'notices' && (
         <div
           onClick={() => setPortalTab('notices')}
-          className="p-3 bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 text-white rounded-2xl border border-purple-400/40 flex items-center justify-between gap-2 shadow-sm cursor-pointer hover:opacity-95 transition"
+          className="p-3 bg-gradient-to-r from-[#635BFF] via-[#4F46E5] to-[#08142E] text-white rounded-2xl border border-indigo-400/40 flex items-center justify-between gap-2 shadow-sm cursor-pointer hover:opacity-95 transition"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-purple-500/30 border border-purple-400/40 flex items-center justify-center text-purple-200 shrink-0">
-              <Bell className="w-4 h-4 animate-bounce" />
+            <div className="w-8 h-8 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center text-white shrink-0">
+              <Bell className="w-4 h-4" />
             </div>
             <div>
               <p className="text-xs font-black text-purple-200">
@@ -1226,64 +1226,72 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
         </div>
       )}
 
-      {/* 3. Monthly Vital Metric Cards (৫টি প্রধান সূচক) */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+      {/* 3. Monthly Vital Metric Cards (৫টি রঙিন গ্র্যাডিয়েন্ট সূচক) */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         {/* Present Days (Regular Workdays only - Friday excluded) */}
-        <div className="bg-white p-3 rounded-2xl border border-slate-200 shadow-xs">
-          <div className="flex items-center justify-between text-xs text-slate-500 font-semibold">
+        <div className="bg-gradient-to-br from-[#059669] to-[#16A34A] text-white p-4 rounded-xl shadow-sm flex flex-col justify-between">
+          <div className="flex items-center justify-between text-xs text-white/90 font-semibold">
             <span>নিয়মিত উপস্থিতি</span>
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+              <CheckCircle2 className="w-4 h-4 text-white" />
+            </div>
           </div>
-          <div className="text-2xl font-black text-slate-900 mt-1 flex items-baseline gap-1">
+          <div className="text-2xl font-black text-white mt-1.5 flex items-baseline gap-1 font-mono tabular-nums">
             <span>{toBengaliNumber(stats.presentCount)}</span>
-            <span className="text-xs font-normal text-slate-500">দিন</span>
+            <span className="text-xs font-sans font-normal text-white/80">দিন</span>
           </div>
-          <div className="text-[10px] text-emerald-700 font-bold mt-0.5 truncate">
+          <div className="text-[10px] text-white/85 font-bold mt-1 truncate">
             শুক্রবার বাদে নিয়মিত কর্মদিবস ({toBengaliNumber(stats.attendanceRate)}%)
           </div>
         </div>
 
         {/* Missed / Absent Days */}
-        <div className="bg-white p-3 rounded-2xl border border-rose-200 shadow-xs bg-rose-50/20">
-          <div className="flex items-center justify-between text-xs text-rose-700 font-semibold">
+        <div className="bg-gradient-to-br from-[#EC4899] to-[#DB2777] text-white p-4 rounded-xl shadow-sm flex flex-col justify-between">
+          <div className="flex items-center justify-between text-xs text-white/90 font-semibold">
             <span>অনুপস্থিত / মিস দিন</span>
-            <XCircle className="w-4 h-4 text-rose-600" />
+            <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+              <XCircle className="w-4 h-4 text-white" />
+            </div>
           </div>
-          <div className="text-2xl font-black text-rose-700 mt-1 flex items-baseline gap-1">
+          <div className="text-2xl font-black text-white mt-1.5 flex items-baseline gap-1 font-mono tabular-nums">
             <span>{toBengaliNumber(stats.absentCount)}</span>
-            <span className="text-xs font-normal text-slate-500">দিন</span>
+            <span className="text-xs font-sans font-normal text-white/80">দিন</span>
           </div>
-          <div className="text-[10px] text-slate-500 mt-0.5 truncate">
+          <div className="text-[10px] text-white/85 mt-1 truncate">
             {stats.lateCount > 0 ? `লেট: ${toBengaliNumber(stats.lateCount)} দিন` : 'শুক্রবার ছুটি ধরা হয়নি'}
           </div>
         </div>
 
         {/* Total Overtime (OT) Hours */}
-        <div className="bg-white p-3 rounded-2xl border border-indigo-200 shadow-xs bg-indigo-50/20">
-          <div className="flex items-center justify-between text-xs text-indigo-700 font-semibold">
+        <div className="bg-gradient-to-br from-[#635BFF] to-[#4338CA] text-white p-4 rounded-xl shadow-sm flex flex-col justify-between">
+          <div className="flex items-center justify-between text-xs text-white/90 font-semibold">
             <span>সর্বমোট ওটি (OT)</span>
-            <Clock className="w-4 h-4 text-indigo-600" />
+            <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+              <Clock className="w-4 h-4 text-white" />
+            </div>
           </div>
-          <div className="text-2xl font-black text-indigo-900 mt-1 flex items-baseline gap-1">
+          <div className="text-2xl font-black text-white mt-1.5 flex items-baseline gap-1 font-mono tabular-nums">
             <span>{toBengaliNumber(stats.totalOtHours)}</span>
-            <span className="text-xs font-normal text-slate-500">ঘণ্টা</span>
+            <span className="text-xs font-sans font-normal text-white/80">ঘণ্টা</span>
           </div>
-          <div className="text-[10px] text-indigo-600 font-bold mt-0.5 truncate">
+          <div className="text-[10px] text-white/85 font-bold mt-1 truncate">
             নিয়মিত: {toBengaliNumber(stats.regularOtHours || 0)}ঘ. + শুক্র: {toBengaliNumber(stats.fridayOtHours || 0)}ঘ.
           </div>
         </div>
 
         {/* Friday Special OT Card */}
-        <div className="bg-white p-3 rounded-2xl border border-amber-200 shadow-xs bg-amber-50/30">
-          <div className="flex items-center justify-between text-xs text-amber-800 font-semibold">
+        <div className="bg-gradient-to-br from-[#F97316] to-[#EA580C] text-white p-4 rounded-xl shadow-sm flex flex-col justify-between">
+          <div className="flex items-center justify-between text-xs text-white/90 font-semibold">
             <span>শুক্রবার বিশেষ ওটি</span>
-            <Sparkles className="w-4 h-4 text-amber-600" />
+            <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-white" />
+            </div>
           </div>
-          <div className="text-2xl font-black text-amber-900 mt-1 flex items-baseline gap-1">
+          <div className="text-2xl font-black text-white mt-1.5 flex items-baseline gap-1 font-mono tabular-nums">
             <span>{toBengaliNumber(stats.fridayOtHours || 0)}</span>
-            <span className="text-xs font-normal text-slate-500">ঘণ্টা</span>
+            <span className="text-xs font-sans font-normal text-white/80">ঘণ্টা</span>
           </div>
-          <div className="text-[10px] text-amber-700 font-bold mt-0.5 truncate">
+          <div className="text-[10px] text-white/85 font-bold mt-1 truncate">
             {(stats.fridayDutiesCount ?? 0) > 0
               ? `ডিউটি: ${toBengaliNumber(stats.fridayDutiesCount || 0)} দিন (হাজিরা ০, শুধু ওটি)`
               : 'কোনো শুক্রবারে ওটি নেই'}
@@ -1291,23 +1299,25 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
         </div>
 
         {/* Estimated / Final Salary */}
-        <div className="bg-white p-3 rounded-2xl border border-emerald-200 shadow-xs bg-emerald-50/20 col-span-2 sm:col-span-1">
-          <div className="flex items-center justify-between text-xs text-slate-500 font-semibold">
+        <div className="bg-gradient-to-br from-[#0284C7] to-[#2563EB] text-white p-4 rounded-xl shadow-sm flex flex-col justify-between col-span-2 sm:col-span-1">
+          <div className="flex items-center justify-between text-xs text-white/90 font-semibold">
             <span>প্রদেয় মোট বেতন</span>
-            <DollarSign className="w-4 h-4 text-emerald-600" />
+            <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+              <DollarSign className="w-4 h-4 text-white" />
+            </div>
           </div>
-          <div className="text-2xl font-black text-emerald-800 mt-1 flex items-baseline gap-1">
+          <div className="text-2xl font-black text-white mt-1.5 flex items-baseline gap-1 font-mono tabular-nums">
             <span>
               ৳ {formatMoney(currentMonthSalary?.netPayable ?? estimatedPayable)}
             </span>
           </div>
-          <div className="text-[10px] font-bold mt-0.5">
+          <div className="text-[10px] font-bold mt-1 text-white/90">
             {currentMonthSalary ? (
-              <span className={currentMonthSalary.paymentStatus === 'paid' ? 'text-emerald-700' : 'text-amber-700'}>
-                {currentMonthSalary.paymentStatus === 'paid' ? 'পরিশোধিত (Paid)' : 'বকেয়া / চূড়ান্তকৃত'}
+              <span>
+                {currentMonthSalary.paymentStatus === 'paid' ? '✓ পরিশোধিত (Paid)' : 'বকেয়া / চূড়ান্তকৃত'}
               </span>
             ) : (
-              <span className="text-blue-700">চলতি সম্ভাব্য হিসাব</span>
+              <span>চলতি সম্ভাব্য হিসাব</span>
             )}
           </div>
         </div>

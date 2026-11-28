@@ -20,6 +20,7 @@ import {
   ShieldCheck,
   X,
   ChevronRight,
+  Activity,
 } from 'lucide-react';
 import { AppMode } from './Header';
 import { toBengaliNumber } from '../lib/utils';
@@ -64,10 +65,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
     {
       heading: 'মূল কর্মক্ষেত্র',
       items: [
-        { tab: 'dashboard', label: 'সমন্বিত ড্যাশবোর্ড', icon: LayoutDashboard },
+        { tab: 'dashboard', label: 'ড্যাশবোর্ড', icon: LayoutDashboard },
         { tab: 'user', label: 'বেতন ক্যালকুলেটর', icon: Calculator },
-        { tab: 'admin', label: 'কর্মী তালিকা ও স্ট্যাটাস', icon: Users, badge: activeWorkersCount },
-        { tab: 'attendance', label: 'দৈনিক হাজিরা ও টাইম', icon: Clock },
+        { tab: 'admin', label: 'কর্মী তালিকা', icon: Users, badge: activeWorkersCount },
+        { tab: 'attendance', label: 'দৈনিক হাজিরা', icon: Clock },
         { tab: 'salaries', label: 'মাসিক বেতন খাতা', icon: Receipt },
         {
           tab: 'applications',
@@ -90,11 +91,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
     {
       heading: 'সেটিংস ও অটোমেশন',
       items: [
-        { tab: 'form', label: 'নতুন কর্মী নিবন্ধন', icon: UserPlus },
+        { tab: 'form', label: 'নতুন কর্মী যোগ', icon: UserPlus },
         { tab: 'details', label: 'প্রোফাইল ও প্রিন্ট', icon: IdCard },
         { tab: 'telegram', label: 'Telegram Bot', icon: Send },
-        { tab: 'sms', label: 'Auto SMS গেটওয়ে', icon: MessageSquare },
-        { tab: 'factory', label: 'কারখানা ও চুক্তি তথ্য', icon: Building2 },
+        { tab: 'sms', label: 'Auto SMS', icon: MessageSquare },
+        { tab: 'factory', label: 'কারখানা ও চুক্তি', icon: Building2 },
         { tab: 'password', label: 'পাসওয়ার্ড ও নিরাপত্তা', icon: KeyRound },
       ],
     },
@@ -110,9 +111,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const renderNavContent = () => (
-    <div className="flex flex-col h-full bg-slate-950 text-slate-300 select-none">
-      {/* Brand Header */}
-      <div className="h-14 px-4 border-b border-slate-800/80 flex items-center justify-between shrink-0">
+    <div className="flex flex-col h-full bg-[#08142E] text-slate-300 select-none">
+      {/* Brand Header matching Navy ERP Frame */}
+      <div className="h-14 px-4 border-b border-[#162752] flex items-center justify-between shrink-0">
         <button
           type="button"
           onClick={() => {
@@ -121,15 +122,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
           }}
           className="flex items-center gap-2.5 min-w-0 text-left cursor-pointer group"
         >
-          <div className="w-8 h-8 rounded-lg bg-white p-0.5 flex items-center justify-center shrink-0 overflow-hidden ring-1 ring-white/15">
-            <img src="/logo.png" alt="টেক্স ওয়ার অ্যাপারেলস" className="w-full h-full object-contain" />
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 p-1 flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
+            <img src="/logo.png" alt="টেক্স ওয়ার অ্যাপারেলস" className="w-full h-full object-contain rounded-md bg-white/95" />
           </div>
           <div className="min-w-0">
-            <div className="text-[13px] font-bold text-white tracking-tight truncate group-hover:text-teal-300 transition-colors">
+            <div className="text-[13.5px] font-bold text-white tracking-tight truncate group-hover:text-amber-300 transition-colors">
               টেক্স ওয়ার অ্যাপারেলস
             </div>
             <div className="text-[10px] font-medium text-slate-400 tracking-wide truncate">
-              Enterprise HR &amp; Payroll
+              Smart Garments HR &amp; Payroll
             </div>
           </div>
         </button>
@@ -138,7 +139,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           type="button"
           onClick={onCloseMobile}
           aria-label="সাইডবার বন্ধ করুন"
-          className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer transition-colors"
+          className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-[#132550] cursor-pointer transition-colors"
         >
           <X className="w-4 h-4" />
         </button>
@@ -161,34 +162,41 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     type="button"
                     id={item.id}
                     onClick={() => handleSelect(item)}
-                    className={`w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg text-[12px] font-medium transition-colors duration-150 cursor-pointer text-left ${
+                    className={`w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-[12.5px] font-medium transition-all duration-150 cursor-pointer text-left ${
                       isActive
-                        ? 'bg-teal-500/15 text-white border border-teal-500/30 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent'
+                        ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white font-semibold shadow-sm'
+                        : 'text-slate-300 hover:text-white hover:bg-[#10204A]'
                     }`}
                   >
                     <span className="flex items-center gap-2.5 min-w-0">
                       <Icon
-                        className={`w-3.5 h-3.5 shrink-0 transition-colors ${
-                          isActive ? 'text-teal-400' : 'text-slate-400'
+                        className={`w-4 h-4 shrink-0 transition-colors ${
+                          isActive ? 'text-white' : 'text-slate-400'
                         }`}
                       />
                       <span className="truncate whitespace-nowrap">{item.label}</span>
                     </span>
 
-                    {typeof item.badge === 'number' && (
-                      <span
-                        className={`text-[10.5px] font-mono font-semibold tabular-nums shrink-0 ${
-                          item.tab === 'applications' && item.badge > 0
-                            ? 'text-amber-400'
-                            : isActive
-                            ? 'text-teal-300'
-                            : 'text-slate-500'
+                    <span className="flex items-center gap-1 shrink-0">
+                      {typeof item.badge === 'number' && (
+                        <span
+                          className={`text-[10.5px] font-mono font-bold tabular-nums ${
+                            item.tab === 'applications' && item.badge > 0
+                              ? 'text-amber-300'
+                              : isActive
+                              ? 'text-blue-100'
+                              : 'text-slate-400'
+                          }`}
+                        >
+                          {toBengaliNumber(item.badge)}
+                        </span>
+                      )}
+                      <ChevronRight
+                        className={`w-3.5 h-3.5 ${
+                          isActive ? 'text-white/90' : 'text-slate-600'
                         }`}
-                      >
-                        {toBengaliNumber(item.badge)}
-                      </span>
-                    )}
+                      />
+                    </span>
                   </button>
                 );
               })}
@@ -197,8 +205,28 @@ export const Sidebar: React.FC<SidebarProps> = ({
         ))}
       </nav>
 
-      {/* Bottom Compact Admin Access Footer */}
-      <div className="p-3 border-t border-slate-800/80 shrink-0">
+      {/* Bottom Live Factory Card + Direct Admin Access */}
+      <div className="p-3 border-t border-[#162752] space-y-2.5 shrink-0">
+        <div className="rounded-xl bg-[#0D1E46] border border-[#1E356B] p-2.5 space-y-1.5">
+          <div className="flex items-center justify-between text-[11px] font-bold text-amber-400">
+            <span className="flex items-center gap-1.5">
+              <Activity className="w-3.5 h-3.5" />
+              <span>কারখানা সারসংক্ষেপ</span>
+            </span>
+            <span className="text-[10px] font-mono text-emerald-400">লাইভ</span>
+          </div>
+          <div className="flex items-center justify-between text-[11px] text-slate-300 tabular-nums">
+            <span>সক্রিয় কর্মী</span>
+            <span className="font-mono font-bold text-white">{toBengaliNumber(activeWorkersCount)} জন</span>
+          </div>
+          <div className="flex items-center justify-between text-[11px] text-slate-300 tabular-nums">
+            <span>পেন্ডিং আবেদন</span>
+            <span className={`font-mono font-bold ${pendingApplicationsCount > 0 ? 'text-amber-300' : 'text-emerald-400'}`}>
+              {toBengaliNumber(pendingApplicationsCount)} টি
+            </span>
+          </div>
+        </div>
+
         <button
           type="button"
           onClick={() => {
@@ -207,15 +235,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
           }}
           className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-[12px] font-semibold transition-colors duration-150 cursor-pointer ${
             isAdminSessionActive
-              ? 'bg-slate-900 hover:bg-slate-800 text-teal-300 border border-slate-700/80'
-              : 'bg-teal-700 hover:bg-teal-600 text-white border border-teal-600'
+              ? 'bg-[#10204A] hover:bg-[#162C63] text-sky-300 border border-[#233B78]'
+              : 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] hover:from-[#1A58C7] hover:to-[#1D4ED8] text-white'
           }`}
         >
           <span className="flex items-center gap-2 whitespace-nowrap">
-            <ShieldCheck className={`w-4 h-4 shrink-0 ${isAdminSessionActive ? 'text-teal-400' : 'text-teal-100'}`} />
+            <ShieldCheck className="w-4 h-4 shrink-0 text-amber-300" />
             <span>{isAdminSessionActive ? 'অ্যাডমিন প্যানেল সক্রিয়' : 'অ্যাডমিন লগইন'}</span>
           </span>
-          <ChevronRight className="w-3.5 h-3.5 opacity-75 shrink-0" />
+          <ChevronRight className="w-3.5 h-3.5 opacity-80 shrink-0" />
         </button>
       </div>
     </div>
@@ -224,7 +252,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <>
       {/* Desktop Persistent Sidebar */}
-      <aside className="hidden lg:flex w-62 shrink-0 flex-col bg-slate-950 border-r border-slate-800 sticky top-0 h-screen no-print">
+      <aside className="hidden lg:flex w-64 shrink-0 flex-col bg-[#08142E] border-r border-[#162752] sticky top-0 h-screen no-print">
         {renderNavContent()}
       </aside>
 
@@ -232,10 +260,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden flex no-print">
           <div
-            className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs"
+            className="fixed inset-0 bg-slate-950/65 backdrop-blur-xs"
             onClick={onCloseMobile}
           />
-          <aside className="relative w-68 max-w-[85vw] bg-slate-950 h-full border-r border-slate-800 shadow-2xl z-10 flex flex-col">
+          <aside className="relative w-68 max-w-[85vw] bg-[#08142E] h-full border-r border-[#162752] shadow-2xl z-10 flex flex-col">
             {renderNavContent()}
           </aside>
         </div>
