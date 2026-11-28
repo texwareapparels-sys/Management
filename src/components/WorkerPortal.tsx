@@ -109,6 +109,37 @@ export const getWorkerAllowedMonths = (_year?: number): string[] => {
 
 export const WORKER_ALLOWED_YEARS = getDynamicYears();
 
+const WorkerKpiSparkline: React.FC<{ values: number[]; id: string }> = ({ values, id }) => {
+  const safeValues = values.length >= 2 ? values : [8, 12, 10, 15, 13, 18, 16];
+  const min = Math.min(...safeValues);
+  const max = Math.max(...safeValues);
+  const range = max - min || 1;
+  const w = 130;
+  const h = 24;
+  const pts = safeValues.map((v, idx) => ({
+    x: (idx / (safeValues.length - 1)) * w,
+    y: h - 3 - ((v - min) / range) * (h - 6),
+  }));
+  let linePath = `M ${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const cx = (pts[i].x + pts[i + 1].x) / 2;
+    linePath += ` C ${cx.toFixed(1)} ${pts[i].y.toFixed(1)}, ${cx.toFixed(1)} ${pts[i + 1].y.toFixed(1)}, ${pts[i + 1].x.toFixed(1)} ${pts[i + 1].y.toFixed(1)}`;
+  }
+  const areaPath = `${linePath} L ${w} ${h} L 0 ${h} Z`;
+  return (
+    <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-6 overflow-visible mt-1.5" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id={`wk-spark-${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.36" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0.02" />
+        </linearGradient>
+      </defs>
+      <path d={areaPath} fill={`url(#wk-spark-${id})`} />
+      <path d={linePath} fill="none" stroke="#ffffff" strokeWidth="1.75" strokeLinecap="round" strokeOpacity="0.92" />
+    </svg>
+  );
+};
+
 export const WorkerPortal: React.FC<WorkerPortalProps> = ({
   employees,
   initialWorkerId = '',
@@ -875,14 +906,17 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
 
   return (
     <div className="space-y-4">
-      {/* 1. Worker Profile Header Card */}
-      <div className="bg-gradient-to-r from-[#08142E] via-[#0F2149] to-[#132B63] text-white rounded-2xl p-4 sm:p-5 shadow-md relative overflow-hidden border border-[#162752]">
+      {/* 1. Worker Profile Executive Hero Card */}
+      <div className="bg-gradient-to-r from-[#08142E] via-[#0F2149] to-[#132B63] text-white rounded-2xl p-4 sm:p-5 shadow-md relative overflow-hidden border border-[#1E3A8A]/40">
+        <div className="absolute -right-10 -top-10 w-44 h-44 bg-blue-500/15 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute left-1/3 -bottom-12 w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
+
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
           {/* Worker Info */}
           <div className="flex items-center gap-3.5">
             <div
               onClick={() => setShowPhotoModal(true)}
-              className="w-16 h-20 sm:w-20 sm:h-24 rounded-2xl bg-slate-800 border-2 border-blue-400/40 overflow-hidden shrink-0 flex items-center justify-center shadow-inner relative group cursor-pointer hover:border-amber-400 transition"
+              className="w-16 h-20 sm:w-20 sm:h-24 rounded-2xl bg-slate-800/90 border-2 border-blue-400/50 overflow-hidden shrink-0 flex items-center justify-center shadow-lg relative group cursor-pointer hover:border-amber-400 transition"
               title="ছবি বড় করে ও পূর্ণাঙ্গ পরিচয়পত্র দেখতে চাপুন"
             >
               {loggedInWorker.photoUrl ? (
@@ -894,44 +928,43 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
               ) : (
                 <User className="w-8 h-8 text-blue-300" />
               )}
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition text-white">
+              <div className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 flex items-center justify-center transition text-white">
                 <Maximize2 className="w-4 h-4 text-white" />
               </div>
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-lg sm:text-xl font-black text-white">{loggedInWorker.name}</h2>
-                <span className="font-mono font-black text-xs px-2.5 py-0.5 rounded-full bg-blue-500/30 text-blue-200 border border-blue-400/30">
+                <h2 className="text-lg sm:text-xl font-black text-white tracking-tight">{loggedInWorker.name}</h2>
+                <span className="font-mono font-black text-xs px-2.5 py-0.5 rounded-lg bg-[#1D63DC]/50 text-blue-100 border border-blue-400/40">
                   {loggedInWorker.workerId}
                 </span>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${statusInfo.bg}`}>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg border ${statusInfo.bg}`}>
                   {statusInfo.label}
                 </span>
               </div>
-              <p className="text-xs text-slate-300 mt-1 flex items-center gap-2 flex-wrap">
-                <span>পদ: <b>{loggedInWorker.designation}</b></span>
-                <span>•</span>
-                <span>সেকশন: <b>{loggedInWorker.department || 'সুইং'}</b></span>
+              <p className="text-xs text-slate-200 mt-1.5 flex items-center gap-2 flex-wrap">
+                <span>পদবী: <b className="text-white">{loggedInWorker.designation}</b></span>
+                <span className="text-blue-400">·</span>
+                <span>সেকশন: <b className="text-cyan-200">{loggedInWorker.department || 'সুইং'}</b></span>
                 {loggedInWorker.joinDate && (
                   <>
-                    <span>•</span>
-                    <span>যোগদান: <b>{formatDateBn(loggedInWorker.joinDate)}</b></span>
+                    <span className="text-blue-400">·</span>
+                    <span>যোগদান: <b className="text-emerald-200">{formatDateBn(loggedInWorker.joinDate)}</b></span>
                   </>
                 )}
               </p>
-              <div className="flex items-center gap-2 mt-1 text-[11px] text-slate-300">
-                <span className="flex items-center gap-1 font-mono">
-                  <Phone className="w-3 h-3 text-slate-400" />
+              <div className="flex items-center gap-2.5 mt-1.5 text-[11px] text-slate-300 flex-wrap">
+                <span className="flex items-center gap-1 font-mono bg-white/10 px-2 py-0.5 rounded-md border border-white/10">
+                  <Phone className="w-3 h-3 text-emerald-300" />
                   {loggedInWorker.mobile || '—'}
                 </span>
-                <span>•</span>
                 <button
                   type="button"
                   onClick={() => setPortalTab('profile')}
-                  className="text-amber-300 hover:text-amber-200 font-semibold underline decoration-dotted cursor-pointer flex items-center gap-1"
+                  className="text-amber-300 hover:text-amber-200 font-bold cursor-pointer flex items-center gap-1 transition"
                 >
                   <User className="w-3 h-3" />
-                  <span>একনজরে পূর্ণাঙ্গ প্রোফাইল তথ্য (রিড-অনলি)</span>
+                  <span>একনজরে পূর্ণাঙ্গ প্রোফাইল তথ্য</span>
                 </button>
               </div>
             </div>
@@ -943,7 +976,7 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
             <button
               type="button"
               onClick={() => setShowPhotoModal(true)}
-              className="px-3 py-1.5 rounded-xl bg-blue-600/80 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs transition active:scale-95 cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#1D63DC] to-[#2563EB] hover:from-blue-500 hover:to-blue-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
               title="শ্রমিকের ছবি বড় করে ও পূর্ণাঙ্গ পরিচয়পত্র দেখুন"
             >
               <IdCard className="w-3.5 h-3.5" />
@@ -954,17 +987,17 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
             <button
               type="button"
               onClick={() => setPortalTab(portalTab === 'notices' ? 'attendance' : 'notices')}
-              className={`px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 shadow-xs transition active:scale-95 cursor-pointer relative ${
+              className={`px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer whitespace-nowrap shrink-0 ${
                 portalTab === 'notices'
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-purple-500/25 hover:bg-purple-500/40 text-purple-200 border border-purple-400/30'
+                  ? 'bg-gradient-to-r from-[#635BFF] to-[#4338CA] text-white'
+                  : 'bg-white/10 hover:bg-white/20 text-indigo-100 border border-indigo-300/30'
               }`}
               title="নোটিশ বোর্ড দেখুন"
             >
               <Bell className="w-3.5 h-3.5" />
               <span>নোটিশ বোর্ড</span>
               {myNotices.length > 0 && (
-                <span className="px-1.5 py-0.2 rounded-full text-[10px] font-black bg-amber-400 text-slate-950 ml-0.5">
+                <span className="px-1.5 py-0.2 rounded-md text-[10px] font-black bg-amber-400 text-slate-950 ml-0.5 tabular-nums">
                   {myNotices.length}
                 </span>
               )}
@@ -974,10 +1007,10 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
             <button
               type="button"
               onClick={() => setPortalTab(portalTab === 'salary' ? 'attendance' : 'salary')}
-              className={`px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 shadow-xs transition active:scale-95 cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer whitespace-nowrap shrink-0 ${
                 portalTab === 'salary'
-                  ? 'bg-emerald-600 text-white'
-                  : 'bg-emerald-500/25 hover:bg-emerald-500/40 text-emerald-200 border border-emerald-400/30'
+                  ? 'bg-gradient-to-r from-[#059669] to-[#16A34A] text-white'
+                  : 'bg-white/10 hover:bg-white/20 text-emerald-100 border border-emerald-300/30'
               }`}
               title="বেতনের বর্তমান অবস্থান ও ইতিহাস দেখুন"
             >
@@ -989,10 +1022,10 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
             <button
               type="button"
               onClick={() => setPortalTab(portalTab === 'profile' ? 'attendance' : 'profile')}
-              className={`px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 shadow-xs transition active:scale-95 cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer whitespace-nowrap shrink-0 ${
                 portalTab === 'profile'
-                  ? 'bg-amber-400 text-slate-950 font-black'
-                  : 'bg-amber-500/25 hover:bg-amber-500/40 text-amber-200 border border-amber-400/30'
+                  ? 'bg-gradient-to-r from-[#F97316] to-[#EA580C] text-white font-black'
+                  : 'bg-white/10 hover:bg-white/20 text-amber-100 border border-amber-300/30'
               }`}
               title="আপনার সকল ব্যক্তিগত ও কর্মসংস্থান তথ্য একনজরে দেখুন"
             >
@@ -1004,18 +1037,18 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
             <button
               type="button"
               onClick={() => setShowInstallModal(true)}
-              className="px-3 py-1.5 rounded-xl bg-emerald-500/25 hover:bg-emerald-500/40 text-emerald-100 border border-emerald-400/35 font-bold text-xs flex items-center gap-1.5 transition active:scale-95 cursor-pointer shadow-xs"
+              className="px-3 py-1.5 rounded-xl bg-emerald-500/25 hover:bg-emerald-500/40 text-emerald-100 border border-emerald-400/35 font-bold text-xs flex items-center gap-1.5 transition active:scale-95 cursor-pointer shadow-xs whitespace-nowrap shrink-0"
               title="শ্রমিক অ্যাপটি ফোনে ইনস্টল বা ডাউনলোড করার নিয়ম"
             >
-              <img src="/logo.png" alt="Logo" className="w-4 h-4 object-contain rounded-full bg-white p-0.5" />
-              <span>📱 শ্রমিক অ্যাপ ডাউনলোড</span>
+              <Download className="w-3.5 h-3.5 text-amber-300" />
+              <span>অ্যাপ ইনস্টল</span>
             </button>
 
             {onBackToApp && (
               <button
                 type="button"
                 onClick={onBackToApp}
-                className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center gap-1.5 transition active:scale-95 cursor-pointer"
+                className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center gap-1.5 transition active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
                 title="আগের পেজে ফিরে যান"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
@@ -1026,7 +1059,7 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
             <button
               type="button"
               onClick={handleLogout}
-              className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-rose-600 text-slate-200 hover:text-white font-bold text-xs flex items-center gap-1.5 transition active:scale-95 cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-600 text-rose-100 hover:text-white border border-rose-400/30 font-bold text-xs flex items-center gap-1.5 transition active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>লগআউট</span>
@@ -1035,9 +1068,9 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
         </div>
 
         {/* Read-Only Notice Bar */}
-        <div className="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between gap-2 text-[11px] text-slate-300">
+        <div className="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between gap-2 text-[11px] text-slate-300 relative z-10">
           <div className="flex items-center gap-1.5">
-            <Info className="w-3.5 h-3.5 text-blue-300 shrink-0" />
+            <Info className="w-3.5 h-3.5 text-cyan-300 shrink-0" />
             <span>
               আপনার প্রোফাইলের সকল তথ্য, হাজিরা ও ওটি কারখানা সার্ভার থেকে সরাসরি প্রদর্শিত হচ্ছে। কোনো গরমিল থাকলে এইচআর অ্যাডমিনকে জানান।
             </span>
@@ -1045,67 +1078,69 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
         </div>
       </div>
 
-      {/* 1.1 Worker Portal Navigation Tabs Bar */}
-      <div className="flex items-center gap-2 p-1.5 bg-white rounded-2xl border border-slate-200 shadow-xs flex-wrap">
+      {/* 1.1 Worker Portal Segmented Dashboard Tabs Bar */}
+      <div className="flex items-center gap-1.5 p-1.5 bg-[#08142E] rounded-2xl border border-[#1E3A8A]/40 shadow-sm flex-wrap">
         <button
           type="button"
           onClick={() => setPortalTab('attendance')}
-          className={`flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition cursor-pointer active:scale-95 ${
+          className={`flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition cursor-pointer active:scale-95 whitespace-nowrap shrink-0 ${
             portalTab === 'attendance'
               ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-sm'
-              : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+              : 'text-slate-300 hover:bg-white/10 hover:text-white'
           }`}
         >
-          <Clock className="w-4 h-4" />
-          <span>হাজিরা ও ওটি বিশ্লেষণ</span>
+          <Clock className={`w-4 h-4 ${portalTab === 'attendance' ? 'text-white' : 'text-sky-400'}`} />
+          <span>ড্যাশবোর্ড ও হাজিরা</span>
         </button>
 
         <button
           type="button"
           onClick={() => setPortalTab('notices')}
-          className={`flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition cursor-pointer active:scale-95 relative ${
+          className={`flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition cursor-pointer active:scale-95 whitespace-nowrap shrink-0 ${
             portalTab === 'notices'
               ? 'bg-gradient-to-r from-[#635BFF] to-[#4338CA] text-white shadow-sm'
-              : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+              : 'text-slate-300 hover:bg-white/10 hover:text-white'
           }`}
         >
-          <Bell className="w-4 h-4" />
+          <Bell className={`w-4 h-4 ${portalTab === 'notices' ? 'text-white' : 'text-indigo-300'}`} />
           <span>নোটিশ বোর্ড</span>
           {myNotices.length > 0 && (
-            <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-black ${
-              portalTab === 'notices' ? 'bg-white text-indigo-900' : 'bg-indigo-100 text-indigo-800'
+            <span className={`px-1.5 py-0.2 rounded-md text-[10px] font-black tabular-nums ${
+              portalTab === 'notices' ? 'bg-white text-indigo-900' : 'bg-indigo-500/30 text-indigo-100'
             }`}>
-              {myNotices.length}
+              {toBengaliNumber(myNotices.length)}
             </span>
           )}
           {unreadNoticesCount > 0 && (
-            <span className="w-2 h-2 rounded-full bg-rose-500 ml-1" />
+            <span className="px-1.5 py-0.2 rounded-md bg-rose-500 text-white text-[10px] font-black tabular-nums">
+              {toBengaliNumber(unreadNoticesCount)} নতুন
+            </span>
           )}
         </button>
 
         <button
           type="button"
           onClick={() => setPortalTab('salary')}
-          className={`flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition cursor-pointer active:scale-95 ${
+          className={`flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition cursor-pointer active:scale-95 whitespace-nowrap shrink-0 ${
             portalTab === 'salary'
               ? 'bg-gradient-to-r from-[#059669] to-[#16A34A] text-white shadow-sm'
-              : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+              : 'text-slate-300 hover:bg-white/10 hover:text-white'
           }`}
         >
-          <DollarSign className="w-4 h-4" />
+          <DollarSign className={`w-4 h-4 ${portalTab === 'salary' ? 'text-white' : 'text-emerald-400'}`} />
           <span>বেতনের অবস্থান ও হিস্ট্রি</span>
         </button>
 
         <button
           type="button"
           onClick={() => setPortalTab('profile')}
-          className={`flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition cursor-pointer active:scale-95 ${
+          className={`flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition cursor-pointer active:scale-95 whitespace-nowrap shrink-0 ${
             portalTab === 'profile'
-              ? 'bg-gradient-to-r from-[#F97316] to-[#EA580C] text-white shadow-sm font-black'
-              : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+              ? 'bg-gradient-to-r from-[#F97316] to-[#EA580C] text-white shadow-sm'
+              : 'text-slate-300 hover:bg-white/10 hover:text-white'
           }`}
         >
-          <User className="w-4 h-4" />
+          <User className={`w-4 h-4 ${portalTab === 'profile' ? 'text-white' : 'text-amber-400'}`} />
           <span>আমার প্রোফাইল তথ্য</span>
         </button>
       </div>
@@ -1121,15 +1156,15 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
               <Bell className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-xs font-black text-purple-200">
+              <p className="text-xs font-black text-indigo-100">
                 নোটিশ বোর্ড: আপনার জন্য {toBengaliNumber(unreadNoticesCount)}টি নতুন নোটিশ রয়েছে!
               </p>
-              <p className="text-[11px] text-slate-300">
-                {myNotices[0]?.title} • বিস্তারিত দেখতে এখানে চাপুন
+              <p className="text-[11px] text-slate-200">
+                {myNotices[0]?.title} · বিস্তারিত দেখতে এখানে চাপুন
               </p>
             </div>
           </div>
-          <span className="px-2.5 py-1 rounded-lg bg-purple-500 text-white font-bold text-xs shrink-0">
+          <span className="px-3 py-1 rounded-lg bg-white text-indigo-900 font-black text-xs shrink-0">
             দেখুন →
           </span>
         </div>
@@ -1140,42 +1175,42 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
         <div className="space-y-4">
           {/* Today's Live Attendance Status Glance */}
           {todayWorkerRecord ? (
-            <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 text-white rounded-2xl p-4 shadow-sm border border-emerald-400/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="bg-gradient-to-r from-[#059669] via-[#0D9488] to-[#08142E] text-white rounded-2xl p-4 shadow-sm border border-emerald-400/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-300 shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-white/15 border border-white/25 flex items-center justify-center text-white shrink-0">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-xs font-black text-white">আজকের উপস্থিতি রেকর্ড</span>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/30 text-emerald-200 border border-emerald-400/40">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white/20 text-white border border-white/25">
                       {todayWorkerRecord.status === 'present' ? 'উপস্থিত' : todayWorkerRecord.status === 'late' ? 'বিলম্ব / লেট' : todayWorkerRecord.status}
                     </span>
                   </div>
-                  <p className="text-[11px] text-emerald-200/90 mt-0.5">
-                    আজ: {formatDateBn(todayStr)} ({getBengaliDayName(todayStr)}) • ইন-টাইম: {todayWorkerRecord.inTime ? formatTime12h(todayWorkerRecord.inTime) : '—'} • আউট: {todayWorkerRecord.outTime ? formatTime12h(todayWorkerRecord.outTime) : 'চলমান'}
+                  <p className="text-[11px] text-emerald-100 mt-0.5">
+                    আজ: {formatDateBn(todayStr)} ({getBengaliDayName(todayStr)}) · ইন-টাইম: {todayWorkerRecord.inTime ? formatTime12h(todayWorkerRecord.inTime) : '—'} · আউট: {todayWorkerRecord.outTime ? formatTime12h(todayWorkerRecord.outTime) : 'চলমান'}
                   </p>
                 </div>
               </div>
               {Number(todayWorkerRecord.otHours) > 0 && (
-                <div className="px-3 py-1.5 rounded-xl bg-indigo-500/30 border border-indigo-400/30 text-right self-start sm:self-auto">
-                  <span className="text-[10px] text-indigo-200 block font-semibold">আজকের ওটি</span>
-                  <span className="text-sm font-black text-indigo-100 font-mono">{toBengaliNumber(todayWorkerRecord.otHours || 0)} ঘণ্টা</span>
+                <div className="px-3.5 py-1.5 rounded-xl bg-white/15 border border-white/20 text-right self-start sm:self-auto">
+                  <span className="text-[10px] text-emerald-100 block font-semibold">আজকের ওটি</span>
+                  <span className="text-sm font-black text-white font-mono tabular-nums">{toBengaliNumber(todayWorkerRecord.otHours || 0)} ঘণ্টা</span>
                 </div>
               )}
             </div>
           ) : (
             <div className="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200 flex items-center justify-between gap-3 text-xs">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F97316] to-[#EA580C] text-white flex items-center justify-center shrink-0 shadow-xs">
                   <Clock className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="font-bold text-slate-800 block">আজকের উপস্থিতি ({formatDateBn(todayStr)})</span>
+                  <span className="font-bold text-slate-900 block">আজকের উপস্থিতি ({formatDateBn(todayStr)})</span>
                   <span className="text-[11px] text-slate-500">কারখানা সার্ভারে আজকের হাজিরার এন্ট্রি এখনও অপেক্ষমাণ রয়েছে</span>
                 </div>
               </div>
-              <span className="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full">
+              <span className="text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-lg whitespace-nowrap shrink-0">
                 অপেক্ষমাণ
               </span>
             </div>
@@ -1226,92 +1261,113 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
         </div>
       )}
 
-      {/* 3. Monthly Vital Metric Cards (৫টি রঙিন গ্র্যাডিয়েন্ট সূচক) */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-        {/* Present Days (Regular Workdays only - Friday excluded) */}
-        <div className="bg-gradient-to-br from-[#059669] to-[#16A34A] text-white p-4 rounded-xl shadow-sm flex flex-col justify-between">
-          <div className="flex items-center justify-between text-xs text-white/90 font-semibold">
-            <span>নিয়মিত উপস্থিতি</span>
-            <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+      {/* 3. Monthly Vital Metric Cards (ড্যাশবোর্ড স্টাইলের ৬টি রঙিন গ্র্যাডিয়েন্ট সূচক ও স্পার্কলাইন) */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        {/* 1. Present Days (Regular Workdays only - Friday excluded) */}
+        <div className="bg-gradient-to-br from-[#059669] to-[#16A34A] text-white p-3.5 rounded-2xl shadow-sm flex flex-col justify-between overflow-hidden">
+          <div className="flex items-center justify-between text-[11px] text-white/90 font-semibold">
+            <span className="truncate">নিয়মিত উপস্থিতি</span>
+            <div className="w-7 h-7 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
               <CheckCircle2 className="w-4 h-4 text-white" />
             </div>
           </div>
-          <div className="text-2xl font-black text-white mt-1.5 flex items-baseline gap-1 font-mono tabular-nums">
+          <div className="text-xl sm:text-2xl font-black text-white mt-1.5 flex items-baseline gap-1 font-mono tabular-nums">
             <span>{toBengaliNumber(stats.presentCount)}</span>
-            <span className="text-xs font-sans font-normal text-white/80">দিন</span>
+            <span className="text-[11px] font-sans font-normal text-white/80">দিন</span>
           </div>
-          <div className="text-[10px] text-white/85 font-bold mt-1 truncate">
-            শুক্রবার বাদে নিয়মিত কর্মদিবস ({toBengaliNumber(stats.attendanceRate)}%)
+          <div className="text-[10px] text-white/85 font-bold mt-0.5 truncate">
+            উপস্থিতির হার {toBengaliNumber(stats.attendanceRate)}%
           </div>
+          <WorkerKpiSparkline id="present" values={workerMonthAttendance.slice(0, 7).reverse().map(r => (r.status === 'present' ? 10 : r.status === 'late' ? 6 : 2))} />
         </div>
 
-        {/* Missed / Absent Days */}
-        <div className="bg-gradient-to-br from-[#EC4899] to-[#DB2777] text-white p-4 rounded-xl shadow-sm flex flex-col justify-between">
-          <div className="flex items-center justify-between text-xs text-white/90 font-semibold">
-            <span>অনুপস্থিত / মিস দিন</span>
-            <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+        {/* 2. Missed / Absent Days */}
+        <div className="bg-gradient-to-br from-[#EC4899] to-[#DB2777] text-white p-3.5 rounded-2xl shadow-sm flex flex-col justify-between overflow-hidden">
+          <div className="flex items-center justify-between text-[11px] text-white/90 font-semibold">
+            <span className="truncate">অনুপস্থিত / মিস দিন</span>
+            <div className="w-7 h-7 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
               <XCircle className="w-4 h-4 text-white" />
             </div>
           </div>
-          <div className="text-2xl font-black text-white mt-1.5 flex items-baseline gap-1 font-mono tabular-nums">
+          <div className="text-xl sm:text-2xl font-black text-white mt-1.5 flex items-baseline gap-1 font-mono tabular-nums">
             <span>{toBengaliNumber(stats.absentCount)}</span>
-            <span className="text-xs font-sans font-normal text-white/80">দিন</span>
+            <span className="text-[11px] font-sans font-normal text-white/80">দিন</span>
           </div>
-          <div className="text-[10px] text-white/85 mt-1 truncate">
-            {stats.lateCount > 0 ? `লেট: ${toBengaliNumber(stats.lateCount)} দিন` : 'শুক্রবার ছুটি ধরা হয়নি'}
+          <div className="text-[10px] text-white/85 font-bold mt-0.5 truncate">
+            {stats.lateCount > 0 ? `লেট: ${toBengaliNumber(stats.lateCount)} দিন` : 'লেট ০ দিন · ছুটি বাদে'}
           </div>
+          <WorkerKpiSparkline id="absent" values={workerMonthAttendance.slice(0, 7).reverse().map(r => (r.status === 'absent' ? 8 : r.status === 'late' ? 5 : 1))} />
         </div>
 
-        {/* Total Overtime (OT) Hours */}
-        <div className="bg-gradient-to-br from-[#635BFF] to-[#4338CA] text-white p-4 rounded-xl shadow-sm flex flex-col justify-between">
-          <div className="flex items-center justify-between text-xs text-white/90 font-semibold">
-            <span>সর্বমোট ওটি (OT)</span>
-            <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+        {/* 3. Total Overtime (OT) Hours */}
+        <div className="bg-gradient-to-br from-[#635BFF] to-[#4338CA] text-white p-3.5 rounded-2xl shadow-sm flex flex-col justify-between overflow-hidden">
+          <div className="flex items-center justify-between text-[11px] text-white/90 font-semibold">
+            <span className="truncate">সর্বমোট ওটি (OT)</span>
+            <div className="w-7 h-7 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
               <Clock className="w-4 h-4 text-white" />
             </div>
           </div>
-          <div className="text-2xl font-black text-white mt-1.5 flex items-baseline gap-1 font-mono tabular-nums">
+          <div className="text-xl sm:text-2xl font-black text-white mt-1.5 flex items-baseline gap-1 font-mono tabular-nums">
             <span>{toBengaliNumber(stats.totalOtHours)}</span>
-            <span className="text-xs font-sans font-normal text-white/80">ঘণ্টা</span>
+            <span className="text-[11px] font-sans font-normal text-white/80">ঘণ্টা</span>
           </div>
-          <div className="text-[10px] text-white/85 font-bold mt-1 truncate">
+          <div className="text-[10px] text-white/85 font-bold mt-0.5 truncate">
             নিয়মিত: {toBengaliNumber(stats.regularOtHours || 0)}ঘ. + শুক্র: {toBengaliNumber(stats.fridayOtHours || 0)}ঘ.
           </div>
+          <WorkerKpiSparkline id="ot" values={workerMonthAttendance.slice(0, 7).reverse().map(r => Number(r.otHours) || 0)} />
         </div>
 
-        {/* Friday Special OT Card */}
-        <div className="bg-gradient-to-br from-[#F97316] to-[#EA580C] text-white p-4 rounded-xl shadow-sm flex flex-col justify-between">
-          <div className="flex items-center justify-between text-xs text-white/90 font-semibold">
-            <span>শুক্রবার বিশেষ ওটি</span>
-            <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+        {/* 4. Friday Special OT Card */}
+        <div className="bg-gradient-to-br from-[#F97316] to-[#EA580C] text-white p-3.5 rounded-2xl shadow-sm flex flex-col justify-between overflow-hidden">
+          <div className="flex items-center justify-between text-[11px] text-white/90 font-semibold">
+            <span className="truncate">শুক্রবার বিশেষ ওটি</span>
+            <div className="w-7 h-7 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
               <Sparkles className="w-4 h-4 text-white" />
             </div>
           </div>
-          <div className="text-2xl font-black text-white mt-1.5 flex items-baseline gap-1 font-mono tabular-nums">
+          <div className="text-xl sm:text-2xl font-black text-white mt-1.5 flex items-baseline gap-1 font-mono tabular-nums">
             <span>{toBengaliNumber(stats.fridayOtHours || 0)}</span>
-            <span className="text-xs font-sans font-normal text-white/80">ঘণ্টা</span>
+            <span className="text-[11px] font-sans font-normal text-white/80">ঘণ্টা</span>
           </div>
-          <div className="text-[10px] text-white/85 font-bold mt-1 truncate">
+          <div className="text-[10px] text-white/85 font-bold mt-0.5 truncate">
             {(stats.fridayDutiesCount ?? 0) > 0
-              ? `ডিউটি: ${toBengaliNumber(stats.fridayDutiesCount || 0)} দিন (হাজিরা ০, শুধু ওটি)`
+              ? `ডিউটি: ${toBengaliNumber(stats.fridayDutiesCount || 0)} দিন (শুধু ওটি)`
               : 'কোনো শুক্রবারে ওটি নেই'}
           </div>
+          <WorkerKpiSparkline id="friday" values={[2, 4, 3, 6, 5, 8, Number(stats.fridayOtHours || 0) || 4]} />
         </div>
 
-        {/* Estimated / Final Salary */}
-        <div className="bg-gradient-to-br from-[#0284C7] to-[#2563EB] text-white p-4 rounded-xl shadow-sm flex flex-col justify-between col-span-2 sm:col-span-1">
-          <div className="flex items-center justify-between text-xs text-white/90 font-semibold">
-            <span>প্রদেয় মোট বেতন</span>
-            <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+        {/* 5. Basic & Bonus Metric Card */}
+        <div className="bg-gradient-to-br from-[#06B6D4] to-[#0D9488] text-white p-3.5 rounded-2xl shadow-sm flex flex-col justify-between overflow-hidden">
+          <div className="flex items-center justify-between text-[11px] text-white/90 font-semibold">
+            <span className="truncate">হাজিরা বোনাস ও হার</span>
+            <div className="w-7 h-7 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
+              <Award className="w-4 h-4 text-white" />
+            </div>
+          </div>
+          <div className="text-xl sm:text-2xl font-black text-white mt-1.5 flex items-baseline gap-1 font-mono tabular-nums">
+            <span>৳ {formatMoney(currentMonthSalary ? (currentMonthSalary.bonus || 0) : autoBonusAmount)}</span>
+          </div>
+          <div className="text-[10px] text-white/85 font-bold mt-0.5 truncate">
+            মূল বেতন: ৳ {formatMoney(loggedInWorker.salary)} · ওটি ৳{toBengaliNumber(loggedInWorker.otRate)}/ঘ.
+          </div>
+          <WorkerKpiSparkline id="bonus" values={[4, 6, 8, 7, 10, 9, 12]} />
+        </div>
+
+        {/* 6. Estimated / Final Salary */}
+        <div className="bg-gradient-to-br from-[#0284C7] to-[#2563EB] text-white p-3.5 rounded-2xl shadow-sm flex flex-col justify-between overflow-hidden">
+          <div className="flex items-center justify-between text-[11px] text-white/90 font-semibold">
+            <span className="truncate">প্রদেয় মোট বেতন</span>
+            <div className="w-7 h-7 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
               <DollarSign className="w-4 h-4 text-white" />
             </div>
           </div>
-          <div className="text-2xl font-black text-white mt-1.5 flex items-baseline gap-1 font-mono tabular-nums">
+          <div className="text-xl sm:text-2xl font-black text-white mt-1.5 flex items-baseline gap-1 font-mono tabular-nums">
             <span>
               ৳ {formatMoney(currentMonthSalary?.netPayable ?? estimatedPayable)}
             </span>
           </div>
-          <div className="text-[10px] font-bold mt-1 text-white/90">
+          <div className="text-[10px] font-bold mt-0.5 text-white/90 truncate">
             {currentMonthSalary ? (
               <span>
                 {currentMonthSalary.paymentStatus === 'paid' ? '✓ পরিশোধিত (Paid)' : 'বকেয়া / চূড়ান্তকৃত'}
@@ -1320,14 +1376,116 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
               <span>চলতি সম্ভাব্য হিসাব</span>
             )}
           </div>
+          <WorkerKpiSparkline id="salary" values={[10, 14, 16, 15, 20, 22, 26]} />
         </div>
       </div>
+
+      {/* 3.5 Visual Attendance & Earnings Composition Overview Strip */}
+      {(() => {
+        const earnedBasicVal = currentMonthSalary?.presentSalary ?? Math.round(((Number(loggedInWorker.salary) || 0) / 26) * effectivePresentDays);
+        const otPayVal = currentMonthSalary?.otPay ?? Math.round((stats.totalOtHours || 0) * (Number(loggedInWorker.otRate) || 0));
+        const bonusVal = currentMonthSalary ? (currentMonthSalary.bonus || 0) : autoBonusAmount;
+        const grossTotalVal = Math.max(1, earnedBasicVal + otPayVal + bonusVal);
+        const basicPct = Math.round((earnedBasicVal / grossTotalVal) * 100);
+        const otPct = Math.round((otPayVal / grossTotalVal) * 100);
+        const bonusPct = Math.max(0, 100 - basicPct - otPct);
+        const totalOffice = Math.max(1, stats.totalOfficeDays || 26);
+        const attProgress = Math.min(100, Math.round((stats.presentCount / totalOffice) * 100));
+
+        return (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3.5">
+            {/* Visual Attendance Progress Card */}
+            <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-3">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#059669] to-[#16A34A] text-white flex items-center justify-center shadow-xs shrink-0">
+                    <TrendingUp className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="font-black text-xs sm:text-sm text-slate-900">উপস্থিতির অগ্রগতি ও কার্যদিবস চিত্র</h4>
+                    <p className="text-[11px] text-slate-500">{selectedMonth} {selectedYear} · মোট অফিস দিন {toBengaliNumber(totalOffice)} দিন</p>
+                  </div>
+                </div>
+                <span className="font-mono font-black text-sm text-emerald-700 tabular-nums">{toBengaliNumber(attProgress)}%</span>
+              </div>
+
+              <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden flex">
+                <div className="bg-gradient-to-r from-[#059669] to-[#16A34A] h-full transition-all" style={{ width: `${attProgress}%` }} />
+                {stats.lateCount > 0 && (
+                  <div className="bg-amber-400 h-full transition-all" style={{ width: `${Math.min(100 - attProgress, Math.round((stats.lateCount / totalOffice) * 100))}%` }} />
+                )}
+                {stats.absentCount > 0 && (
+                  <div className="bg-rose-500 h-full transition-all" style={{ width: `${Math.min(100 - attProgress, Math.round((stats.absentCount / totalOffice) * 100))}%` }} />
+                )}
+              </div>
+
+              <div className="grid grid-cols-4 gap-2 text-[11px]">
+                <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-200 text-center">
+                  <span className="text-emerald-700 font-semibold block">উপস্থিত</span>
+                  <span className="font-mono font-black text-emerald-950">{toBengaliNumber(stats.presentCount)} দিন</span>
+                </div>
+                <div className="p-2 rounded-xl bg-amber-50 border border-amber-200 text-center">
+                  <span className="text-amber-700 font-semibold block">লেট / বিলম্ব</span>
+                  <span className="font-mono font-black text-amber-950">{toBengaliNumber(stats.lateCount)} দিন</span>
+                </div>
+                <div className="p-2 rounded-xl bg-rose-50 border border-rose-200 text-center">
+                  <span className="text-rose-700 font-semibold block">অনুপস্থিত</span>
+                  <span className="font-mono font-black text-rose-950">{toBengaliNumber(stats.absentCount)} দিন</span>
+                </div>
+                <div className="p-2 rounded-xl bg-blue-50 border border-blue-200 text-center">
+                  <span className="text-blue-700 font-semibold block">ছুটি</span>
+                  <span className="font-mono font-black text-blue-950">{toBengaliNumber(stats.leaveCount || 0)} দিন</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Visual Earnings Split Card */}
+            <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-3">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#1D63DC] to-[#635BFF] text-white flex items-center justify-center shadow-xs shrink-0">
+                    <BarChart3 className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="font-black text-xs sm:text-sm text-slate-900">আয় ও বেতন কাঠামো বিশ্লেষণ</h4>
+                    <p className="text-[11px] text-slate-500">মূল বেতন, ওভারটাইম ও বোনাসের অনুপাত</p>
+                  </div>
+                </div>
+                <span className="font-mono font-black text-sm text-blue-700 tabular-nums">৳ {formatMoney(currentMonthSalary?.netPayable ?? estimatedPayable)}</span>
+              </div>
+
+              <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden flex">
+                <div className="bg-gradient-to-r from-[#0284C7] to-[#2563EB] h-full transition-all" style={{ width: `${basicPct}%` }} />
+                <div className="bg-gradient-to-r from-[#635BFF] to-[#4338CA] h-full transition-all" style={{ width: `${otPct}%` }} />
+                <div className="bg-gradient-to-r from-[#059669] to-[#16A34A] h-full transition-all" style={{ width: `${bonusPct}%` }} />
+              </div>
+
+              <div className="grid grid-cols-3 gap-2 text-[11px]">
+                <div className="p-2 rounded-xl bg-blue-50 border border-blue-200">
+                  <span className="text-blue-700 font-semibold block">উপস্থিত বেতন ({toBengaliNumber(basicPct)}%)</span>
+                  <span className="font-mono font-black text-blue-950">৳ {formatMoney(earnedBasicVal)}</span>
+                </div>
+                <div className="p-2 rounded-xl bg-indigo-50 border border-indigo-200">
+                  <span className="text-indigo-700 font-semibold block">ওটি আয় ({toBengaliNumber(otPct)}%)</span>
+                  <span className="font-mono font-black text-indigo-950">৳ {formatMoney(otPayVal)}</span>
+                </div>
+                <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-200">
+                  <span className="text-emerald-700 font-semibold block">হাজিরা বোনাস ({toBengaliNumber(bonusPct)}%)</span>
+                  <span className="font-mono font-black text-emerald-950">৳ {formatMoney(bonusVal)}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* 4. COMPREHENSIVE ANALYTICS & AUDIT BREAKDOWN (সকল হিসাব আরো বিশ্লেষণ সহ) */}
       <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-3 border-b border-slate-100 gap-2">
-          <div className="flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-indigo-600" />
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#635BFF] to-[#4338CA] text-white flex items-center justify-center shadow-xs shrink-0">
+              <BarChart3 className="w-5 h-5" />
+            </div>
             <div>
               <h3 className="font-black text-sm text-slate-900">
                 {selectedMonth} {selectedYear} — বিস্তারিত হাজিরা, ওটি ও বেতন বিশ্লেষণ
@@ -1337,8 +1495,8 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
               </p>
             </div>
           </div>
-          <span className="px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold text-xs flex items-center gap-1 self-start sm:self-auto">
-            <Layers className="w-3.5 h-3.5" />
+          <span className="px-3 py-1 rounded-lg bg-[#08142E] text-white font-bold text-xs flex items-center gap-1.5 self-start sm:self-auto whitespace-nowrap shrink-0">
+            <Layers className="w-3.5 h-3.5 text-cyan-300" />
             <span>পূর্ণাঙ্গ অডিট বিবরণী</span>
           </span>
         </div>
@@ -1346,45 +1504,45 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
         {/* ৩টি বিস্তারিত বিশ্লেষণ কার্ড */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
           {/* Card 1: হাজিরা ও কর্মদিবস বিশ্লেষণ */}
-          <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200 space-y-2.5">
-            <div className="flex items-center gap-1.5 font-bold text-xs text-slate-800 pb-1 border-b border-slate-200">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+          <div className="rounded-xl bg-slate-50/80 border border-slate-200 overflow-hidden flex flex-col">
+            <div className="bg-gradient-to-r from-[#059669] to-[#16A34A] px-3.5 py-2.5 text-white flex items-center gap-2 font-bold text-xs">
+              <CheckCircle2 className="w-4 h-4 text-white" />
               <span>১. হাজিরা ও ছুটির বিশ্লেষণ</span>
             </div>
-            <div className="space-y-1.5 text-xs">
-              <div className="flex justify-between items-center text-slate-700 bg-slate-100/70 p-1.5 rounded-lg font-bold">
+            <div className="p-3.5 space-y-1.5 text-xs flex-1">
+              <div className="flex justify-between items-center text-slate-700 bg-white p-1.5 rounded-lg border border-slate-200 font-bold">
                 <span>কারখানার মোট অফিস ডে:</span>
-                <span className="font-black text-slate-900 font-mono">
+                <span className="font-black text-slate-900 font-mono tabular-nums">
                   {toBengaliNumber(stats.totalOfficeDays || 26)} দিন
                 </span>
               </div>
               <div className="flex justify-between items-center text-slate-600">
                 <span>নিয়মিত উপস্থিত দিন:</span>
-                <span className="font-black text-slate-900 font-mono">
+                <span className="font-black text-slate-900 font-mono tabular-nums">
                   {toBengaliNumber(stats.presentCount)} দিন
                 </span>
               </div>
               <div className="flex justify-between items-center text-slate-600">
                 <span>অনুপস্থিত / মিস দিন:</span>
-                <span className={`font-black font-mono ${stats.absentCount > 0 ? 'text-rose-700' : 'text-slate-900'}`}>
+                <span className={`font-black font-mono tabular-nums ${stats.absentCount > 0 ? 'text-rose-700' : 'text-slate-900'}`}>
                   {toBengaliNumber(stats.absentCount)} দিন
                 </span>
               </div>
               <div className="flex justify-between items-center text-slate-600">
                 <span>বিলম্ব / লেট দিন:</span>
-                <span className="font-bold text-amber-700 font-mono">
+                <span className="font-bold text-amber-700 font-mono tabular-nums">
                   {toBengaliNumber(stats.lateCount)} দিন
                 </span>
               </div>
               <div className="flex justify-between items-center text-slate-600">
                 <span>অনুমোদিত ছুটি (Leave):</span>
-                <span className="font-bold text-blue-700 font-mono">
+                <span className="font-bold text-blue-700 font-mono tabular-nums">
                   {toBengaliNumber(stats.leaveCount || 0)} দিন
                 </span>
               </div>
               <div className="flex justify-between items-center text-amber-900 bg-amber-100/60 p-1.5 rounded-lg border border-amber-200 font-semibold text-[11px]">
                 <span>শুক্রবার ওটি ডিউটি:</span>
-                <span className="font-black text-amber-950 font-mono">
+                <span className="font-black text-amber-950 font-mono tabular-nums">
                   {toBengaliNumber(stats.fridayDutiesCount || 0)} দিন (হাজিরা ০)
                 </span>
               </div>
@@ -1392,39 +1550,39 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
           </div>
 
           {/* Card 2: ওভারটাইম (OT) ও কর্মঘণ্টা বিশ্লেষণ */}
-          <div className="p-3.5 rounded-xl bg-indigo-50/50 border border-indigo-100 space-y-2.5">
-            <div className="flex items-center gap-1.5 font-bold text-xs text-indigo-950 pb-1 border-b border-indigo-200">
-              <Clock className="w-4 h-4 text-indigo-600" />
+          <div className="rounded-xl bg-indigo-50/40 border border-indigo-200 overflow-hidden flex flex-col">
+            <div className="bg-gradient-to-r from-[#635BFF] to-[#4338CA] px-3.5 py-2.5 text-white flex items-center gap-2 font-bold text-xs">
+              <Clock className="w-4 h-4 text-white" />
               <span>২. ওভারটাইম (OT) বিশ্লেষণ</span>
             </div>
-            <div className="space-y-1.5 text-xs">
+            <div className="p-3.5 space-y-1.5 text-xs flex-1">
               <div className="flex justify-between items-center text-slate-700">
                 <span>সাধারণ দিনের ওটি:</span>
-                <span className="font-black text-slate-900 font-mono">
+                <span className="font-black text-slate-900 font-mono tabular-nums">
                   {toBengaliNumber(stats.regularOtHours || 0)} ঘণ্টা
                 </span>
               </div>
               <div className="flex justify-between items-center text-indigo-900">
                 <span>শুক্রবার বিশেষ ওটি:</span>
-                <span className="font-black text-indigo-950 font-mono">
+                <span className="font-black text-indigo-950 font-mono tabular-nums">
                   {toBengaliNumber(stats.fridayOtHours || 0)} ঘণ্টা
                 </span>
               </div>
               <div className="flex justify-between items-center text-slate-700">
                 <span>প্রতি ঘণ্টার ওটি রেট:</span>
-                <span className="font-bold text-slate-900 font-mono">
+                <span className="font-bold text-slate-900 font-mono tabular-nums">
                   ৳ {formatMoney(loggedInWorker.otRate)}
                 </span>
               </div>
               <div className="flex justify-between items-center text-slate-700">
                 <span>নিয়মিত ওটি আয়:</span>
-                <span className="font-bold text-slate-900 font-mono">
+                <span className="font-bold text-slate-900 font-mono tabular-nums">
                   ৳ {formatMoney(Math.round((stats.regularOtHours || 0) * (Number(loggedInWorker.otRate) || 0)))}
                 </span>
               </div>
-              <div className="flex justify-between items-center text-indigo-900 bg-indigo-100/70 p-1.5 rounded-lg border border-indigo-200 font-bold text-[11px]">
+              <div className="flex justify-between items-center text-indigo-900 bg-indigo-100/80 p-1.5 rounded-lg border border-indigo-200 font-bold text-[11px] mt-auto">
                 <span>মোট ওটি উপার্জন:</span>
-                <span className="font-black text-indigo-950 font-mono">
+                <span className="font-black text-indigo-950 font-mono tabular-nums">
                   ৳ {formatMoney(Math.round((stats.totalOtHours || 0) * (Number(loggedInWorker.otRate) || 0)))}
                 </span>
               </div>
@@ -1432,47 +1590,47 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
           </div>
 
           {/* Card 3: বেতন হিসাব ও মজুরি বিশ্লেষণ */}
-          <div className="p-3.5 rounded-xl bg-emerald-50/50 border border-emerald-100 space-y-2.5">
-            <div className="flex items-center gap-1.5 font-bold text-xs text-emerald-950 pb-1 border-b border-emerald-200">
-              <DollarSign className="w-4 h-4 text-emerald-600" />
+          <div className="rounded-xl bg-blue-50/40 border border-blue-200 overflow-hidden flex flex-col">
+            <div className="bg-gradient-to-r from-[#0284C7] to-[#2563EB] px-3.5 py-2.5 text-white flex items-center gap-2 font-bold text-xs">
+              <DollarSign className="w-4 h-4 text-white" />
               <span>৩. বেতন হিসাব ও আর্থিক বিশ্লেষণ</span>
             </div>
-            <div className="space-y-1.5 text-xs">
+            <div className="p-3.5 space-y-1.5 text-xs flex-1">
               <div className="flex justify-between items-center text-slate-700">
                 <span>মূল মাসিক বেতন (Basic):</span>
-                <span className="font-black text-slate-900 font-mono">
+                <span className="font-black text-slate-900 font-mono tabular-nums">
                   ৳ {formatMoney(loggedInWorker.salary)}
                 </span>
               </div>
               <div className="flex justify-between items-center text-slate-700">
                 <span>দৈনিক মূল হার (Basic ÷ ২৬):</span>
-                <span className="font-bold text-slate-900 font-mono">
+                <span className="font-bold text-slate-900 font-mono tabular-nums">
                   ৳ {formatMoney(Math.round((Number(loggedInWorker.salary) || 0) / 26))}
                 </span>
               </div>
               <div className="flex justify-between items-center text-slate-700">
                 <span>উপস্থিতির মজুরি ({toBengaliNumber(effectivePresentDays)} দিন):</span>
-                <span className="font-bold text-slate-900 font-mono">
+                <span className="font-bold text-slate-900 font-mono tabular-nums">
                   ৳ {formatMoney(Math.round(((Number(loggedInWorker.salary) || 0) / 26) * effectivePresentDays))}
                 </span>
               </div>
               {penaltyInfo.totalPenaltyDays > 0 && (
                 <div className="flex justify-between items-center text-rose-700 bg-rose-50/70 p-1.5 rounded-lg border border-rose-200 font-semibold text-[11px]">
                   <span>লেট ও অনুপস্থিতি কর্তন (৩ দিনে ১ দিন):</span>
-                  <span className="font-bold font-mono">
+                  <span className="font-bold font-mono tabular-nums">
                     -{toBengaliNumber(penaltyInfo.totalPenaltyDays)} দিন
                   </span>
                 </div>
               )}
               <div className="flex justify-between items-center text-slate-700">
                 <span>ওভারটাইম টাকা ({toBengaliNumber(stats.totalOtHours)} ঘ.):</span>
-                <span className="font-bold text-indigo-900 font-mono">
+                <span className="font-bold text-indigo-900 font-mono tabular-nums">
                   ৳ {formatMoney(Math.round((stats.totalOtHours || 0) * (Number(loggedInWorker.otRate) || 0)))}
                 </span>
               </div>
-              <div className="flex justify-between items-center text-emerald-900 bg-emerald-100/70 p-1.5 rounded-lg border border-emerald-200 font-bold text-[11px]">
+              <div className="flex justify-between items-center text-emerald-900 bg-emerald-100/80 p-1.5 rounded-lg border border-emerald-200 font-bold text-[11px]">
                 <span>সর্বমোট প্রদেয় বেতন:</span>
-                <span className="font-black text-emerald-950 font-mono text-xs">
+                <span className="font-black text-emerald-950 font-mono text-xs tabular-nums">
                   ৳ {formatMoney(currentMonthSalary?.netPayable ?? estimatedPayable)}
                 </span>
               </div>
@@ -1481,7 +1639,7 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
         </div>
 
         {/* Friday Special Policy Clarification Banner */}
-        <div className="p-3 bg-gradient-to-r from-amber-50 via-amber-100/50 to-orange-50 rounded-xl border border-amber-300 text-xs flex items-start gap-2.5">
+        <div className="p-3 bg-gradient-to-r from-amber-50 via-orange-50/70 to-amber-50 rounded-xl border border-amber-300 text-xs flex items-start gap-2.5">
           <Info className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
           <div className="space-y-0.5">
             <span className="font-black text-amber-950">
@@ -1499,14 +1657,16 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
       {currentMonthSalary && (
         <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-emerald-200 space-y-3">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100 flex-wrap gap-2">
-            <div className="flex items-center gap-2">
-              <Receipt className="w-4 h-4 text-emerald-600" />
-              <h3 className="font-bold text-sm text-slate-900">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#059669] to-[#16A34A] text-white flex items-center justify-center shadow-xs shrink-0">
+                <Receipt className="w-4 h-4" />
+              </div>
+              <h3 className="font-black text-sm text-slate-900">
                 {selectedMonth} {selectedYear} এর চূড়ান্ত বেতন রসিদ ও পে-স্লিপ
               </h3>
             </div>
             <div className="flex items-center gap-2">
-              <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full border ${
+              <span className={`text-xs font-bold px-2.5 py-0.5 rounded-lg border ${
                 currentMonthSalary.paymentStatus === 'paid'
                   ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
                   : 'bg-amber-100 text-amber-800 border-amber-300'
@@ -1516,7 +1676,7 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
               <button
                 type="button"
                 onClick={() => setSelectedSlipRecord(currentMonthSalary)}
-                className="px-3 py-1 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1 transition cursor-pointer"
+                className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#1D63DC] to-[#2563EB] hover:from-blue-600 hover:to-blue-700 text-white font-bold text-xs flex items-center gap-1 transition cursor-pointer shadow-xs whitespace-nowrap shrink-0"
               >
                 <Eye className="w-3.5 h-3.5" />
                 <span>পে-স্লিপ প্রিন্ট দেখুন</span>
@@ -1525,21 +1685,21 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-            <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
-              <span className="text-slate-500 block">উপস্থিত বেতন:</span>
-              <span className="font-black text-slate-900 text-sm">৳ {formatMoney(currentMonthSalary.presentSalary)}</span>
+            <div className="p-3 bg-gradient-to-br from-[#0284C7] to-[#2563EB] text-white rounded-xl shadow-xs">
+              <span className="text-white/85 block text-[11px] font-semibold">উপস্থিত বেতন:</span>
+              <span className="font-black text-white text-sm font-mono tabular-nums">৳ {formatMoney(currentMonthSalary.presentSalary)}</span>
             </div>
-            <div className="p-2.5 bg-indigo-50/60 rounded-xl border border-indigo-200">
-              <span className="text-indigo-700 block">ওভারটাইম টাকা ({toBengaliNumber(currentMonthSalary.otHours)} ঘ.):</span>
-              <span className="font-black text-indigo-900 text-sm">৳ {formatMoney(currentMonthSalary.otPay)}</span>
+            <div className="p-3 bg-gradient-to-br from-[#635BFF] to-[#4338CA] text-white rounded-xl shadow-xs">
+              <span className="text-white/85 block text-[11px] font-semibold">ওভারটাইম ({toBengaliNumber(currentMonthSalary.otHours)} ঘ.):</span>
+              <span className="font-black text-white text-sm font-mono tabular-nums">৳ {formatMoney(currentMonthSalary.otPay)}</span>
             </div>
-            <div className="p-2.5 bg-emerald-50/60 rounded-xl border border-emerald-200">
-              <span className="text-emerald-700 block">মোট প্রদেয় বেতন (Net):</span>
-              <span className="font-black text-emerald-800 text-sm">৳ {formatMoney(currentMonthSalary.netPayable)}</span>
+            <div className="p-3 bg-gradient-to-br from-[#059669] to-[#16A34A] text-white rounded-xl shadow-xs">
+              <span className="text-white/85 block text-[11px] font-semibold">মোট প্রদেয় বেতন (Net):</span>
+              <span className="font-black text-white text-sm font-mono tabular-nums">৳ {formatMoney(currentMonthSalary.netPayable)}</span>
             </div>
-            <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
-              <span className="text-slate-500 block">পরিশোধের মাধ্যম:</span>
-              <span className="font-bold text-slate-800 text-sm capitalize">
+            <div className="p-3 bg-gradient-to-br from-[#F97316] to-[#EA580C] text-white rounded-xl shadow-xs">
+              <span className="text-white/85 block text-[11px] font-semibold">পরিশোধের মাধ্যম:</span>
+              <span className="font-black text-white text-sm capitalize">
                 {currentMonthSalary.paymentMethod === 'cash' ? 'ক্যাশ' : currentMonthSalary.paymentMethod}
               </span>
             </div>
@@ -1550,18 +1710,22 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
       {/* 6. Daily Attendance & In/Out Times Log (দৈনিক ইন-আউট টাইম ও ওটি খাতা) */}
       <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-3 border-b border-slate-100 gap-3">
-          <div>
-            <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-blue-600" />
-              <span>দৈনিক ইন-টাইম, আউট-টাইম ও ওটি হিসাবের খাতা</span>
-            </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
-              {selectedMonth} {selectedYear} মাসের প্রতিটি দিনের বিস্তারিত ইন-আউট সময়, ওটি ও শুক্রবার নীতি
-            </p>
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#1D63DC] to-[#2563EB] text-white flex items-center justify-center shadow-xs shrink-0">
+              <Clock className="w-4 h-4" />
+            </div>
+            <div>
+              <h3 className="font-black text-sm text-slate-900">
+                দৈনিক ইন-টাইম, আউট-টাইম ও ওটি হিসাবের খাতা
+              </h3>
+              <p className="text-xs text-slate-500 mt-0.5">
+                {selectedMonth} {selectedYear} মাসের প্রতিটি দিনের বিস্তারিত ইন-আউট সময়, ওটি ও শুক্রবার নীতি
+              </p>
+            </div>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-full">
+            <span className="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-lg tabular-nums">
               মোট: {toBengaliNumber(workerMonthAttendance.length)} দিন
             </span>
 
@@ -1570,9 +1734,9 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
               <button
                 type="button"
                 onClick={() => setAttendanceViewMode('card')}
-                className={`px-2.5 py-1 rounded-lg font-bold transition flex items-center gap-1 cursor-pointer ${
+                className={`px-3 py-1 rounded-lg font-bold transition flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0 ${
                   attendanceViewMode === 'card'
-                    ? 'bg-blue-600 text-white shadow-xs'
+                    ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
                 title="মোবাইল বা ছোট স্ক্রিনে সহজে প্রতিটি দিন স্পষ্টভাবে দেখুন"
@@ -1583,9 +1747,9 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
               <button
                 type="button"
                 onClick={() => setAttendanceViewMode('table')}
-                className={`px-2.5 py-1 rounded-lg font-bold transition flex items-center gap-1 cursor-pointer ${
+                className={`px-3 py-1 rounded-lg font-bold transition flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0 ${
                   attendanceViewMode === 'table'
-                    ? 'bg-blue-600 text-white shadow-xs'
+                    ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
                 title="তালিকা টেবিল আকারে দেখুন"
@@ -1779,7 +1943,7 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
             <div className="overflow-x-auto border border-slate-200 rounded-2xl shadow-2xs">
               <table className="min-w-[680px] w-full text-xs text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-50 text-slate-700 border-b border-slate-200">
+                  <tr className="bg-gradient-to-r from-[#08142E] via-[#0F2149] to-[#132B63] text-white">
                     <th className="py-3 px-3.5 font-bold whitespace-nowrap">তারিখ ও বার</th>
                     <th className="py-3 px-3.5 font-bold whitespace-nowrap">স্ট্যাটাস / হাজিরা</th>
                     <th className="py-3 px-3.5 font-bold whitespace-nowrap">ইন-টাইম (In)</th>
@@ -1800,9 +1964,9 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
                         key={rec.id}
                         className={`hover:bg-slate-50/80 transition ${
                           isFri
-                            ? 'bg-amber-50/35 border-l-4 border-l-amber-500'
+                            ? 'bg-amber-50/45'
                             : rec.status === 'absent'
-                            ? 'bg-rose-50/30'
+                            ? 'bg-rose-50/35'
                             : ''
                         }`}
                       >
@@ -1936,13 +2100,13 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
           <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2.5">
-                <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#635BFF] to-[#4338CA] text-white flex items-center justify-center shrink-0 shadow-xs">
                   <Bell className="w-5 h-5" />
                 </div>
                 <div>
                   <h3 className="font-black text-sm text-slate-900 flex items-center gap-2">
                     <span>শ্রমিক নোটিশ বোর্ড</span>
-                    <span className="px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 text-xs font-bold">
+                    <span className="px-2 py-0.5 rounded-lg bg-indigo-100 text-indigo-800 text-xs font-bold tabular-nums">
                       {toBengaliNumber(myNotices.length)}টি নোটিশ
                     </span>
                   </h3>
@@ -1952,14 +2116,14 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
                 </div>
               </div>
 
-              {/* Filter Pills */}
+              {/* Filter Tabs */}
               <div className="flex items-center gap-1.5 flex-wrap">
                 <button
                   type="button"
                   onClick={() => setNoticeFilter('all')}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 ${
                     noticeFilter === 'all'
-                      ? 'bg-purple-600 text-white'
+                      ? 'bg-gradient-to-r from-[#635BFF] to-[#4338CA] text-white shadow-xs'
                       : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   }`}
                 >
@@ -1968,15 +2132,15 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
                 <button
                   type="button"
                   onClick={() => setNoticeFilter('unread')}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0 ${
                     noticeFilter === 'unread'
-                      ? 'bg-rose-600 text-white'
+                      ? 'bg-gradient-to-r from-[#EC4899] to-[#DB2777] text-white shadow-xs'
                       : 'bg-rose-50 text-rose-700 hover:bg-rose-100'
                   }`}
                 >
                   <span>অপঠিত</span>
                   {unreadNoticesCount > 0 && (
-                    <span className="px-1.5 py-0.2 bg-white text-rose-700 rounded-full text-[10px] font-black">
+                    <span className="px-1.5 py-0.2 bg-white text-rose-700 rounded-md text-[10px] font-black tabular-nums">
                       {toBengaliNumber(unreadNoticesCount)}
                     </span>
                   )}
@@ -1984,9 +2148,9 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
                 <button
                   type="button"
                   onClick={() => setNoticeFilter('individual')}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 ${
                     noticeFilter === 'individual'
-                      ? 'bg-indigo-600 text-white'
+                      ? 'bg-gradient-to-r from-[#1D63DC] to-[#2563EB] text-white shadow-xs'
                       : 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100'
                   }`}
                 >
@@ -1995,9 +2159,9 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
                 <button
                   type="button"
                   onClick={() => setNoticeFilter('factory')}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 ${
                     noticeFilter === 'factory'
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-gradient-to-r from-[#059669] to-[#16A34A] text-white shadow-xs'
                       : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
                   }`}
                 >
@@ -2018,7 +2182,7 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
                 </p>
               </div>
             ) : (
-              <div className="divide-y divide-slate-100 mt-2">
+              <div className="space-y-2.5 mt-3">
                 {filteredNotices.map((notice) => {
                   const isRead = notice.readBy?.includes(loggedInWorker.id);
                   const isPersonal = notice.targetType === 'individual';
@@ -2028,8 +2192,8 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
                   return (
                     <div
                       key={notice.id}
-                      className={`py-4 transition rounded-xl px-3 my-1.5 ${
-                        !isRead ? 'bg-purple-50/50 border-l-4 border-purple-500' : 'hover:bg-slate-50/70'
+                      className={`p-3.5 transition rounded-2xl border ${
+                        !isRead ? 'bg-indigo-50/60 border-indigo-300 shadow-2xs' : 'bg-white border-slate-200 hover:bg-slate-50/70'
                       }`}
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1.5">
@@ -2198,17 +2362,22 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
           {/* Current Month Status & 4-Step Stepper Card */}
           <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200 space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
-              <div>
-                <span className="text-[11px] font-bold text-slate-500">
-                  বেতনের বর্তমান পর্যায় ({selectedMonth} {selectedYear})
-                </span>
-                <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                  <h3 className="text-lg font-black text-slate-900">
-                    স্ট্যাটাস: <span className="text-emerald-700">{progressInfo.label}</span>
-                  </h3>
-                  <span className={`px-2.5 py-0.5 rounded-full text-xs font-black border ${progressInfo.badge}`}>
-                    ধাপ {toBengaliNumber(progressInfo.step)} / ৪
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#059669] to-[#16A34A] text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <DollarSign className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[11px] font-bold text-slate-500">
+                    বেতনের বর্তমান পর্যায় ({selectedMonth} {selectedYear})
                   </span>
+                  <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                    <h3 className="text-lg font-black text-slate-900">
+                      স্ট্যাটাস: <span className="text-emerald-700">{progressInfo.label}</span>
+                    </h3>
+                    <span className={`px-2.5 py-0.5 rounded-lg text-xs font-black border ${progressInfo.badge}`}>
+                      ধাপ {toBengaliNumber(progressInfo.step)} / ৪
+                    </span>
+                  </div>
                 </div>
               </div>
 
@@ -2281,9 +2450,9 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
 
             {/* Salary Breakdown Table */}
             <div className="border border-slate-200 rounded-xl overflow-hidden">
-              <div className="bg-slate-50 px-4 py-2 border-b border-slate-200 font-bold text-xs text-slate-800 flex justify-between items-center">
+              <div className="bg-gradient-to-r from-[#08142E] via-[#0F2149] to-[#132B63] px-4 py-2.5 font-bold text-xs text-white flex justify-between items-center">
                 <span>{selectedMonth} মাসের পূর্ণাঙ্গ হিসাব বিবরণী</span>
-                <span className="text-[11px] font-normal text-slate-500">
+                <span className="text-[11px] font-semibold text-cyan-200">
                   {currentMonthSalary ? 'অ্যাডমিন সংরক্ষিত রেকর্ড' : 'চলতি সম্ভাব্য হিসাব'}
                 </span>
               </div>
@@ -2399,14 +2568,16 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
 
           {/* Salary History Across Months (তারিখ অনুযায়ী হিস্ট্রি) */}
           <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200 space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <div className="flex items-center gap-2">
-                <History className="w-4 h-4 text-indigo-600" />
+            <div className="flex items-center justify-between pb-2.5 border-b border-slate-100">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#635BFF] to-[#4338CA] text-white flex items-center justify-center shadow-xs shrink-0">
+                  <History className="w-4 h-4" />
+                </div>
                 <h4 className="font-black text-sm text-slate-900">
                   পূর্ববর্তী মাসের বেতন প্রদান ও স্ট্যাটাস হিস্ট্রি
                 </h4>
               </div>
-              <span className="text-xs text-slate-500">
+              <span className="text-xs font-bold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg tabular-nums">
                 মোট {toBengaliNumber(workerSalaryHistory.length)}টি রেকর্ড
               </span>
             </div>
@@ -2416,53 +2587,53 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
                 পূর্ববর্তী কোনো বেতন রেকর্ড সংরক্ষিত নেই।
               </p>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+              <div className="overflow-x-auto rounded-xl border border-slate-200">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead className="bg-gradient-to-r from-[#08142E] via-[#0F2149] to-[#132B63] text-white font-bold">
                     <tr>
-                      <th className="py-2 px-3">মাস ও বছর</th>
-                      <th className="py-2 px-3">স্ট্যাটাসের অবস্থান</th>
-                      <th className="py-2 px-3">আপডেট তারিখ</th>
-                      <th className="py-2 px-3">নিট বেতন</th>
-                      <th className="py-2 px-3">অবস্থা</th>
-                      <th className="py-2 px-3 text-right">পে-স্লিপ</th>
+                      <th className="py-2.5 px-3 whitespace-nowrap">মাস ও বছর</th>
+                      <th className="py-2.5 px-3 whitespace-nowrap">স্ট্যাটাসের অবস্থান</th>
+                      <th className="py-2.5 px-3 whitespace-nowrap">আপডেট তারিখ</th>
+                      <th className="py-2.5 px-3 whitespace-nowrap">নিট বেতন</th>
+                      <th className="py-2.5 px-3 whitespace-nowrap">অবস্থা</th>
+                      <th className="py-2.5 px-3 text-right whitespace-nowrap">পে-স্লিপ</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-slate-100 bg-white">
                     {workerSalaryHistory.map((rec) => {
                       const prog = getSalaryProgressInfo(rec.progressStatus, rec.paymentStatus);
                       return (
                         <tr key={rec.id} className="hover:bg-slate-50/70 transition">
-                          <td className="py-2.5 px-3 font-bold text-slate-900">
+                          <td className="py-2.5 px-3 font-bold text-slate-900 whitespace-nowrap">
                             {rec.month} {rec.year}
                           </td>
-                          <td className="py-2.5 px-3">
-                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-black border ${prog.badge}`}>
+                          <td className="py-2.5 px-3 whitespace-nowrap">
+                            <span className={`px-2 py-0.5 rounded-lg text-[10px] font-black border ${prog.badge}`}>
                               {prog.label}
                             </span>
                           </td>
-                          <td className="py-2.5 px-3 font-mono text-slate-600">
+                          <td className="py-2.5 px-3 font-mono text-slate-600 whitespace-nowrap tabular-nums">
                             {rec.statusUpdatedDate
                               ? formatDateBn(rec.statusUpdatedDate)
                               : rec.statusUpdatedAt
                               ? formatDateBn(new Date(rec.statusUpdatedAt).toISOString().split('T')[0])
                               : '—'}
                           </td>
-                          <td className="py-2.5 px-3 font-bold font-mono text-slate-900">
+                          <td className="py-2.5 px-3 font-black font-mono text-slate-900 whitespace-nowrap tabular-nums">
                             ৳ {formatMoney(rec.netPayable)}
                           </td>
-                          <td className="py-2.5 px-3">
-                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                          <td className="py-2.5 px-3 whitespace-nowrap">
+                            <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${
                               rec.paymentStatus === 'paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
                             }`}>
                               {rec.paymentStatus === 'paid' ? 'পরিশোধিত' : 'বকেয়া'}
                             </span>
                           </td>
-                          <td className="py-2.5 px-3 text-right">
+                          <td className="py-2.5 px-3 text-right whitespace-nowrap">
                             <button
                               type="button"
                               onClick={() => setSelectedSlipRecord(rec)}
-                              className="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 font-bold text-xs inline-flex items-center gap-1 cursor-pointer"
+                              className="px-2.5 py-1 rounded-lg bg-gradient-to-r from-[#1D63DC] to-[#2563EB] hover:from-blue-600 hover:to-blue-700 text-white font-bold text-xs inline-flex items-center gap-1 cursor-pointer shadow-xs"
                             >
                               <Receipt className="w-3 h-3" />
                               <span>স্লিপ</span>
@@ -2494,21 +2665,23 @@ export const WorkerPortal: React.FC<WorkerPortalProps> = ({
       {portalTab !== 'profile' && (
         <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200 space-y-3">
           <div className="pb-3 border-b border-slate-100 flex items-center justify-between flex-wrap gap-2">
-            <div className="flex items-center gap-2">
-              <User className="w-4 h-4 text-blue-600" />
-              <h3 className="font-bold text-sm text-slate-900">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#F97316] to-[#EA580C] text-white flex items-center justify-center shadow-xs shrink-0">
+                <User className="w-4 h-4" />
+              </div>
+              <h3 className="font-black text-sm text-slate-900">
                 ব্যক্তিগত ও পরিচয় তথ্য
               </h3>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md inline-flex items-center gap-1">
+              <span className="text-[11px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-lg inline-flex items-center gap-1">
                 <Lock className="w-2.5 h-2.5" />
                 <span>রিড-অনলি</span>
               </span>
               <button
                 type="button"
                 onClick={() => setPortalTab('profile')}
-                className="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs flex items-center gap-1.5 cursor-pointer transition shadow-xs active:scale-95"
+                className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#1D63DC] to-[#2563EB] hover:from-blue-600 hover:to-blue-700 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer transition shadow-xs active:scale-95 whitespace-nowrap shrink-0"
               >
                 <Eye className="w-3.5 h-3.5" />
                 <span>একনজরে পূর্ণাঙ্গ প্রোফাইল</span>

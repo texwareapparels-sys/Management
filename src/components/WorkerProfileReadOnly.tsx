@@ -80,10 +80,10 @@ export const WorkerProfileReadOnly: React.FC<WorkerProfileReadOnlyProps> = ({
   return (
     <div className="space-y-3 sm:space-y-4">
       {/* 1. Header Information & Read-Only Notice Bar */}
-      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 text-white rounded-2xl p-4 sm:p-5 shadow-md border border-white/10 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-[#08142E] via-[#0F2149] to-[#132B63] text-white rounded-2xl p-4 sm:p-5 shadow-md border border-[#1E3A8A]/40 relative overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative z-10">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-400/30 flex items-center justify-center text-amber-300 shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#F97316] to-[#EA580C] text-white flex items-center justify-center shrink-0 shadow-sm">
               <IdCard className="w-5 h-5" />
             </div>
             <div>
@@ -91,7 +91,7 @@ export const WorkerProfileReadOnly: React.FC<WorkerProfileReadOnlyProps> = ({
                 <h3 className="font-black text-sm sm:text-base text-white">
                   কর্মী পূর্ণাঙ্গ প্রোফাইল তথ্য
                 </h3>
-                <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30 text-[10px] font-black inline-flex items-center gap-1">
+                <span className="px-2.5 py-0.5 rounded-lg bg-amber-400/20 text-amber-200 border border-amber-400/35 text-[10px] font-black inline-flex items-center gap-1">
                   <Lock className="w-2.5 h-2.5" />
                   <span>শুধুমাত্র প্রদর্শনযোগ্য (Read-Only)</span>
                 </span>
@@ -107,7 +107,7 @@ export const WorkerProfileReadOnly: React.FC<WorkerProfileReadOnlyProps> = ({
               <button
                 type="button"
                 onClick={onBackToAttendance}
-                className="px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white font-bold text-xs flex items-center gap-1.5 transition active:scale-95 cursor-pointer"
+                className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#1D63DC] to-[#2563EB] hover:from-blue-500 hover:to-blue-600 text-white font-bold text-xs flex items-center gap-1.5 transition active:scale-95 cursor-pointer shadow-xs whitespace-nowrap shrink-0"
               >
                 <span>← হাজিরা ভিউতে ফিরুন</span>
               </button>
@@ -125,21 +125,21 @@ export const WorkerProfileReadOnly: React.FC<WorkerProfileReadOnlyProps> = ({
       </div>
 
       {/* 1.1 Dedicated Worker App Phone Install Card */}
-      <div className="bg-gradient-to-r from-teal-700 via-emerald-800 to-cyan-900 text-white rounded-2xl p-4 sm:p-5 shadow-md border border-emerald-400/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-[#059669] via-[#0D9488] to-[#0284C7] text-white rounded-2xl p-4 sm:p-5 shadow-md border border-emerald-400/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-2xl bg-white/15 p-2 flex items-center justify-center border border-white/20 shadow-inner shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-white/15 p-2 flex items-center justify-center border border-white/25 shadow-inner shrink-0">
             <Smartphone className="w-6 h-6 text-white" />
           </div>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <h4 className="font-black text-sm sm:text-base text-white">
-                📱 টেক্স ওয়ার শ্রমিক অ্যাপ ফোনে ডাউনলোড / ইনস্টল করুন
+                টেক্স ওয়ার শ্রমিক অ্যাপ ফোনে ডাউনলোড / ইনস্টল করুন
               </h4>
-              <span className="bg-amber-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full">
+              <span className="bg-amber-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-lg">
                 শ্রমিকদের জন্য স্বতন্ত্র অ্যাপ
               </span>
             </div>
-            <p className="text-xs text-teal-100 mt-1 leading-relaxed">
+            <p className="text-xs text-teal-50 mt-1 leading-relaxed">
               প্লে-স্টোর ছাড়াই আপনার মোবাইলের হোম স্ক্রিনে অ্যাপটি ইনস্টল করে রাখুন। প্রতিদিন ব্রাউজারে লিংক খোঁজা ছাড়াই সরাসরি আইডি ও পাসওয়ার্ড দিয়ে নিজের হাজিরা ও বেতন দেখুন।
             </p>
           </div>
@@ -149,7 +149,7 @@ export const WorkerProfileReadOnly: React.FC<WorkerProfileReadOnlyProps> = ({
           <button
             type="button"
             onClick={onOpenInstallModal}
-            className="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-95 cursor-pointer shrink-0"
+            className="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
           >
             <Download className="w-4 h-4 text-slate-950" />
             <span>শ্রমিক অ্যাপ ইনস্টল করুন</span>
@@ -221,15 +221,15 @@ export const WorkerProfileReadOnly: React.FC<WorkerProfileReadOnlyProps> = ({
             </div>
           </div>
 
-          {/* Key Rates Highlights (Compact Badges) */}
-          <div className="flex items-center gap-2 self-start sm:self-auto bg-slate-50 border border-slate-200 rounded-xl p-2.5">
-            <div className="px-3 py-1 text-center border-r border-slate-200">
-              <span className="text-[10px] text-slate-500 block font-semibold">মূল বেতন</span>
-              <span className="font-mono font-black text-xs text-slate-900">৳ {formatMoney(Number(employee.salary || 0))}</span>
+          {/* Key Rates Highlights (Colorful Gradient Metric Tiles) */}
+          <div className="flex items-center gap-2.5 self-start sm:self-auto">
+            <div className="px-3.5 py-2 rounded-xl bg-gradient-to-br from-[#0284C7] to-[#2563EB] text-white text-center shadow-xs">
+              <span className="text-[10px] text-white/85 block font-semibold">মূল বেতন</span>
+              <span className="font-mono font-black text-xs sm:text-sm text-white tabular-nums">৳ {formatMoney(Number(employee.salary || 0))}</span>
             </div>
-            <div className="px-3 py-1 text-center">
-              <span className="text-[10px] text-slate-500 block font-semibold">ওটি রেট (ঘণ্টা)</span>
-              <span className="font-mono font-black text-xs text-indigo-700">৳ {toBengaliNumber(Number(employee.otRate || 0))}</span>
+            <div className="px-3.5 py-2 rounded-xl bg-gradient-to-br from-[#635BFF] to-[#4338CA] text-white text-center shadow-xs">
+              <span className="text-[10px] text-white/85 block font-semibold">ওটি রেট (ঘণ্টা)</span>
+              <span className="font-mono font-black text-xs sm:text-sm text-white tabular-nums">৳ {toBengaliNumber(Number(employee.otRate || 0))}</span>
             </div>
           </div>
         </div>
@@ -239,8 +239,10 @@ export const WorkerProfileReadOnly: React.FC<WorkerProfileReadOnlyProps> = ({
           
           {/* Section 1: ব্যক্তিগত ও জাতীয় পরিচয় */}
           <div>
-            <div className="flex items-center gap-1.5 text-xs font-black text-slate-800 mb-2.5">
-              <User className="w-3.5 h-3.5 text-blue-600" />
+            <div className="flex items-center gap-2 text-xs font-black text-slate-900 mb-2.5">
+              <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-[#1D63DC] to-[#2563EB] text-white flex items-center justify-center shadow-xs">
+                <User className="w-3.5 h-3.5" />
+              </div>
               <span>ব্যক্তিগত ও পরিচয় তথ্য</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs">
@@ -300,8 +302,10 @@ export const WorkerProfileReadOnly: React.FC<WorkerProfileReadOnlyProps> = ({
 
           {/* Section 2: চাকরি, পদবী ও শিফট তথ্য */}
           <div>
-            <div className="flex items-center gap-1.5 text-xs font-black text-slate-800 mb-2.5">
-              <Building2 className="w-3.5 h-3.5 text-indigo-600" />
+            <div className="flex items-center gap-2 text-xs font-black text-slate-900 mb-2.5">
+              <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-[#635BFF] to-[#4338CA] text-white flex items-center justify-center shadow-xs">
+                <Building2 className="w-3.5 h-3.5" />
+              </div>
               <span>চাকরি ও কর্মসংস্থান তথ্য</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs">
@@ -328,8 +332,10 @@ export const WorkerProfileReadOnly: React.FC<WorkerProfileReadOnlyProps> = ({
 
           {/* Section 3: বেতন ও পেমেন্ট অ্যাকাউন্ট বিবরণী */}
           <div>
-            <div className="flex items-center gap-1.5 text-xs font-black text-slate-800 mb-2.5">
-              <DollarSign className="w-3.5 h-3.5 text-emerald-600" />
+            <div className="flex items-center gap-2 text-xs font-black text-slate-900 mb-2.5">
+              <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-[#059669] to-[#16A34A] text-white flex items-center justify-center shadow-xs">
+                <DollarSign className="w-3.5 h-3.5" />
+              </div>
               <span>বেতন ও পেমেন্ট অ্যাকাউন্ট বিবরণী</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs">
